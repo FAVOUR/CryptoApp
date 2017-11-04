@@ -1,0 +1,9 @@
+
+<resources>
+    <!-- Margin around the floating action button in CatalogActivity -->
+    <dimen name="button_margin">16dp</dimen>
+
+    <!-- margin value for the button elevation  -->
+    <dimen name="activity_margin">16dp</dimen>
+</resources>
+

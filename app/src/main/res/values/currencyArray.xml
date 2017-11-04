@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are the options displayed in the gender drop-down Spinner -->
+    <string-array name="currency_options">
+        <item> " "</item>
+        <item>Australia Dollar </item>
+        <item>Egypt Pound</item>
+        <item>Great Britain Pound</item>
+        <item>German Euro</item>
+        <item>Georgia Lari </item>
+        <item>Ghana New Cedi</item>
+        <item> Hong Kong Dollar</item>
+        <item>Israel New Shekel</item>
+        <item>Jamaica Dollar</item>
+        <item>Japan Yen</item>
+        <item>Malaysia Ringgit</item>
+        <item>Nigeria Naira</item>
+        <item> Philippines Peso </item>
+        <item>Qatar Rial</item>
+        <item>Russia Rouble</item>
+        <item>South Africa Rand</item>
+        <item>Switzerland Franc</item>
+        <item> Taiwan Dollar</item>
+        <item>Thailand Baht</item>
+        <item>USA Dollar</item>
+
+    </string-array>
+</resources>

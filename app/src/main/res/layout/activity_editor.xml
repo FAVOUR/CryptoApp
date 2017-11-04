@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_margin"
+    tools:context="com.example.android.cryptoapp.activities.EditorActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#434343"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pbloading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pbloading"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:text="Obtaining rates......"/>
+    </RelativeLayout>
+
+    <TextView
+        android:text="Select a currency "
+        style="@style/CategoryStyle" />
+
+
+    <!-- Overview category -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/currrency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+                <!-- All Currencies  -->
+                <Spinner
+                    android:id="@+id/currencyName"
+                    android:layout_height="48dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:paddingRight="16dp"
+                    android:spinnerMode="dropdown"
+
+                    />
+
+                 <!--Convert Button -->
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="116dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:elevation="@dimen/button_margin"
+                    android:text="Add"
+                    android:textColor="#ffff"
+                    android:onClick="addCurrency"
+                    />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -1,0 +1,41 @@
+<resources>
+
+    <!--app name -->
+    <string name="app_name">Crypto Converter</string>
+    <string name="list_activity_title">Btc &amp; Eth Converter </string>
+
+    <string name="conversion_activity_title">Currency Converter </string>
+
+    <string name="editor_activity_title">Currency Selector </string>
+
+    <string name="About">About</string>
+
+    <string name="About_">An app for ALC intermediate challenge built by Olije Favour</string>
+    <string name="Dummy_value_forEdittext">"     0.0"</string>
+
+    <!--String values of all currencies -->
+    <string name="none"></string>
+    <string name="btc">BTC</string>
+    <string name="eth">ETH</string>
+    <string name="Australia_Dollar">AUD</string>
+    <string name="Egypt_Pound">EGP</string>
+    <string name="Great_Britain_Pound">GBP</string>
+    <string name="German_Euro">EUR</string>
+    <string name="Georgia_Lari">GEL</string>
+    <string name="Ghana_New_Cedi">GHS</string>
+    <string name="Hong_Kong_Dollar">HKD</string>
+    <string name="Israel_New_Shekel">ILS</string>
+    <string name="Jamaica_Dollar">JMD</string>
+    <string name="Japan_Yen">JPY</string>
+    <string name="Malaysia_Ringgit">MYR</string>
+    <string name="Nigeria_Naira">NGN</string>
+    <string name="Philippines_Peso">PHP</string>
+    <string name="Qatar_Rial">QAR</string>
+    <string name="Russia_Rouble">RUB</string>
+    <string name="South_Africa_Rand">ZAR</string>
+    <string name="Switzerland_Franc">CHF</string>
+    <string name="Taiwan_Dollar">TWD</string>
+    <string name="Thailand_Baht">THB</string>
+    <string name="usa_Dollar">USD</string>
+
+</resources>
