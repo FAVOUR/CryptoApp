@@ -1,14 +1,15 @@
 package com.example.android.cryptoapp.activities;
 
 import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.cryptoapp.R;
 import com.squareup.picasso.Picasso;
@@ -18,12 +19,12 @@ import java.text.DecimalFormat;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class ConversionActivity extends AppCompatActivity {
-    EditText currency_amount;
     EditText btc_amount;
     EditText eth_amount;
     ImageView currencyImage;
     ImageView btcImage;
     ImageView ethImage;
+    TextView currency_amount;
     TextView btcExchangeRate;
     TextView ethExchangeRate;
     TextView currencySymbol_1;
@@ -64,10 +65,11 @@ public class ConversionActivity extends AppCompatActivity {
         format.setMaximumIntegerDigits(20);
         format.setMaximumFractionDigits(3);
 
-        currency_amount=(EditText) findViewById(R.id.currency_amount);
+        currency_amount=(TextView) findViewById(R.id.currency_amount);
         btc_amount = (EditText) findViewById(R.id.btc_amount);
         eth_amount = (EditText) findViewById(R.id.eth_amount);
-
+        btc_amount.addTextChangedListener(generalWatcher);
+        eth_amount.addTextChangedListener(generalWatcher);
 
 
 
@@ -110,30 +112,96 @@ public class ConversionActivity extends AppCompatActivity {
         currency_Name.setText(currencyName);
     }
 
-    //addCurrency button
-    public void convert(View view) {
-       try{
-        if (currency_amount.getText() != null) {
-            Float currencyFigure = Float.parseFloat(currency_amount.getText().toString().trim());
+
+    private final TextWatcher generalWatcher =new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
 
-            String fBtcRate = format.format(currencyFigure / btcRate);
-
-            btc_amount.setText(fBtcRate);
-            String fEthRate = format.format(currencyFigure / ethRate);
-
-            eth_amount.setText(fEthRate);
-        } }
-
-        catch (NumberFormatException e){
-
-            currency_amount.setText("");
-            eth_amount.setText("");
-            btc_amount.setText("");
-
-            Toast.makeText(getBaseContext(), "Enter an amount in " + currencyAbr  ,Toast.LENGTH_LONG).show();
 
         }
-    }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            if(btc_amount.getText().hashCode()==charSequence.hashCode()) {
+                String sBtcValue;
+                if(charSequence.length()>0){
+
+                    Float fBtcValue =  Float.parseFloat(btc_amount.getText().toString().trim());
+                    sBtcValue = format.format(btcRate * fBtcValue);
+
+                    currency_amount.setTextColor(Color.parseColor("#ab7d0b"));
+                    currency_amount.setText(currencySymbol + sBtcValue);
+
+
+                }
+
+                else{
+                    currency_amount.setText("");
+
+                }
+
+            }
+
+
+            else if(eth_amount.getText().hashCode()==charSequence.hashCode()) {
+                String sEthValue;
+                if(charSequence.length()>0){
+
+                    Float fEthValue =  Float.parseFloat(eth_amount.getText().toString().trim());
+
+                    sEthValue = format.format(ethRate * fEthValue);
+                    currency_amount.setTextColor(Color.parseColor("#5b6abd"));
+                    currency_amount.setText(currencySymbol + sEthValue);
+
+
+                }
+
+                else{
+
+                    currency_amount.setText("");
+
+                }
+            }
+
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+
+    };
+//    //addCurrency button
+//    public void convert(View view) {
+//       try{
+//        if (currency_amount.getText() != null) {
+//
+//            Float currencyFigure = Float.parseFloat(currency_amount.getText().toString().trim());
+//
+//
+//            String fBtcRate = format.format(currencyFigure / btcRate);
+//
+//            btc_amount.setText(fBtcRate);
+//
+//
+//            String fEthRate = format.format(currencyFigure / ethRate);
+//
+//            eth_amount.setText(fEthRate);
+//
+//
+//        } }
+//
+//        catch (NumberFormatException e){
+//
+//            currency_amount.setText("");
+//            eth_amount.setText("");
+//            btc_amount.setText("");
+//
+//            Toast.makeText(getBaseContext(), "Enter an amount in " + currencyAbr  ,Toast.LENGTH_LONG).show();
+//
+//        }
+//    }
 }
 
