@@ -59,7 +59,7 @@ public class EditorActivity extends AppCompatActivity {
 
         loading = (RelativeLayout) findViewById(R.id.loading);
 
-       setTitle(R.string.list_activity_title);
+       setTitle(R.string.editor_activity_title);
         spinnerForCurrency();
 
     }

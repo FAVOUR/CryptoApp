@@ -2,11 +2,11 @@
 
     <!--app name -->
     <string name="app_name">Crypto Converter</string>
-    <string name="list_activity_title">Obtain Btc Eth Rates </string>
+    <string name="editor_activity_title">Obtain Btc &amp; Eth Rates </string>
 
-    <string name="conversion_activity_title">Converter</string>
+    <string name="conversion_activity_title">Base Currency Converter</string>
 
-    <string name="editor_activity_title">Currency Selector </string>
+
 
     <string name="About">About</string>
 
