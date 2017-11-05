@@ -64,7 +64,7 @@ public class ConversionActivity extends AppCompatActivity {
         format.setMaximumIntegerDigits(20);
         format.setMaximumFractionDigits(3);
 
-        currency_amount = (EditText) findViewById(R.id.currency_amount);
+        currency_amount=(EditText) findViewById(R.id.currency_amount);
         btc_amount = (EditText) findViewById(R.id.btc_amount);
         eth_amount = (EditText) findViewById(R.id.eth_amount);
 
