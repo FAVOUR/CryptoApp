@@ -3,9 +3,6 @@ package com.example.android.cryptoapp.currency_data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by OZMA NIG COM LTD on 11-Oct-17.
- */
 
 public class Btc {
     @SerializedName("AUD")
@@ -153,26 +150,5 @@ public class Btc {
         return uSD;
     }
 
-//(Egypt Pound)
-//      Australia Dollar
-//    Great Britain Pound
-//            Euro
-//    Germany Mark(EURO)
-//    Ghana New Cedi
-//    Hong Kong Dollar
-//    Italy Lira (EURO)
-//    Jamaica Dollar
-//    Japan Yen
-//    Malaysia Ringgit
-//    Nigeria Naira
-//    North Korea Won
-//    Qatar Rial
-//    Russia Rouble
-//      South Africa Rand
-//        Switzerland Franc
-//        Syria Pound
-//        Taiwan Dollar
-//        USA Dollar
-//
 
     }

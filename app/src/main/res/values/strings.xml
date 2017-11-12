@@ -14,7 +14,7 @@
     <string name="Dummy_value_forEdittext">"     0.0"</string>
 
     <!--String values of all currencies -->
-    <string name="none"></string>
+    <string name="none">""</string>
     <string name="btc">BTC</string>
     <string name="eth">ETH</string>
     <string name="Australia_Dollar">AUD</string>
@@ -37,5 +37,6 @@
     <string name="Taiwan_Dollar">TWD</string>
     <string name="Thailand_Baht">THB</string>
     <string name="usa_Dollar">USD</string>
+    <string name="add_an_exchange_rate">add an exchange rate</string>
 
 </resources>

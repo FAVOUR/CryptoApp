@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import com.example.android.cryptoapp.R;
 import com.example.android.cryptoapp.Results;
 import com.example.android.cryptoapp.adapter.RatesAdapter;
+import com.example.android.cryptoapp.currency_data.Btc;
+import com.example.android.cryptoapp.currency_data.Eth;
 import com.example.android.cryptoapp.rest.ApiClient;
 import com.example.android.cryptoapp.rest.CryptoCurrencyService;
 
@@ -38,6 +40,8 @@ public class ListActivity extends AppCompatActivity implements RatesAdapter.List
     Double btcRate;
     Double ethRate;
     CryptoCurrencyService cryptoClient;
+    Btc btcConversionRates;
+    Eth ethConversionRates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,6 @@ public class ListActivity extends AppCompatActivity implements RatesAdapter.List
         check = getIntent().getExtras() == null;
 
         layoutManager = new LinearLayoutManager(getBaseContext());
-
 
 
         results = new ArrayList<>();
@@ -77,10 +80,36 @@ public class ListActivity extends AppCompatActivity implements RatesAdapter.List
         }
 
 
+
+
     }
 
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Entry")
+                .setMessage("Are sure you wat to exit?")
+                .setPositiveButton(android.R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ListActivity.this.finish();
+                            }
+                        })
 
 
+                .setNegativeButton(android.R.string.no,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
     @Override
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,22 +118,46 @@ public class ListActivity extends AppCompatActivity implements RatesAdapter.List
 
         return true;
     }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        //Let ApCompactActivity call the onPrepareOptionsMenu(menu) method
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem_1;
+        if(resultAdapter.getItemCount()>0){
+            MenuItem menuItem = menu.findItem(R.id.add_new_card);
+            menuItem.setVisible(false);
+            menuItem_1 = menu.findItem(R.id.replace);
+            menuItem_1.setVisible(true);
+
+        }
+
+        else{
+            menuItem_1 = menu.findItem(R.id.replace);
+            menuItem_1.setVisible(false);
+        }
+
+        return true;
+    }
 
     @Override
 
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Intent intent;
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
 
             // Respond to a click in order to add a new card
             case R.id.add_new_card:
 
-                Intent intent = new Intent(ListActivity.this, EditorActivity.class);
+                intent = new Intent(ListActivity.this, EditorActivity.class);
 
 
                 startActivity(intent);
 
                 return true;
+
+
 
             case R.id.about:
                 AlertDialog.Builder builder;
@@ -119,8 +172,21 @@ public class ListActivity extends AppCompatActivity implements RatesAdapter.List
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 return true;
+
+            case R.id.replace:
+
+                 intent = new Intent(ListActivity.this, EditorActivity.class);
+
+
+                startActivity(intent);
+
+                return true;
         }
+
+
+
         return super.onOptionsItemSelected(item);
+
     }
 
     @Override
@@ -139,6 +205,8 @@ public class ListActivity extends AppCompatActivity implements RatesAdapter.List
 
 
     }
+
+
 
 }
 

@@ -62,14 +62,14 @@
 
                     />
 
-                 <!--Convert Button -->
+
                 <Button
                     android:id="@+id/button"
                     android:layout_width="116dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:elevation="@dimen/button_margin"
-                    android:text="Add"
+                    android:text="ok"
                     android:textColor="#ffff"
                     android:onClick="addCurrency"
                     />

@@ -1,26 +1,23 @@
 package com.example.android.cryptoapp;
 
-/**
- * Created by OZMA NIG COM LTD on 13-Oct-17.
- */
 
 public class Results {
 
-    String mName;
-    String mAbr;
-    Double mFirstExRate;
-    Double mSecondExRate;
-    String mSymbol;
-    int mImage;
+    private String mName;
+    private String mAbr;
+    private Double mFirstExRate;
+    private Double mSecondExRate;
+    private String mSymbol;
+    private int mImage;
 
 
     public Results(int image, Double firstExRate, Double secondExRate, String name, String abbrivation, String Symbol){
         mImage=image;
-         mName = name;
-         mAbr= abbrivation;
-         mFirstExRate=firstExRate;
-         mSecondExRate=secondExRate;
-         mSymbol = Symbol;
+        mName = name;
+        mAbr= abbrivation;
+        mFirstExRate=firstExRate;
+        mSecondExRate=secondExRate;
+        mSymbol = Symbol;
 
     }
 

@@ -38,7 +38,6 @@ public class EditorActivity extends AppCompatActivity {
 
     Double conversionFromBtc;
     Double conversionFromEth;
-    String baseCurrencies;
     String currencyAbr;
     String currencySymbol;
     String currencyName;
@@ -112,7 +111,7 @@ public class EditorActivity extends AppCompatActivity {
 
 
         loading.setVisibility(View.VISIBLE);
-        
+
         Call<JsonResponse> ok = cryptoClient.getJsonResponse(currencyAbr);
         ok.enqueue(new Callback<JsonResponse>() {
 
@@ -173,7 +172,7 @@ public class EditorActivity extends AppCompatActivity {
 
     //    Checks the spinner and returns the abbreviation and image resource of the currency selected
     private String checkSpinner(int position){
-        String CurrencyAbbreviation ="";
+        String CurrencyAbbreviation;
         switch (position){
             case 1:
                 CurrencyAbbreviation =getString(R.string.Australia_Dollar);
@@ -265,7 +264,7 @@ public class EditorActivity extends AppCompatActivity {
 
     //confirm BTC rates after putting  the currency type as parameter of this method
     public  double confirmBtcRates(String currency){
-        double BtcRates =0.0;
+        double BtcRates;
         switch (currency){
             case "AUD":
                 BtcRates = btcConversionRates.getAUD();
@@ -336,18 +335,15 @@ public class EditorActivity extends AppCompatActivity {
 
     //confirm ETH rates after putting the currency type as parameter of this method
     protected double confirmEthRates(String currency){
-        double ethRates =0.0;
+        double ethRates;
         switch (currency){
             case "AUD":
                 ethRates = ethConversionRates.getAUD();
                 currencySymbol=ethConversionRates.getAUDSymbol();
-
-
                 break;
             case "EGP":
                 ethRates =ethConversionRates.getEGP();
                 currencySymbol=ethConversionRates.getEGPSymbol();
-
                 break;
             case "EUR":
                 ethRates =ethConversionRates.getEUR();

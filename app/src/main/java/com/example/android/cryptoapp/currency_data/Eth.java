@@ -3,9 +3,6 @@ package com.example.android.cryptoapp.currency_data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by OZMA NIG COM LTD on 06-Oct-17.
- */
 
 public class Eth {
 
@@ -17,7 +14,7 @@ public class Eth {
     private Double egp;
     @SerializedName("GBP")
     @Expose
-    private Double  gbp;
+    private Double gbp;
     @SerializedName("EUR")
     @Expose
     private Double eur;
@@ -72,18 +69,19 @@ public class Eth {
     @Expose
     private Double uSD;
 
-    public  Double getAUD() {
+    public Double getAUD() {
         return aud;
     }
 
     public Double getCHF() {
         return chf;
     }
-    public String getAUDSymbol(){
+
+    public String getAUDSymbol() {
         return "$";
     }
 
-    public String getCHFSymbol(){
+    public String getCHFSymbol() {
         return "₣";
     }
 
@@ -91,20 +89,24 @@ public class Eth {
     public Double getEGP() {
         return egp;
     }
-    public String getEGPSymbol(){
+
+    public String getEGPSymbol() {
         return "£";
     }
+
     public Double getEUR() {
         return eur;
     }
-    public String getEURSymbol(){
+
+    public String getEURSymbol() {
         return "€";
     }
 
     public Double getGBP() {
         return gbp;
     }
-    public String getGBPSymbol(){
+
+    public String getGBPSymbol() {
         return "£";
     }
 
@@ -112,48 +114,56 @@ public class Eth {
     public Double getGEL() {
         return gel;
     }
-    public String getGELSymbol(){
+
+    public String getGELSymbol() {
         return "ლ";
     }
 
     public Double getGHS() {
         return ghs;
     }
-    public String getGHSSymbol(){
+
+    public String getGHSSymbol() {
         return "₵";
     }
 
     public Double getHKD() {
         return hkd;
     }
-    public String getHKDSymbol(){
+
+    public String getHKDSymbol() {
         return "$";
     }
 
     public Double getILS() {
         return ils;
     }
-    public String getILSSymbol(){
+
+    public String getILSSymbol() {
         return "₪";
     }
 
     public Double getJMD() {
         return jmd;
     }
-    public String getJMDSymbol(){
+
+    public String getJMDSymbol() {
         return "$";
     }
+
     public Double getJPY() {
         return jpy;
     }
-    public String getJPYSymbol(){
+
+    public String getJPYSymbol() {
         return "¥";
     }
 
     public Double getMYR() {
         return myr;
     }
-    public String getMYRSymbol(){
+
+    public String getMYRSymbol() {
         return "RM";
     }
 
@@ -162,20 +172,24 @@ public class Eth {
 
         return ngn;
     }
-    public String getNGNSymbol(){
+
+    public String getNGNSymbol() {
         return "₦";
     }
+
     public Double getPHP() {
         return php;
     }
-    public String getPHPSymbol(){
+
+    public String getPHPSymbol() {
         return "₱";
     }
 
     public Double getQAR() {
         return qar;
     }
-    public String getQARSymbol(){
+
+    public String getQARSymbol() {
         return "ر.ق";
     }
 
@@ -183,7 +197,8 @@ public class Eth {
     public Double getRUB() {
         return rub;
     }
-    public String getRUBSymbol(){
+
+    public String getRUBSymbol() {
         return "р";
     }
 
@@ -191,7 +206,8 @@ public class Eth {
     public Double getTHB() {
         return thb;
     }
-    public String getTHBSymbol(){
+
+    public String getTHBSymbol() {
         return "฿";
     }
 
@@ -199,7 +215,8 @@ public class Eth {
     public Double getTWD() {
         return twd;
     }
-    public String getTWDSymbol(){
+
+    public String getTWDSymbol() {
         return "$";
     }
 
@@ -207,37 +224,17 @@ public class Eth {
     public Double getUSD() {
         return uSD;
     }
-    public String getUSDSymbol(){
+
+    public String getUSDSymbol() {
         return "$";
     }
 
     public Double getZAR() {
         return zar;
     }
-    public String getZARSymbol(){
+
+    public String getZARSymbol() {
         return "R";
     }
-
-//(Egypt Pound)
-//      Australia Dollar
-//    Great Britain Pound
-//            Euro
-//    Germany Mark(EURO)
-//    Ghana New Cedi
-//    Hong Kong Dollar
-//    Italy Lira (EURO)
-//    Jamaica Dollar
-//    Japan Yen
-//    Malaysia Ringgit
-//    Nigeria Naira
-//    North Korea Won
-//    Qatar Rial
-//    Russia Rouble
-//      South Africa Rand
-//        Switzerland Franc
-//        Syria Pound
-//        Taiwan Dollar
-//        USA Dollar
-//
 
 }

@@ -14,30 +14,27 @@ import com.example.android.cryptoapp.Results;
 import java.text.DecimalFormat;
 import java.util.List;
 
-/**
- * Created by OZMA NIG COM LTD on 13-Oct-17.
- */
 
 public class RatesAdapter extends RecyclerView.Adapter<RatesAdapter.Rates_ViewHoler>  {
 
     final private ListItemClickListiner mOnClickedListiner;
     private List<Results> mResults;
-    private Context context;
+    private Context mContext;
     private int clickedPosition;
-    ImageView currencyImage;
-    TextView currencyAbr;
-    TextView exchangeRate_1;
-    TextView currencyName;
-    TextView exchangeRate_2;
-    TextView currencySymbol_1;
-    TextView currencySymbol_2;
-    DecimalFormat format;
+    private ImageView currencyImage;
+    private TextView currencyAbr;
+    private TextView exchangeRate_1;
+    private TextView currencyName;
+    private TextView exchangeRate_2;
+    private TextView currencySymbol_1;
+    private TextView currencySymbol_2;
+    private DecimalFormat format;
 
 
         public RatesAdapter(Context context, List<Results> results, ListItemClickListiner listiner) {
 
             mResults = results;
-            this.context = context;
+            mContext = context;
             mOnClickedListiner = listiner;
 
 
@@ -86,19 +83,19 @@ public class RatesAdapter extends RecyclerView.Adapter<RatesAdapter.Rates_ViewHo
                 itemView.setOnClickListener(this);
 
 
-                exchangeRate_1 = (TextView)itemView.findViewById(R.id.conversion_result);
+                exchangeRate_1 = (TextView)itemView.findViewById(R.id.btc_result);
                 currencyAbr = (TextView)itemView.findViewById(R.id.currency_abr);
                 currencyImage=(ImageView)itemView.findViewById(R.id.currency_image);
                 currencyName =  (TextView)itemView.findViewById(R.id.currency_name);
                 currencySymbol_1 =(TextView)itemView.findViewById(R.id.currency_symbol);
-                exchangeRate_2 = (TextView)itemView.findViewById(R.id.conversion_result_1);
+                exchangeRate_2 = (TextView)itemView.findViewById(R.id.eth_result);
                 currencySymbol_2=(TextView)itemView.findViewById(R.id.currency_symbol_1);
 
 
             }
 
 
-            void bind(int listIndex) {
+            private void bind(int listIndex) {
 
                 format = new DecimalFormat();
                 format.setGroupingUsed(true);

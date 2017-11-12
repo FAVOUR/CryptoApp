@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.cryptoapp.R;
 import com.squareup.picasso.Picasso;
@@ -44,7 +45,6 @@ public class ConversionActivity extends AppCompatActivity {
     DecimalFormat format;
 
 
-
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +65,11 @@ public class ConversionActivity extends AppCompatActivity {
         format.setMaximumIntegerDigits(20);
         format.setMaximumFractionDigits(3);
 
-        currency_amount=(TextView) findViewById(R.id.currency_amount);
+        currency_amount = (TextView) findViewById(R.id.currency_amount);
         btc_amount = (EditText) findViewById(R.id.btc_amount);
         eth_amount = (EditText) findViewById(R.id.eth_amount);
         btc_amount.addTextChangedListener(generalWatcher);
         eth_amount.addTextChangedListener(generalWatcher);
-
-
 
 
         if (!check) {
@@ -86,7 +84,7 @@ public class ConversionActivity extends AppCompatActivity {
 
         }
 
-         //Set the currency Image
+        //Set the currency Image
         currencyImage = (ImageView) findViewById(R.id.currency_image);
         Picasso.with(getBaseContext()).load(image)
                 .transform(new CropCircleTransformation())
@@ -110,13 +108,38 @@ public class ConversionActivity extends AppCompatActivity {
         currencySymbol_2.setText(currencySymbol);
         currencyAbbreviation.setText(currencyAbr);
         currency_Name.setText(currencyName);
+
+
     }
 
+//    @Override
+//
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        getMenuInflater().inflate(R.menu.menu_conversion_screen, menu);
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // User clicked on a menu option in the app bar overflow menu
+//        switch (item.getItemId()) {
+//            // Respond to a click on the "Up" arrow button in the app bar
+//            case android.R.id.home:
+//                // Navigate back to parent activity (CatalogActivity)
+//                NavUtils.navigateUpFromSameTask(this);
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
-    private final TextWatcher generalWatcher =new TextWatcher() {
+    private final TextWatcher generalWatcher = new TextWatcher() {
+
+        boolean ignore = true;
+
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
 
 
         }
@@ -124,54 +147,63 @@ public class ConversionActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            if(btc_amount.getText().hashCode()==charSequence.hashCode()) {
-                String sBtcValue;
-                if(charSequence.length()>0){
-
-                    Float fBtcValue =  Float.parseFloat(btc_amount.getText().toString().trim());
-                    sBtcValue = format.format(btcRate * fBtcValue);
-
-                    currency_amount.setTextColor(Color.parseColor("#ab7d0b"));
-                    currency_amount.setText(currencySymbol + sBtcValue);
-
-
-                }
-
-                else{
-                    currency_amount.setText("");
-
-                }
-
-            }
-
-
-            else if(eth_amount.getText().hashCode()==charSequence.hashCode()) {
-                String sEthValue;
-                if(charSequence.length()>0){
-
-                    Float fEthValue =  Float.parseFloat(eth_amount.getText().toString().trim());
-
-                    sEthValue = format.format(ethRate * fEthValue);
-                    currency_amount.setTextColor(Color.parseColor("#5b6abd"));
-                    currency_amount.setText(currencySymbol + sEthValue);
-
-
-                }
-
-                else{
-
-                    currency_amount.setText("");
-
-                }
-            }
-
 
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
-        }
+            try {
+                Float fBtcValue;
+                String sBtcValue;
+                if (btc_amount.getText().hashCode() == editable.hashCode()) {
 
+                    if (editable.length() > 0) {
+
+                        if (ignore) {
+                            eth_amount.setText("");
+                            fBtcValue = Float.parseFloat(btc_amount.getText().toString().trim());
+                            sBtcValue = format.format(btcRate * fBtcValue);
+                            currency_amount.setTextColor(Color.parseColor("#ab7d0b"));
+
+                            currency_amount.setText(currencySymbol + sBtcValue);
+                            return;
+                        }
+                        else{ currency_amount.setText("");}
+
+                        ignore = false;
+
+                    }
+
+
+                } else if (eth_amount.getText().hashCode() == editable.hashCode()) {
+                    String sEthValue;
+
+                    if (editable.length() > 0) {
+                        if (ignore) {
+                            btc_amount.setText("");
+                            Float fEthValue = Float.parseFloat(eth_amount.getText().toString().trim());
+
+                            sEthValue = format.format(ethRate * fEthValue);
+                            currency_amount.setTextColor(Color.parseColor("#5b6abd"));
+                            currency_amount.setText(currencySymbol + sEthValue);
+                            return;
+                        }
+                        else{ currency_amount.setText("");}
+                        ignore = false;
+
+                    }
+
+                }
+
+
+            } catch (NumberFormatException e) {
+                btc_amount.setText("");
+                eth_amount.setText("");
+                currency_amount.setText("");
+                Toast.makeText(getBaseContext(), "You can only Enter Numbers!", Toast.LENGTH_LONG).show();
+            }
+
+        }
     };
 //    //addCurrency button
 //    public void convert(View view) {
@@ -203,5 +235,6 @@ public class ConversionActivity extends AppCompatActivity {
 //
 //        }
 //    }
+
 }
 
