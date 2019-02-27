@@ -136,7 +136,7 @@ public class ConversionActivity extends AppCompatActivity {
 
     private final TextWatcher generalWatcher = new TextWatcher() {
 
-        boolean ignore = true;
+        boolean ignore = true;//This works fine with java but with kotlin
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -152,6 +152,7 @@ public class ConversionActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
+         ignore = true; //You have to reasign with kotlin you should try this 
             try {
                 Float fBtcValue;
                 String sBtcValue;
