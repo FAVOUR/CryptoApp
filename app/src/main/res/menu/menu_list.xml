@@ -11,7 +11,6 @@
 
     <item
         android:id="@+id/replace"
-        android:icon="@drawable/replace"
         android:title="replace"
         android:visible="true"
         app:showAsAction="always"/>
