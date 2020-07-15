@@ -85,22 +85,22 @@ public class ConversionActivity extends AppCompatActivity {
         }
 
         //Set the currency Image
-        currencyImage = (ImageView) findViewById(R.id.currency_image);
-        Picasso.with(getBaseContext()).load(image)
-                .transform(new CropCircleTransformation())
-                .into(currencyImage);
+//        currencyImage = (ImageView) findViewById(R.id.currency_image);
+//        Picasso.with(getBaseContext()).load(image)
+//                .transform(new CropCircleTransformation())
+//                .into(currencyImage);
 
         //Set the btc Image
-        btcImage = (ImageView) findViewById(R.id.btc_logo);
-        Picasso.with(getBaseContext()).load(R.drawable.btc)
-                .transform(new CropCircleTransformation())
-                .into(btcImage);
+//        btcImage = (ImageView) findViewById(R.id.btc_logo);
+//        Picasso.with(getBaseContext()).load(R.drawable.btc)
+//                .transform(new CropCircleTransformation())
+//                .into(btcImage);
 
         //Set the eth Image
-        ethImage = (ImageView) findViewById(R.id.eth_logo);
-        Picasso.with(getBaseContext()).load(R.drawable.eth)
-                .transform(new CropCircleTransformation())
-                .into(ethImage);
+//        ethImage = (ImageView) findViewById(R.id.eth_logo);
+//        Picasso.with(getBaseContext()).load(R.drawable.eth)
+//                .transform(new CropCircleTransformation())
+//                .into(ethImage);
 
         btcExchangeRate.setText(format.format(btcRate));
         ethExchangeRate.setText(format.format(ethRate));
