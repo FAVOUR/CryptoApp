@@ -34,7 +34,7 @@ class EditorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editor)
-        cryptoClient = ApiClient.client.create(CryptoCurrencyService::class.java)
+        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
         currencySpinner = findViewById<View>(R.id.currencyName) as Spinner
         loading = findViewById<View>(R.id.loading) as RelativeLayout
         setTitle(R.string.editor_activity_title)
@@ -75,15 +75,15 @@ class EditorActivity : AppCompatActivity() {
         return currencyAbr
     }
 
-    fun addCurrency(view: View?) {
+    fun addCurrency(view: View) {
         loading!!.visibility = View.VISIBLE
         val ok = cryptoClient!!.getJsonResponse(currencyAbr)
-        ok.enqueue(object : Callback<JsonResponse?> {
+        ok?.enqueue(object : Callback<JsonResponse?> {
             override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
                 jsonResponse = response.body()
                 if (jsonResponse != null) {
-                    btcConversionRates = jsonResponse!!.btc
-                    ethConversionRates = jsonResponse!!.eth
+                    btcConversionRates = jsonResponse!!.bTC
+                    ethConversionRates = jsonResponse!!.eTH
 
                     //check for the BTC rates
                     conversionFromBtc = confirmBtcRates(currencyAbr)
@@ -203,28 +203,28 @@ class EditorActivity : AppCompatActivity() {
     fun confirmBtcRates(currency: String?): Double {
         val BtcRates: Double
         BtcRates = when (currency) {
-            "AUD" -> btcConversionRates!!.aud
-            "EGP" -> btcConversionRates!!.egp
-            "GBP" -> btcConversionRates!!.gbp
-            "EUR" -> btcConversionRates!!.eur
-            "GEL" -> btcConversionRates!!.gel
-            "GHS" -> btcConversionRates!!.ghs
-            "HKD" -> btcConversionRates!!.hkd
-            "ILS" -> btcConversionRates!!.ils
-            "JMD" -> btcConversionRates!!.jmd
-            "JPY" -> btcConversionRates!!.jpy
-            "MYR" -> btcConversionRates!!.myr
-            "NGN" -> btcConversionRates!!.ngn
-            "PHP" -> btcConversionRates!!.php
-            "QAR" -> btcConversionRates!!.qar
-            "RUB" -> btcConversionRates!!.rub
-            "ZAR" -> btcConversionRates!!.zar
-            "CHF" -> btcConversionRates!!.chf
-            "TWD" -> btcConversionRates!!.twd
-            "THB" -> btcConversionRates!!.thb
-            "USD" -> btcConversionRates!!.usd
+            "AUD" -> btcConversionRates?.AUD ?: 0.00
+            "EGP" -> btcConversionRates?.EGP ?: 0.00
+            "GBP" -> btcConversionRates?.GBP ?: 0.00
+            "EUR" -> btcConversionRates?.EUR ?: 0.00
+            "GEL" -> btcConversionRates?.GEL ?: 0.00
+            "GHS" -> btcConversionRates?.GHS ?: 0.00
+            "HKD" -> btcConversionRates?.HKD ?: 0.00
+            "ILS" -> btcConversionRates?.ILS ?: 0.00
+            "JMD" -> btcConversionRates?.JMD ?: 0.00
+            "JPY" -> btcConversionRates?.JPY ?: 0.00
+            "MYR" -> btcConversionRates?.MYR ?: 0.00
+            "NGN" -> btcConversionRates?.NGN ?: 0.00
+            "PHP" -> btcConversionRates?.PHP ?: 0.00
+            "QAR" -> btcConversionRates?.QAR ?: 0.00
+            "RUB" -> btcConversionRates?.RUB ?: 0.00
+            "ZAR" -> btcConversionRates?.ZAR ?: 0.00
+            "CHF" -> btcConversionRates?.CHF ?: 0.00
+            "TWD" -> btcConversionRates?.TWD ?: 0.00
+            "THB" -> btcConversionRates?.THB ?: 0.00
+            "USD" -> btcConversionRates?.USD ?: 0.00
             else -> 0.0
-        }
+        } as Double
         return BtcRates
     }
 
@@ -233,84 +233,84 @@ class EditorActivity : AppCompatActivity() {
         val ethRates: Double
         when (currency) {
             "AUD" -> {
-                ethRates = ethConversionRates!!.aud
-                currencySymbol = ethConversionRates!!.audSymbol
+                ethRates = ethConversionRates?.AUD ?: 0.00
+                currencySymbol = ethConversionRates?.aUDSymbol
             }
             "EGP" -> {
-                ethRates = ethConversionRates!!.egp
-                currencySymbol = ethConversionRates!!.egpSymbol
+                ethRates = ethConversionRates?.EGP ?: 0.00
+                currencySymbol = ethConversionRates?.eGPSymbol
             }
             "EUR" -> {
-                ethRates = ethConversionRates!!.eur
-                currencySymbol = ethConversionRates!!.eurSymbol
+                ethRates = ethConversionRates?.EUR ?: 0.00
+                currencySymbol = ethConversionRates?.eURSymbol
             }
             "GBP" -> {
-                ethRates = ethConversionRates!!.gbp
-                currencySymbol = ethConversionRates!!.gbpSymbol
+                ethRates = ethConversionRates?.GBP ?: 0.00
+                currencySymbol = ethConversionRates?.gBPSymbol
             }
             "GEL" -> {
-                ethRates = ethConversionRates!!.gel
-                currencySymbol = ethConversionRates!!.gelSymbol
+                ethRates = ethConversionRates?.GEL ?: 0.00
+                currencySymbol = ethConversionRates?.gELSymbol
             }
             "GHS" -> {
-                ethRates = ethConversionRates!!.ghs
-                currencySymbol = ethConversionRates!!.ghsSymbol
+                ethRates = ethConversionRates?.GHS ?: 0.00
+                currencySymbol = ethConversionRates?.gHSSymbol
             }
-            "HKD" -> {
-                ethRates = ethConversionRates!!.hkd
-                currencySymbol = ethConversionRates!!.hkdSymbol
+            "HKD ?: 0.00" -> {
+                ethRates = ethConversionRates?.HKD ?: 0.00
+                currencySymbol = ethConversionRates?.hKDSymbol
             }
             "ILS" -> {
-                ethRates = ethConversionRates!!.ils
-                currencySymbol = ethConversionRates!!.ilsSymbol
+                ethRates = ethConversionRates?.ILS ?: 0.00
+                currencySymbol = ethConversionRates?.iLSSymbol
             }
             "JMD" -> {
-                ethRates = ethConversionRates!!.jmd
-                currencySymbol = ethConversionRates!!.jmdSymbol
+                ethRates = ethConversionRates?.JMD ?: 0.00
+                currencySymbol = ethConversionRates?.jMDSymbol
             }
             "JPY" -> {
-                ethRates = ethConversionRates!!.jpy
-                currencySymbol = ethConversionRates!!.jpySymbol
+                ethRates = ethConversionRates?.JPY ?: 0.00
+                currencySymbol = ethConversionRates?.jPYSymbol
             }
             "MYR" -> {
-                ethRates = ethConversionRates!!.myr
-                currencySymbol = ethConversionRates!!.myrSymbol
+                ethRates = ethConversionRates?.MYR ?: 0.00
+                currencySymbol = ethConversionRates?.mYRSymbol
             }
             "NGN" -> {
-                ethRates = ethConversionRates!!.ngn
-                currencySymbol = ethConversionRates!!.ngnSymbol
+                ethRates = ethConversionRates?.NGN ?: 0.00
+                currencySymbol = ethConversionRates?.nGNSymbol
             }
             "PHP" -> {
-                ethRates = ethConversionRates!!.php
-                currencySymbol = ethConversionRates!!.phpSymbol
+                ethRates = ethConversionRates?.PHP ?: 0.00
+                currencySymbol = ethConversionRates?.pHPSymbol
             }
             "QAR" -> {
-                ethRates = ethConversionRates!!.qar
-                currencySymbol = ethConversionRates!!.qarSymbol
+                ethRates = ethConversionRates?.QAR ?: 0.00
+                currencySymbol = ethConversionRates?.qARSymbol
             }
             "RUB" -> {
-                ethRates = ethConversionRates!!.rub
-                currencySymbol = ethConversionRates!!.rubSymbol
+                ethRates = ethConversionRates?.RUB ?: 0.00
+                currencySymbol = ethConversionRates?.rUBSymbol
             }
             "ZAR" -> {
-                ethRates = ethConversionRates!!.zar
-                currencySymbol = ethConversionRates!!.zarSymbol
+                ethRates = ethConversionRates?.ZAR ?: 0.00
+                currencySymbol = ethConversionRates?.zARSymbol
             }
             "CHF" -> {
-                ethRates = ethConversionRates!!.chf
-                currencySymbol = ethConversionRates!!.chfSymbol
+                ethRates = ethConversionRates?.CHF ?: 0.00
+                currencySymbol = ethConversionRates?.cHFSymbol
             }
             "TWD" -> {
-                ethRates = ethConversionRates!!.twd
-                currencySymbol = ethConversionRates!!.twdSymbol
+                ethRates = ethConversionRates?.TWD ?: 0.00
+                currencySymbol = ethConversionRates?.tWDSymbol
             }
             "THB" -> {
-                ethRates = ethConversionRates!!.thb
-                currencySymbol = ethConversionRates!!.thbSymbol
+                ethRates = ethConversionRates?.THB ?: 0.00
+                currencySymbol = ethConversionRates?.tHBSymbol
             }
             "USD" -> {
-                ethRates = ethConversionRates!!.usd
-                currencySymbol = ethConversionRates!!.usdSymbol
+                ethRates = ethConversionRates?.USD ?: 0.00
+                currencySymbol = ethConversionRates?.uSDSymbol
             }
             else -> ethRates = 0.0
         }

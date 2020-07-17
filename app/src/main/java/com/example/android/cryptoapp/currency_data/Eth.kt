@@ -6,83 +6,84 @@ import com.google.gson.annotations.SerializedName
 class Eth {
     @SerializedName("AUD")
     @Expose
-    val aUD: Double? = null
+    val AUD: Double? = null
 
     @SerializedName("EGP")
     @Expose
-    val eGP: Double? = null
+    val EGP: Double? = null
 
     @SerializedName("GBP")
     @Expose
-    val gBP: Double? = null
+    val GBP: Double? = null
 
     @SerializedName("EUR")
     @Expose
-    val eUR: Double? = null
+    val EUR: Double? = null
 
     @SerializedName("GEL")
     @Expose
-    val gEL: Double? = null
+    val GEL: Double? = null
 
     @SerializedName("GHS")
     @Expose
-    val gHS: Double? = null
+    val GHS: Double? = null
 
     @SerializedName("HKD")
     @Expose
-    val hKD: Double? = null
+    val HKD: Double? = null
 
     @SerializedName("ILS")
     @Expose
-    val iLS: Double? = null
+    val ILS: Double? = null
 
     @SerializedName("JMD")
     @Expose
-    val jMD: Double? = null
+    val JMD: Double? = null
 
     @SerializedName("JPY")
     @Expose
-    val jPY: Double? = null
+    val JPY: Double? = null
 
     @SerializedName("MYR")
     @Expose
-    val mYR: Double? = null
+    val MYR: Double? = null
 
     @SerializedName("NGN")
     @Expose
-    val nGN: Double? = null
+    val NGN: Double? = null
 
     @SerializedName("PHP")
     @Expose
-    val pHP: Double? = null
+    val PHP: Double? = null
 
     @SerializedName("QAR")
     @Expose
-    val qAR: Double? = null
+    val QAR: Double? = null
 
     @SerializedName("RUB")
     @Expose
-    val rUB: Double? = null
+    val RUB: Double? = null
 
     @SerializedName("ZAR")
     @Expose
-    val zAR: Double? = null
+    val ZAR: Double? = null
 
     @SerializedName("CHF")
     @Expose
-    val cHF: Double? = null
+    val CHF: Double? = null
 
     @SerializedName("TWD")
     @Expose
-    val tWD: Double? = null
+    val TWD: Double? = null
 
     @SerializedName("THB")
     @Expose
-    val tHB: Double? = null
+    val THB: Double? = null
 
     @SerializedName("USD")
     @Expose
-    val uSD: Double? = null
+    val USD: Double? = null
+
 
     val aUDSymbol: String
         get() = "$"
