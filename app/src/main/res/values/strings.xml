@@ -7,7 +7,6 @@
     <string name="conversion_activity_title">Base Currency Converter</string>
 
 
-
     <string name="About">About</string>
 
     <string name="About_">An app for ALC intermediate challenge built by Olije Favour</string>
@@ -38,5 +37,7 @@
     <string name="Thailand_Baht">THB</string>
     <string name="usa_Dollar">USD</string>
     <string name="add_an_exchange_rate">add an exchange rate</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
