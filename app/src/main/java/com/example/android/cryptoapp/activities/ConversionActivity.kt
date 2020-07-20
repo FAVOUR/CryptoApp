@@ -18,7 +18,8 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import java.text.DecimalFormat
 
 //import com.squareup.picasso.Picasso;
-class ConversionActivity : AppCompatActivity() {
+class ConversionActivity :
+        AppCompatActivity() {
     var btc_amount: EditText? = null
     var eth_amount: EditText? = null
     var currencyImage: ImageView? = null
