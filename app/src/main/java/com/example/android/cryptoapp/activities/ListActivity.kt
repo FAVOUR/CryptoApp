@@ -45,7 +45,8 @@ class ListActivity : AppCompatActivity(), ListItemClickListiner {
         layoutManager = LinearLayoutManager(baseContext)
         results = ArrayList()
         soFar = ArrayList()
-        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
+//        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
+        resultAdapter = RatesAdapter(this@ListActivity, results)
         resultRv = findViewById<View>(R.id.rv_members) as RecyclerView
         resultRv!!.layoutManager = layoutManager
         resultRv!!.adapter = resultAdapter
