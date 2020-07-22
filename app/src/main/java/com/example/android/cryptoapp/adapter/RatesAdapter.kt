@@ -80,7 +80,14 @@ class RatesAdapter( val mContext: Context, private val mResults: MutableList<Res
             currencySymbol_1 = itemView.findViewById<View>(R.id.currency_symbol) as TextView
             exchangeRate_2 = itemView.findViewById<View>(R.id.eth_result) as TextView
             currencySymbol_2 = itemView.findViewById<View>(R.id.currency_symbol_1) as TextView
-            mOnClickedListiner = mContext as  ListItemClickListiner
+
+
+            if (mContext is ListItemClickListiner) {
+                mOnClickedListiner = mContext as  ListItemClickListiner
+            } else {
+                throw ClassCastException(mContext.toString()
+                        + mContext.resources.getString(R.string.exception_message))
+            }
 
 
         }
