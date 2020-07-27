@@ -12,7 +12,9 @@ import com.example.android.cryptoapp.Results
 import com.example.android.cryptoapp.adapter.RatesAdapter.Rates_ViewHoler
 import java.text.DecimalFormat
 
-class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private val mOnClickedListiner: ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
+
+//class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private val mOnClickedListiner: ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
+class RatesAdapter( val mContext: Context, private val mResults: MutableList<Results>) : RecyclerView.Adapter<Rates_ViewHoler>() {
     private var clickedPosition = 0
     private lateinit var currencyImage: ImageView
     private lateinit var currencyAbr: TextView
@@ -21,7 +23,7 @@ class RatesAdapter(private val mContext: Context, private val mResults: MutableL
     private lateinit var exchangeRate_2: TextView
     private lateinit var currencySymbol_1: TextView
     private lateinit var currencySymbol_2: TextView
-
+    private lateinit var mOnClickedListiner: ListItemClickListiner
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Rates_ViewHoler {
         val layoutResourceId = R.layout.rates_row_items
         val getCurrentContext = parent.context
@@ -78,6 +80,16 @@ class RatesAdapter(private val mContext: Context, private val mResults: MutableL
             currencySymbol_1 = itemView.findViewById<View>(R.id.currency_symbol) as TextView
             exchangeRate_2 = itemView.findViewById<View>(R.id.eth_result) as TextView
             currencySymbol_2 = itemView.findViewById<View>(R.id.currency_symbol_1) as TextView
+
+
+            if (mContext is ListItemClickListiner) {
+                mOnClickedListiner = mContext as  ListItemClickListiner
+            } else {
+                throw ClassCastException(mContext.toString()
+                        + mContext.resources.getString(R.string.exception_message))
+            }
+
+
         }
     }
 

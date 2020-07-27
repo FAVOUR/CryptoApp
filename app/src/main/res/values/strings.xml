@@ -37,6 +37,7 @@
     <string name="Thailand_Baht">THB</string>
     <string name="usa_Dollar">USD</string>
     <string name="add_an_exchange_rate">add an exchange rate</string>
+        <string name="exception_message">An exception occurred</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
