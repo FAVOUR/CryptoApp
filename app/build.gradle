@@ -37,6 +37,17 @@ dependencies {
     //fetching image and transforming it
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+//    Fragment
+    def fragment_version = "1.2.5"
+
+    // Kotlin
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+
+//    Testing
+    // Testing Fragments in Isolation
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
   
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
