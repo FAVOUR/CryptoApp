@@ -1,23 +1,41 @@
-package com.example.android.cryptoapp.activities
+package com.example.android.cryptoapp.fragments
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
-import androidx.appcompat.app.AppCompatActivity
 import com.example.android.cryptoapp.R
+import com.example.android.cryptoapp.activities.ListActivity
 import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
 import com.example.android.cryptoapp.currency_data.JsonResponse
 import com.example.android.cryptoapp.rest.ApiClient
 import com.example.android.cryptoapp.rest.CryptoCurrencyService
+import kotlinx.android.synthetic.main.fragment_editor.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EditorActivity : AppCompatActivity() {
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [EditorFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class EditorFragment : Fragment() {
+    // TODO: Rename and change types of parameters
+  /*  private var param1: String? = null
+    private var param2: String? = null
+*/
+
     private var currencySpinner: Spinner? = null
     var cryptoClient: CryptoCurrencyService? = null
     var jsonResponse: JsonResponse? = null
@@ -27,17 +45,41 @@ class EditorActivity : AppCompatActivity() {
     var conversionFromEth: Double? = null
     var currencyAbr: String? = null
     var currencySymbol: String? = null
-    var currencyName: String? = null
+    var _currencyName: String? = null
     var image = 0
     var loading: RelativeLayout? = null
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_editor)
+     /*   arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }*/
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_editor, container, false)
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
-        currencySpinner = findViewById<View>(R.id.currencyName) as Spinner
-        loading = findViewById<View>(R.id.progressBarRL) as RelativeLayout
-        setTitle(R.string.editor_activity_title)
+//        currencySpinner = findViewById<View>(R.id.currencyName) as Spinner
+        currencySpinner = currencyName
+//        loading = findViewById<View>(R.id.loading) as RelativeLayout
+        loading =progressBarRL
+        activity?.actionBar?.title =resources.getString(R.string.editor_activity_title)
         spinnerForCurrency()
+        ExchangeRateBTN.setOnClickListener {
+            addCurrency()
+        }
     }
 
     /**
@@ -45,7 +87,7 @@ class EditorActivity : AppCompatActivity() {
      */
     private fun spinnerForCurrency(): String? {
         // Create Adapter for spinner. The list options are from the String array
-        val currencySpinnerAdapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(this,
+        val currencySpinnerAdapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(requireContext(),
                 R.array.currency_options, android.R.layout.simple_spinner_item)
 
         // Specify dropdown layout style - simple list view with 1 item per line
@@ -55,17 +97,17 @@ class EditorActivity : AppCompatActivity() {
         currencySpinner!!.adapter = currencySpinnerAdapter
 
         // Set the currency Selected to the constant values
-        currencySpinner!!.onItemSelectedListener = object : OnItemSelectedListener {
+        currencySpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val selection = parent.getItemAtPosition(position) as String
                 if (!TextUtils.isEmpty(selection)) {
 
                     //Use the position of item chosen to get the currencyAbr and currencyName
                     currencyAbr = checkSpinner(position)
-                    currencyName = selection
+                    _currencyName = selection
                 } else {
                     currencyAbr = getString(R.string.none)
-                    currencyName = getString(R.string.none)
+                    _currencyName = getString(R.string.none)
                 }
             }
 
@@ -74,7 +116,7 @@ class EditorActivity : AppCompatActivity() {
         return currencyAbr
     }
 
-    fun addCurrency(view: View) {
+    fun addCurrency() {
         loading!!.visibility = View.VISIBLE
         val ok = cryptoClient!!.getJsonResponse(currencyAbr)
         ok?.enqueue(object : Callback<JsonResponse?> {
@@ -90,20 +132,20 @@ class EditorActivity : AppCompatActivity() {
                     //check for the Eth rates
                     conversionFromEth = confirmEthRates(currencyAbr)
                 }
-                val intent = Intent(this@EditorActivity, ListActivity::class.java)
+                val intent = Intent(requireContext(), ListActivity::class.java)
                 intent.putExtra("image", image)
                 intent.putExtra("btcRate", conversionFromBtc)
                 intent.putExtra("currencySymbol", currencySymbol)
                 intent.putExtra("ethRate", conversionFromEth)
                 intent.putExtra("currencyAbr", currencyAbr)
-                intent.putExtra("currencyName", currencyName)
+                intent.putExtra("currencyName", _currencyName)
                 startActivity(intent)
                 loading!!.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
                 loading!!.visibility = View.GONE
-                Toast.makeText(baseContext, "Check your internet connection ", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Check your internet connection ", Toast.LENGTH_LONG).show()
             }
         }
         )
@@ -315,4 +357,24 @@ class EditorActivity : AppCompatActivity() {
         }
         return ethRates
     }
+
+    /*companion object {
+        *//**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment EditorFragment.
+         *//*
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+                EditorFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putString(ARG_PARAM2, param2)
+                    }
+                }
+    }*/
 }

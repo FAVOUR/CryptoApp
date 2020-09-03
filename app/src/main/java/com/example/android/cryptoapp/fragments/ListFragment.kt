@@ -142,8 +142,15 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
         val intent: Intent
         when (item.itemId) {
             R.id.add_new_card -> {
-                intent = Intent(requireContext(), EditorActivity::class.java)
-                startActivity(intent)
+//                intent = Intent(requireContext(), EditorActivity::class.java)
+//                startActivity(intent)
+
+                var editorFragment = EditorFragment()
+
+                activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(R.id.viewContainer,  editorFragment,null)
+                        ?.addToBackStack(null)
+                        ?.commit()
                 return true
             }
             R.id.about -> {
