@@ -51,28 +51,28 @@
             android:orientation="vertical">
 
 
-                <!-- All Currencies  -->
-                <Spinner
-                    android:id="@+id/currencyName"
-                    android:layout_height="48dp"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:paddingRight="16dp"
-                    android:spinnerMode="dropdown"
+            <!-- All Currencies  -->
+            <Spinner
+                android:id="@+id/currencyName"
+                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="30dp"
+                android:paddingRight="16dp"
+                android:spinnerMode="dropdown"
 
-                    />
+                />
 
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="116dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:elevation="@dimen/button_margin"
-                    android:text="ok"
-                    android:textColor="#ffff"
-                    android:onClick="addCurrency"
-                    />
+            <Button
+                android:id="@+id/ExchangeRateBTN"
+                android:layout_width="116dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:elevation="@dimen/button_margin"
+                android:text="ok"
+                android:textColor="#ffff"
+                android:onClick="addCurrency"
+                />
 
         </LinearLayout>
 
