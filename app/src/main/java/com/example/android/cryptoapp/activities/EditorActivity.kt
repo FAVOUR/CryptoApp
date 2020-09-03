@@ -8,7 +8,6 @@ import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import com.example.android.cryptoapp.R
-import com.example.android.cryptoapp.activities.EditorActivity
 import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
 import com.example.android.cryptoapp.currency_data.JsonResponse
@@ -36,7 +35,7 @@ class EditorActivity : AppCompatActivity() {
         setContentView(R.layout.activity_editor)
         cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
         currencySpinner = findViewById<View>(R.id.currencyName) as Spinner
-        loading = findViewById<View>(R.id.loading) as RelativeLayout
+        loading = findViewById<View>(R.id.progressBarRL) as RelativeLayout
         setTitle(R.string.editor_activity_title)
         spinnerForCurrency()
     }
