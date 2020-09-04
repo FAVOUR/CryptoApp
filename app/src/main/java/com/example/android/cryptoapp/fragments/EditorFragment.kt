@@ -146,7 +146,7 @@ class EditorFragment : Fragment() {
 //                startActivity(intent)
 
                 val editorFragment =EditorFragment()
-                editorFragment .arguments=bundle
+                editorFragment.arguments=bundle
                 val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
                                                   .replace(R.id.viewContainer,editorFragment,null)
                                                   .commit()
