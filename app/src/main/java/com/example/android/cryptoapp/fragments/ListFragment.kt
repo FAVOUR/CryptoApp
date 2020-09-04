@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.Results
-import com.example.android.cryptoapp.activities.ConversionActivity
-import com.example.android.cryptoapp.activities.EditorActivity
 import com.example.android.cryptoapp.adapter.RatesAdapter
 import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
@@ -163,8 +161,13 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                 return true
             }
             R.id.replace -> {
-                intent = Intent(requireContext(), EditorActivity::class.java)
-                startActivity(intent)
+                      val editorFragment = EditorFragment()
+                val fragmentManager = activity?.let {   activity ->
+                                activity.supportFragmentManager.beginTransaction()
+                                        .replace(R.id.viewContainer,editorFragment,null)
+                                        .addToBackStack(null)
+                                        .commit()
+                    }
                 return true
             }
         }
@@ -172,14 +175,25 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
     }
 
     override fun onListItemClicked(clickditemindex: Int) {
-        val intent = Intent(requireContext(), ConversionActivity::class.java)
-        intent.putExtra("image", image)
-        intent.putExtra("btcRate", btcRate)
-        intent.putExtra("currencySymbol", currencySymbol)
-        intent.putExtra("ethRate", ethRate)
-        intent.putExtra("currencyAbr", currencyAbr)
-        intent.putExtra("currencyName", currencyName)
-        startActivity(intent)
+          val conversionFragment = ConversionFragment()
+
+         val bundle = Bundle()
+        bundle.putInt("image", image)
+        bundle.putDouble("btcRate", btcRate)
+        bundle.putString("currencySymbol", currencySymbol)
+        bundle.putDouble("ethRate", ethRate)
+        bundle.putString("currencyAbr", currencyAbr)
+        bundle.putString("currencyName", currencyName)
+
+        conversionFragment.arguments = bundle
+
+        val fragmentManager = activity?.let{activity ->
+            activity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.viewContainer,conversionFragment,null)
+                    .addToBackStack(null)
+                    .commit()
+
+        }
     }
 
 
