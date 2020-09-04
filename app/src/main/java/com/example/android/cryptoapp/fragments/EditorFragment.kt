@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.android.cryptoapp.R
-import com.example.android.cryptoapp.activities.ListActivity
 import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
 import com.example.android.cryptoapp.currency_data.JsonResponse
@@ -78,6 +77,7 @@ class EditorFragment : Fragment() {
         activity?.actionBar?.title =resources.getString(R.string.editor_activity_title)
         spinnerForCurrency()
         ExchangeRateBTN.setOnClickListener {
+
             addCurrency()
         }
     }
@@ -132,15 +132,26 @@ class EditorFragment : Fragment() {
                     //check for the Eth rates
                     conversionFromEth = confirmEthRates(currencyAbr)
                 }
-                val intent = Intent(requireContext(), ListActivity::class.java)
-                intent.putExtra("image", image)
-                intent.putExtra("btcRate", conversionFromBtc)
-                intent.putExtra("currencySymbol", currencySymbol)
-                intent.putExtra("ethRate", conversionFromEth)
-                intent.putExtra("currencyAbr", currencyAbr)
-                intent.putExtra("currencyName", _currencyName)
-                startActivity(intent)
+
+
+
+                val bundle = Bundle()
+                bundle.putInt("image", image)
+                bundle.putDouble("btcRate", conversionFromBtc?:0.00)
+                bundle.putString("currencySymbol", currencySymbol)
+                bundle.putDouble("ethRate", conversionFromEth ?:0.00)
+                bundle.putString("currencyAbr", currencyAbr)
+                bundle.putString("currencyName", _currencyName)
+//                startActivity(intent)
+
+                val listFragment =ListFragment()
+                listFragment.arguments=bundle
+                val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
+                                                  .add(R.id.viewContainer,listFragment,null)
+                                                  .commit()
+
                 loading!!.visibility = View.GONE
+
             }
 
             override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
