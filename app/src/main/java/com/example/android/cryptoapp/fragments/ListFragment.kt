@@ -1,7 +1,9 @@
 package com.example.android.cryptoapp.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
@@ -9,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.Results
-import com.example.android.cryptoapp.activities.ConversionActivity
-import com.example.android.cryptoapp.activities.EditorActivity
 import com.example.android.cryptoapp.adapter.RatesAdapter
 import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
@@ -71,6 +71,14 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
+     val TAG :String = "ListFragment"
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//
+//
+//        Log.e(TAG,"${(context as RatesAdapter.ListItemClickListiner).toString()} ${context.resources.getString(R.string.exception_message)}")
+//    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -84,7 +92,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
         results = ArrayList()
         soFar = ArrayList()
 //        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
-        resultAdapter = RatesAdapter(requireActivity(), results)
+        resultAdapter = RatesAdapter(requireContext(), results)
         resultRv = rv_members
         resultRv!!.layoutManager = layoutManager
         resultRv!!.adapter = resultAdapter
@@ -163,8 +171,13 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                 return true
             }
             R.id.replace -> {
-                intent = Intent(requireContext(), EditorActivity::class.java)
-                startActivity(intent)
+                      val editorFragment = EditorFragment()
+                val fragmentManager = activity?.let {   activity ->
+                                activity.supportFragmentManager.beginTransaction()
+                                        .replace(R.id.viewContainer,editorFragment,null)
+                                        .addToBackStack(null)
+                                        .commit()
+                    }
                 return true
             }
         }
@@ -172,14 +185,25 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
     }
 
     override fun onListItemClicked(clickditemindex: Int) {
-        val intent = Intent(requireContext(), ConversionActivity::class.java)
-        intent.putExtra("image", image)
-        intent.putExtra("btcRate", btcRate)
-        intent.putExtra("currencySymbol", currencySymbol)
-        intent.putExtra("ethRate", ethRate)
-        intent.putExtra("currencyAbr", currencyAbr)
-        intent.putExtra("currencyName", currencyName)
-        startActivity(intent)
+          val conversionFragment = ConversionFragment()
+
+         val bundle = Bundle()
+        bundle.putInt("image", image)
+        bundle.putDouble("btcRate", btcRate)
+        bundle.putString("currencySymbol", currencySymbol)
+        bundle.putDouble("ethRate", ethRate)
+        bundle.putString("currencyAbr", currencyAbr)
+        bundle.putString("currencyName", currencyName)
+
+        conversionFragment.arguments = bundle
+
+        val fragmentManager = activity?.let{activity ->
+            activity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.viewContainer,conversionFragment,null)
+                    .addToBackStack(null)
+                    .commit()
+
+        }
     }
 
 
