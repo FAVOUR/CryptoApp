@@ -135,7 +135,6 @@ class EditorFragment : Fragment() {
 
 
 
-
                 val bundle = Bundle()
                 bundle.putInt("image", image)
                 bundle.putDouble("btcRate", conversionFromBtc?:0.00)
@@ -145,10 +144,10 @@ class EditorFragment : Fragment() {
                 bundle.putString("currencyName", _currencyName)
 //                startActivity(intent)
 
-                val editorFragment =EditorFragment()
-                editorFragment.arguments=bundle
+                val listFragment =ListFragment()
+                listFragment.arguments=bundle
                 val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
-                                                  .replace(R.id.viewContainer,editorFragment,null)
+                                                  .add(R.id.viewContainer,listFragment,null)
                                                   .commit()
 
                 loading!!.visibility = View.GONE
