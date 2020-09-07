@@ -14,7 +14,7 @@ import java.text.DecimalFormat
 
 
 //class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private val mOnClickedListiner: ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
-class RatesAdapter( val mContext: Context, private val mResults: MutableList<Results>) : RecyclerView.Adapter<Rates_ViewHoler>() {
+class RatesAdapter( private val mResults: MutableList<Results>, private  val mListItemClickListiner :ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
     private var clickedPosition = 0
     private lateinit var currencyImage: ImageView
     private lateinit var currencyAbr: TextView
@@ -82,12 +82,12 @@ class RatesAdapter( val mContext: Context, private val mResults: MutableList<Res
             currencySymbol_2 = itemView.findViewById<View>(R.id.currency_symbol_1) as TextView
 
 
-            if (mContext is ListItemClickListiner) {
-                mOnClickedListiner = mContext as  ListItemClickListiner
-            } else {
-                throw ClassCastException(mContext.toString()
-                        + mContext.resources.getString(R.string.exception_message))
-            }
+//            if (mListItemClickListiner is ListItemClickListiner) {
+                mOnClickedListiner =mListItemClickListiner
+//            } else {
+//                throw ClassCastException(mContext.toString()
+//                        + mContext.resources.getString(R.string.exception_message))
+//            }
 
 
         }

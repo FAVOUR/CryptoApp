@@ -30,10 +30,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class EditorFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-  /*  private var param1: String? = null
-    private var param2: String? = null
-*/
 
     private var currencySpinner: Spinner? = null
     var cryptoClient: CryptoCurrencyService? = null
@@ -61,8 +57,10 @@ class EditorFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_editor, container, false)
+//        return inflater.inflate(R.layout.fragment_editor, container, false)
+
+        val view =  inflater.inflate(R.layout.fragment_editor, container, false)
+        return view
     }
 
 
@@ -308,7 +306,7 @@ class EditorFragment : Fragment() {
                 ethRates = ethConversionRates?.GHS ?: 0.00
                 currencySymbol = ethConversionRates?.gHSSymbol
             }
-            "HKD ?: 0.00" -> {
+            "HKD" -> {
                 ethRates = ethConversionRates?.HKD ?: 0.00
                 currencySymbol = ethConversionRates?.hKDSymbol
             }
