@@ -16,7 +16,16 @@ import android.widget.Toast
 import com.example.android.cryptoapp.R
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.activity_conversion.*
 import kotlinx.android.synthetic.main.fragment_conversion.*
+import kotlinx.android.synthetic.main.fragment_conversion.btc_amount
+import kotlinx.android.synthetic.main.fragment_conversion.btc_exchangerate
+import kotlinx.android.synthetic.main.fragment_conversion.btc_logo
+import kotlinx.android.synthetic.main.fragment_conversion.currency_amount
+import kotlinx.android.synthetic.main.fragment_conversion.currency_image
+import kotlinx.android.synthetic.main.fragment_conversion.eth_amount
+import kotlinx.android.synthetic.main.fragment_conversion.eth_exchangerate
+import kotlinx.android.synthetic.main.fragment_conversion.eth_logo
 import java.text.DecimalFormat
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,18 +43,18 @@ class ConversionFragment : Fragment() {
 //    private var param1: String? = null
 //    private var param2: String? = null
 
-    var btc_amount: EditText? = null
-    var eth_amount: EditText? = null
-    var currencyImage: ImageView? = null
-    var btcImage: ImageView? = null
-    var ethImage: ImageView? = null
-    var currency_amount: TextView? = null
-    var btcExchangeRate: TextView? = null
-    var ethExchangeRate: TextView? = null
-    var currencySymbol_1: TextView? = null
-    var currencySymbol_2: TextView? = null
-    var currency_Name: TextView? = null
-    var currencyAbbreviation: TextView? = null
+//    var btc_amount: EditText? = null
+//    var eth_amount: EditText? = null
+//    var currencyImage: ImageView? = null
+//    var btcImage: ImageView? = null
+//    var ethImage: ImageView? = null
+//    var currency_amount: TextView? = null
+//    var btcExchangeRate: TextView? = null
+//    var ethExchangeRate: TextView? = null
+//    var currencySymbol_1: TextView? = null
+//    var currencySymbol_2: TextView? = null
+//    var currency_Name: TextView? = null
+//    var currencyAbbreviation: TextView? = null
     var image = 0
     var check = false
     var currencyAbr: String? = null
@@ -72,24 +81,24 @@ class ConversionFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_conversion, container, false)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         bundle = arguments
 
         check = bundle == null
-        btcExchangeRate = btc_exchangerate
-        ethExchangeRate = eth_exchangerate
-        currencySymbol_1 = currency_symbol
-        currencySymbol_2 = currency_symbol_2
-        currencyAbbreviation = abrivation
-        currency_Name = currency_name
+//        btcExchangeRate = btc_exchangerate
+//        ethExchangeRate = eth_exchangerate
+//        currencySymbol_1 = currency_symbol
+//        currencySymbol_2 = currency_symbol_2
+//        currencyAbbreviation = abrivation
+//        currency_Name = currency_name
         format = DecimalFormat()
         format!!.isGroupingUsed = true
         format!!.maximumIntegerDigits = 20
         format!!.maximumFractionDigits = 3
-        currency_amount = currency_amount
-        btc_amount = btc_amount
-        eth_amount =eth_amount
+//        currency_amount = currency_amount
+//        btc_amount = btc_amount
+//        eth_amount =eth_amount
         btc_amount!!.addTextChangedListener(generalWatcher)
         eth_amount!!.addTextChangedListener(generalWatcher)
         if (!check) {
@@ -102,28 +111,25 @@ class ConversionFragment : Fragment() {
         }
 
         //Set the currency Image
-        currencyImage = currency_image
         Picasso.get().load(image)
                 .transform(CropCircleTransformation())
-                .into(currencyImage)
+                .into(currency_image)
 
         //Set the btc Image
-        btcImage = btc_logo
         Picasso.get().load(R.drawable.btc)
                 .transform(CropCircleTransformation())
-                .into(btcImage)
+                .into(btc_logo)
 
         //Set the eth Image
-        ethImage = eth_logo
         Picasso.get().load(R.drawable.eth)
                 .transform(CropCircleTransformation())
-                .into(ethImage)
-        btcExchangeRate!!.text = format!!.format(btcRate!!)
-        ethExchangeRate!!.text = format!!.format(ethRate!!)
-        currencySymbol_1!!.text = currencySymbol
-        currencySymbol_2!!.text = currencySymbol
-        currencyAbbreviation!!.text = currencyAbr
-        currency_Name!!.text = currencyName
+                .into(eth_logo)
+        btc_exchangerate!!.text = format!!.format(btcRate!!)
+        eth_exchangerate!!.text = format!!.format(ethRate!!)
+        currency_symbol!!.text = currencySymbol
+        currency_symbol_2!!.text = currencySymbol
+        abrivation!!.text = currencyAbr
+        currency_name!!.text = currencyName
     }
 
 //    companion object {
