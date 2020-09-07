@@ -304,7 +304,7 @@ class EditorFragment : Fragment() {
                 ethRates = ethConversionRates?.GHS ?: 0.00
                 currencySymbol = ethConversionRates?.gHSSymbol
             }
-            "HKD ?: 0.00" -> {
+            "HKD" -> {
                 ethRates = ethConversionRates?.HKD ?: 0.00
                 currencySymbol = ethConversionRates?.hKDSymbol
             }
