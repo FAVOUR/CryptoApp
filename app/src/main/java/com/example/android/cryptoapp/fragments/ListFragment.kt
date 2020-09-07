@@ -92,7 +92,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
         results = ArrayList()
         soFar = ArrayList()
 //        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
-        resultAdapter = RatesAdapter(requireContext(), results)
+        resultAdapter = RatesAdapter(results,this)
         resultRv = rv_members
         resultRv!!.layoutManager = layoutManager
         resultRv!!.adapter = resultAdapter
