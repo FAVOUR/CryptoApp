@@ -157,6 +157,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
 //                startActivity(intent)
 
                 var editorFragment = EditorFragment()
+                  editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
 //                  editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
 
                   editorFragment.show(activity?.supportFragmentManager!!,null)

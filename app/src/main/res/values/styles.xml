@@ -10,12 +10,14 @@
 
     <!-- Theme of the editor -->
     <style name="EditorTheme" parent="Theme.AppCompat.Dialog">
-        <item name="colorPrimary">@color/editorColorPrimary</item>
-        <item name="colorPrimaryDark">@color/editorColorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="background">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/editorColorPrimary</item>
+        <item name="android:textColor">@color/colorSelect</item>
     </style>
+
+<!--    <item name="colorPrimary">@color/editorColorPrimary</item>-->
+<!--    <item name="colorPrimaryDark">@color/editorColorPrimaryDark</item>-->
+<!--    <item name="colorAccent">@color/colorAccent</item>-->
+<!--    <item name="android:windowBackground">@color/editorColorPrimary</item>-->
+
     <!-- Style for a category in the editor -->
     <style name="CategoryStyle">
         <item name="android:layout_height">wrap_content</item>
