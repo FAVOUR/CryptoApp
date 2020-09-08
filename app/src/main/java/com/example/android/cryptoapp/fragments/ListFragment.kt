@@ -38,7 +38,6 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
    /* private var param1: String? = null
     private var param2: String? = null
 */
-    var resultRv: RecyclerView? = null
     var resultAdapter: RatesAdapter? = null
     var layoutManager: LinearLayoutManager? = null
     lateinit var results: MutableList<Results>
@@ -71,7 +70,12 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_list, container, false)
+        bundle = arguments
+
+        setupAdapter()
+        return   view
     }
 
      val TAG :String = "ListFragment"
@@ -87,34 +91,32 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
-//        bundle = arguments
+//
+//        layoutManager = LinearLayoutManager(requireContext())
+//        results = ArrayList()
+//        soFar = ArrayList()
+//        rv_members!!.layoutManager = layoutManager
+//
+////        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
+//        resultAdapter = RatesAdapter(results,this)
+//        rv_members!!.adapter = resultAdapter
+//        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
 
-/*
-        layoutManager = LinearLayoutManager(requireContext())
-        results = ArrayList()
-        soFar = ArrayList()
-//        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
-        resultAdapter = RatesAdapter(results,this)
-        resultRv = rv_members
-        resultRv!!.layoutManager = layoutManager
-        resultRv!!.adapter = resultAdapter
-        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)*/
-
-        setupAdapter()
     }
 
     private fun setupAdapter() {
+
+
         check = bundle == null
 
-
+//
         layoutManager = LinearLayoutManager(requireContext())
         results = ArrayList()
         soFar = ArrayList()
 //        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
         resultAdapter = RatesAdapter(results,this)
-        resultRv = rv_members
-        resultRv!!.layoutManager = layoutManager
-        resultRv!!.adapter = resultAdapter
+        rv_members!!.layoutManager = layoutManager
+        rv_members!!.adapter = resultAdapter
         cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
 
         if (!check) {
@@ -124,9 +126,10 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
             currencySymbol = bundle?.getString("currencySymbol") ?: ""
             currencyName = bundle?.getString("currencyName") ?: ""
             ethRate = bundle?.getDouble("ethRate") ?: 0.00
-            resultRv!!.setHasFixedSize(true)
+//            rv_members!!.setHasFixedSize(true)
             output = Results(image, btcRate, ethRate, currencyName, currencyAbr, currencySymbol)
             resultAdapter!!.add(output)
+            resultAdapter!!.notifyDataSetChanged()
         }
     }
 
@@ -178,7 +181,8 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
 //                  editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
                   editorFragment.setTargetFragment(this@ListFragment,1)
                   editorFragment.show(activity?.supportFragmentManager!!,null)
-
+//
+//                var editorFragment = EditorFragment()
 //                activity?.supportFragmentManager?.beginTransaction()
 //                        ?.replace(R.id.viewContainer,  editorFragment,null)
 //                        ?.addToBackStack(null)
@@ -233,6 +237,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
     override fun data(bundle: Bundle) {
         this.bundle = bundle
         setupAdapter()
+
     }
 
 

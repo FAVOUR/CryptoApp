@@ -164,7 +164,7 @@ class EditorFragment : DialogFragment() {
 //                loading!!.visibility = View.GONE
                 pbloading.visibility = View.GONE
                 textView.visibility = View.GONE
-                dismiss()
+//                dismiss()
             }
 
             override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
