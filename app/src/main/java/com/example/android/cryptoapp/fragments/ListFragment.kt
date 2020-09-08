@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -156,11 +157,14 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
 //                startActivity(intent)
 
                 var editorFragment = EditorFragment()
+//                  editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
 
-                activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.viewContainer,  editorFragment,null)
-                        ?.addToBackStack(null)
-                        ?.commit()
+                  editorFragment.show(activity?.supportFragmentManager!!,null)
+
+//                activity?.supportFragmentManager?.beginTransaction()
+//                        ?.replace(R.id.viewContainer,  editorFragment,null)
+//                        ?.addToBackStack(null)
+//                        ?.commit()
                 return true
             }
             R.id.about -> {
