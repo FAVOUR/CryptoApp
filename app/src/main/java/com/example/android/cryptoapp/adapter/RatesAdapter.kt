@@ -1,6 +1,7 @@
 package com.example.android.cryptoapp.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.Results
 import com.example.android.cryptoapp.adapter.RatesAdapter.Rates_ViewHoler
+import com.google.gson.Gson
 import java.text.DecimalFormat
 
 
@@ -25,6 +27,8 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
     private lateinit var currencySymbol_2: TextView
     private lateinit var mOnClickedListiner: ListItemClickListiner
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Rates_ViewHoler {
+        Log.e("onCreateViewHolder",  "Here ")
+
         val layoutResourceId = R.layout.rates_row_items
         val getCurrentContext = parent.context
         val layoutInflater = LayoutInflater.from(getCurrentContext)
@@ -33,10 +37,14 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
     }
 
     override fun onBindViewHolder(holder: Rates_ViewHoler, position: Int) {
+        Log.e("position",  "${position}")
+
         holder.bind(position)
     }
 
     override fun getItemCount(): Int {
+
+        Log.e(" mResults.size",  "${mResults.size}")
         return mResults.size
     }
 
@@ -72,6 +80,8 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
         }
 
         init {
+            Log.e("Init",  "Here ")
+
             itemView.setOnClickListener(this)
             exchangeRate_1 = itemView.findViewById<View>(R.id.btc_result) as TextView
             currencyAbr = itemView.findViewById<View>(R.id.currency_abr) as TextView
@@ -96,6 +106,9 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
     //adds data for the adapter to utilize
     fun add(results: Results) {
         mResults.add(results)
+        Log.e("results",Gson().toJson(results))
+        Log.e("resultAdapter size",Gson().toJson(mResults.size))
+//        notifyDataSetChanged()
     }
 
 }
