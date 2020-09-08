@@ -1,8 +1,10 @@
 package com.example.android.cryptoapp.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +45,7 @@ class EditorFragment : DialogFragment() {
     var currencySymbol: String? = null
     var _currencyName: String? = null
     var image = 0
+    private lateinit var mOnDataGotten:OnDataGotten
 //    var loading: RelativeLayout? = null
 
 
@@ -115,6 +118,11 @@ class EditorFragment : DialogFragment() {
         return currencyAbr
     }
 
+  //Used to transfer data between the fragments
+    interface OnDataGotten{
+       fun data (bundle: Bundle)
+    }
+
     fun addCurrency() {
 //        loading!!.visibility = View.VISIBLE
         pbloading.visibility = View.VISIBLE
@@ -136,6 +144,7 @@ class EditorFragment : DialogFragment() {
 
 
 
+
                 val bundle = Bundle()
                 bundle.putInt("image", image)
                 bundle.putDouble("btcRate", conversionFromBtc?:0.00)
@@ -144,16 +153,18 @@ class EditorFragment : DialogFragment() {
                 bundle.putString("currencyAbr", currencyAbr)
                 bundle.putString("currencyName", _currencyName)
 //                startActivity(intent)
+                mOnDataGotten.data(bundle)
 
-                val listFragment =ListFragment()
-                listFragment.arguments=bundle
-                val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
-                                                  .add(R.id.viewContainer,listFragment,null)
-                                                  .commit()
+//                val listFragment =ListFragment()
+//                listFragment.arguments=bundle
+//                val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
+//                                                  .replace(R.id.viewContainer,listFragment,null)
+//                                                  .commit()
 
 //                loading!!.visibility = View.GONE
                 pbloading.visibility = View.GONE
                 textView.visibility = View.GONE
+                dismiss()
             }
 
             override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
@@ -166,6 +177,15 @@ class EditorFragment : DialogFragment() {
         }
         )
     }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+          Log.e("targetFragment", "Name of fragment $targetFragment")
+          Log.e("targetFragment as targetFragment", "Name of fragment Cast  ${targetFragment as OnDataGotten} ")
+         mOnDataGotten = targetFragment as OnDataGotten
+    }
+
 
     //    Checks the spinner and returns the abbreviation and image resource of the currency selected
     private fun checkSpinner(position: Int): String {

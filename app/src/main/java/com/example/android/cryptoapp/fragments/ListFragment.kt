@@ -33,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
+class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragment.OnDataGotten {
     // TODO: Rename and change types of parameters
    /* private var param1: String? = null
     private var param2: String? = null
@@ -87,10 +87,26 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
-        bundle = arguments
+//        bundle = arguments
 
+/*
+        layoutManager = LinearLayoutManager(requireContext())
+        results = ArrayList()
+        soFar = ArrayList()
+//        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
+        resultAdapter = RatesAdapter(results,this)
+        resultRv = rv_members
+        resultRv!!.layoutManager = layoutManager
+        resultRv!!.adapter = resultAdapter
+        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)*/
 
+        setupAdapter()
+    }
+
+    private fun setupAdapter() {
         check = bundle == null
+
+
         layoutManager = LinearLayoutManager(requireContext())
         results = ArrayList()
         soFar = ArrayList()
@@ -100,31 +116,32 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
         resultRv!!.layoutManager = layoutManager
         resultRv!!.adapter = resultAdapter
         cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
+
         if (!check) {
             image = bundle!!.getInt("image")
             btcRate = bundle!!.getDouble("btcRate")
-            currencyAbr = bundle?.getString("currencyAbr") ?:""
-            currencySymbol = bundle?.getString("currencySymbol") ?:""
-            currencyName = bundle?.getString("currencyName") ?:""
-            ethRate = bundle?.getDouble("ethRate") ?:0.00
+            currencyAbr = bundle?.getString("currencyAbr") ?: ""
+            currencySymbol = bundle?.getString("currencySymbol") ?: ""
+            currencyName = bundle?.getString("currencyName") ?: ""
+            ethRate = bundle?.getDouble("ethRate") ?: 0.00
             resultRv!!.setHasFixedSize(true)
             output = Results(image, btcRate, ethRate, currencyName, currencyAbr, currencySymbol)
             resultAdapter!!.add(output)
         }
     }
 
-  /*  override fun onBackPressed() {
-        val builder: AlertDialog.Builder
-        builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Delete Entry")
-                .setMessage("Are sure you wat to exit?")
-                .setPositiveButton(android.R.string.yes
-                ) { dialog, which -> activity?.finish() }
-                .setNegativeButton(android.R.string.no
-                ) { dialog, which -> dialog.dismiss() }
-        val alertDialog = builder.create()
-        alertDialog.show()
-    }*/
+    /*  override fun onBackPressed() {
+          val builder: AlertDialog.Builder
+          builder = AlertDialog.Builder(requireContext())
+          builder.setTitle("Delete Entry")
+                  .setMessage("Are sure you wat to exit?")
+                  .setPositiveButton(android.R.string.yes
+                  ) { dialog, which -> activity?.finish() }
+                  .setNegativeButton(android.R.string.no
+                  ) { dialog, which -> dialog.dismiss() }
+          val alertDialog = builder.create()
+          alertDialog.show()
+      }*/
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         //Let ApCompactActivity call the onPrepareOptionsMenu(menu) method
@@ -159,7 +176,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                 var editorFragment = EditorFragment()
                   editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
 //                  editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
-
+                  editorFragment.setTargetFragment(this@ListFragment,1)
                   editorFragment.show(activity?.supportFragmentManager!!,null)
 
 //                activity?.supportFragmentManager?.beginTransaction()
@@ -211,6 +228,11 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                     .commit()
 
         }
+    }
+
+    override fun data(bundle: Bundle) {
+        this.bundle = bundle
+        setupAdapter()
     }
 
 

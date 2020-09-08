@@ -1,6 +1,7 @@
 package com.example.android.cryptoapp.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.Results
 import com.example.android.cryptoapp.adapter.RatesAdapter.Rates_ViewHoler
+import com.google.gson.Gson
 import java.text.DecimalFormat
 
 
@@ -96,6 +98,8 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
     //adds data for the adapter to utilize
     fun add(results: Results) {
         mResults.add(results)
+        Log.e("results",Gson().toJson(results))
+//        notifyDataSetChanged()
     }
 
 }
