@@ -79,13 +79,6 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
     }
 
      val TAG :String = "ListFragment"
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//
-//
-//        Log.e(TAG,"${(context as RatesAdapter.ListItemClickListiner).toString()} ${context.resources.getString(R.string.exception_message)}")
-//    }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
