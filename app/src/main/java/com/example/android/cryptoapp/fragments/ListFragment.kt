@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -19,6 +20,7 @@ import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
 import com.example.android.cryptoapp.rest.ApiClient
 import com.example.android.cryptoapp.rest.CryptoCurrencyService
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_list.*
 import java.util.ArrayList
 import kotlin.properties.Delegates
@@ -74,7 +76,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
         val view = inflater.inflate(R.layout.fragment_list, container, false)
         bundle = arguments
 
-        setupAdapter()
+
         return   view
     }
 
@@ -83,7 +85,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-
+        setupAdapter()
 //
 //        layoutManager = LinearLayoutManager(requireContext())
 //        results = ArrayList()
@@ -95,6 +97,16 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
 //        rv_members!!.adapter = resultAdapter
 //        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
 
+
+
+        layoutManager = LinearLayoutManager(requireContext())
+        results = ArrayList()
+        soFar = ArrayList()
+//        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
+        resultAdapter = RatesAdapter(requireContext(),results,this)
+        rv_members!!.layoutManager = layoutManager
+        rv_members!!.adapter = resultAdapter
+        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
     }
 
     private fun setupAdapter() {
@@ -103,14 +115,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
         check = bundle == null
 
 //
-        layoutManager = LinearLayoutManager(requireContext())
-        results = ArrayList()
-        soFar = ArrayList()
-//        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
-        resultAdapter = RatesAdapter(results,this)
-        rv_members!!.layoutManager = layoutManager
-        rv_members!!.adapter = resultAdapter
-        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
+
 
         if (!check) {
             image = bundle!!.getInt("image")
@@ -121,8 +126,12 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
             ethRate = bundle?.getDouble("ethRate") ?: 0.00
 //            rv_members!!.setHasFixedSize(true)
             output = Results(image, btcRate, ethRate, currencyName, currencyAbr, currencySymbol)
-            resultAdapter!!.add(output)
-            resultAdapter!!.notifyDataSetChanged()
+//            resultAdapter!!.add(output)
+
+            Toast.makeText(requireContext(), Gson().toJson(output),Toast.LENGTH_SHORT).show()
+            results.add(output)
+
+            resultAdapter!!.notifyItemChanged(results.size)
         }
     }
 
