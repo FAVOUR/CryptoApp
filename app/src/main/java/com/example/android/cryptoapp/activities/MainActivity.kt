@@ -13,8 +13,8 @@ class MainActivity : AppCompatActivity() {
         var listFragment = ListFragment()
 
                       supportFragmentManager.beginTransaction()
-                                            .add(listFragment,null)
-                                            .commit()
+                                              .replace(R.id.viewContainer,listFragment)
+                                              .commit()
 
     }
 }
