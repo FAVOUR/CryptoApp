@@ -79,7 +79,6 @@ class EditorFragment : DialogFragment() {
         activity?.actionBar?.title =resources.getString(R.string.editor_activity_title)
         spinnerForCurrency()
         ExchangeRateBTN.setOnClickListener {
-
             addCurrency()
         }
     }
