@@ -70,7 +70,6 @@ class EditorFragment : DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
 //        currencySpinner = findViewById<View>(R.id.currencyName) as Spinner
         currencySpinner = currencyName
