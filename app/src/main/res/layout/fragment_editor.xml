@@ -1,83 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_margin"
-    android:theme="@style/EditorTheme"
-    >
-
-    <RelativeLayout
-        android:id="@+id/progressBarRL"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#434343"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/pbloading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            />
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pbloading"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:text="Obtaining rates......"/>
-    </RelativeLayout>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/editorColorPrimary">
 
     <TextView
-        android:text="Select a currency "
-        style="@style/CategoryStyle" />
+            android:id="@+id/title"
+            android:text="Select a currency "
+            style="@style/CategoryStyle"
+        app:layout_constraintBottom_toTopOf="@+id/currencyName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <Spinner
+        android:id="@+id/currencyName"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="30dp"
+        android:spinnerMode="dropdown"
+        android:dropDownSelector="@color/colorSelect"
+        app:layout_constraintBottom_toTopOf="@+id/ExchangeRateBTN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+            <ProgressBar
+                android:id="@+id/pbloading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/ExchangeRateBTN"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pbloading"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:text="Obtaining rates......"
+                android:textColor="@color/colorSelect"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/currencyName"/>
+
+    <Button
+        android:id="@+id/ExchangeRateBTN"
+        android:layout_height="wrap_content"
+        android:layout_width="116dp"
+        android:layout_gravity="center_horizontal"
+        android:elevation="@dimen/button_margin"
+        android:text="ok"
+        android:background="@color/colorAccent"
+        android:textColor="#ffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currencyName" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--<LinearLayout-->
+    <!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:orientation="vertical"-->
+    <!--    android:padding="@dimen/activity_margin"-->
+    <!--    android:gravity="center_vertical|center_horizontal"-->
+    <!--    >-->
+
+
+    <!--    android:theme="@style/EditorTheme"-->
+
+    <!--    <RelativeLayout-->
+    <!--        android:id="@+id/progressBarRL"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="#434343"-->
+    <!--        android:layout_gravity="center_vertical|center_horizontal"-->
+    <!--        android:visibility="visible">-->
+
+    <!--        <ProgressBar-->
+    <!--            android:id="@+id/pbloading"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            -->
+    <!--            />-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/textView"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_below="@+id/pbloading"-->
+    <!--            android:layout_centerHorizontal="true"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:text="Obtaining rates......"/>-->
+    <!--    </RelativeLayout>-->
+
+    <!--    <TextView-->
+    <!--        android:text="Select a currency "-->
+    <!--        style="@style/CategoryStyle" />-->
 
 
     <!-- Overview category -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="horizontal">-->
 
-        <LinearLayout
-            android:id="@+id/currrency"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-
-            <!-- All Currencies  -->
-            <Spinner
-                android:id="@+id/currencyName"
-                android:layout_height="48dp"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="30dp"
-                android:paddingRight="16dp"
-                android:spinnerMode="dropdown"
-
-                />
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/currrency"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:gravity="center_horizontal"-->
+    <!--            android:orientation="vertical">-->
 
 
-            <Button
-                android:id="@+id/ExchangeRateBTN"
-                android:layout_width="116dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:elevation="@dimen/button_margin"
-                android:text="ok"
-                android:textColor="#ffff"
-                android:onClick="addCurrency"
-                />
+    <!--            &lt;!&ndash; All Currencies  &ndash;&gt;-->
+    <!--            <Spinner-->
+    <!--                android:id="@+id/currencyName"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_marginTop="30dp"-->
+    <!--                android:paddingRight="16dp"-->
+    <!--                android:spinnerMode="dropdown"-->
 
-        </LinearLayout>
-
-    </LinearLayout>
+    <!--                />-->
 
 
+    <!--            <Button-->
+    <!--                android:id="@+id/ExchangeRateBTN"-->
+    <!--                android:layout_width="116dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_gravity="center_horizontal"-->
+    <!--                android:elevation="@dimen/button_margin"-->
+    <!--                android:text="ok"-->
+    <!--                android:textColor="#ffff"-->
+    <!--                android:onClick="addCurrency"-->
+    <!--                />-->
 
-</LinearLayout>
+    <!--        </LinearLayout>-->
+
+    <!--    </LinearLayout>-->
+
+
+    <!--</LinearLayout>-->

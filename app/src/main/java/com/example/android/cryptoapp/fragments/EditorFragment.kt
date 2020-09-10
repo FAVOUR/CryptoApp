@@ -1,13 +1,16 @@
 package com.example.android.cryptoapp.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.DialogFragment
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
@@ -29,7 +32,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [EditorFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EditorFragment : Fragment() {
+class EditorFragment : DialogFragment() {
 
     private var currencySpinner: Spinner? = null
     var cryptoClient: CryptoCurrencyService? = null
@@ -42,7 +45,8 @@ class EditorFragment : Fragment() {
     var currencySymbol: String? = null
     var _currencyName: String? = null
     var image = 0
-    var loading: RelativeLayout? = null
+    private lateinit var mOnDataGotten:OnDataGotten
+//    var loading: RelativeLayout? = null
 
 
 
@@ -71,7 +75,7 @@ class EditorFragment : Fragment() {
 //        currencySpinner = findViewById<View>(R.id.currencyName) as Spinner
         currencySpinner = currencyName
 //        loading = findViewById<View>(R.id.loading) as RelativeLayout
-        loading =progressBarRL
+//        loading =progressBarRL
         activity?.actionBar?.title =resources.getString(R.string.editor_activity_title)
         spinnerForCurrency()
         ExchangeRateBTN.setOnClickListener {
@@ -114,8 +118,15 @@ class EditorFragment : Fragment() {
         return currencyAbr
     }
 
+  //Used to transfer data between the fragments
+    interface OnDataGotten{
+       fun data (bundle: Bundle)
+    }
+
     fun addCurrency() {
-        loading!!.visibility = View.VISIBLE
+//        loading!!.visibility = View.VISIBLE
+        pbloading.visibility = View.VISIBLE
+        textView.visibility = View.VISIBLE
         val ok = cryptoClient!!.getJsonResponse(currencyAbr)
         ok?.enqueue(object : Callback<JsonResponse?> {
             override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
@@ -133,6 +144,7 @@ class EditorFragment : Fragment() {
 
 
 
+
                 val bundle = Bundle()
                 bundle.putInt("image", image)
                 bundle.putDouble("btcRate", conversionFromBtc?:0.00)
@@ -141,24 +153,39 @@ class EditorFragment : Fragment() {
                 bundle.putString("currencyAbr", currencyAbr)
                 bundle.putString("currencyName", _currencyName)
 //                startActivity(intent)
+                mOnDataGotten.data(bundle)
 
-                val listFragment =ListFragment()
-                listFragment.arguments=bundle
-                val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
-                                                  .add(R.id.viewContainer,listFragment,null)
-                                                  .commit()
+//                val listFragment =ListFragment()
+//                listFragment.arguments=bundle
+//                val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
+//                                                  .replace(R.id.viewContainer,listFragment,null)
+//                                                  .commit()
 
-                loading!!.visibility = View.GONE
-
+//                loading!!.visibility = View.GONE
+                pbloading.visibility = View.GONE
+                textView.visibility = View.GONE
+//                dismiss()
             }
 
             override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
-                loading!!.visibility = View.GONE
+//                loading!!.visibility = View.GONE
+
+                pbloading.visibility = View.GONE
+                textView.visibility = View.GONE
                 Toast.makeText(requireContext(), "Check your internet connection ", Toast.LENGTH_LONG).show()
             }
         }
         )
     }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+          Log.e("targetFragment", "Name of fragment $targetFragment")
+          Log.e("targetFragment as targetFragment", "Name of fragment Cast  ${targetFragment as OnDataGotten} ")
+         mOnDataGotten = targetFragment as OnDataGotten
+    }
+
 
     //    Checks the spinner and returns the abbreviation and image resource of the currency selected
     private fun checkSpinner(position: Int): String {

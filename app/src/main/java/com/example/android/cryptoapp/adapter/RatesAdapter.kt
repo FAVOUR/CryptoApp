@@ -1,20 +1,24 @@
 package com.example.android.cryptoapp.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.Results
-import com.example.android.cryptoapp.adapter.RatesAdapter.Rates_ViewHoler
+import com.example.android.cryptoapp.adapter.RatesAdapter.RatesViewHolder
+import com.google.gson.Gson
 import java.text.DecimalFormat
 
 
 //class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private val mOnClickedListiner: ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
-class RatesAdapter( private val mResults: MutableList<Results>, private  val mListItemClickListiner :ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
+class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private  val mListItemClickListiner :ListItemClickListiner) : RecyclerView.Adapter<RatesViewHolder>() {
     private var clickedPosition = 0
     private lateinit var currencyImage: ImageView
     private lateinit var currencyAbr: TextView
@@ -24,19 +28,38 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
     private lateinit var currencySymbol_1: TextView
     private lateinit var currencySymbol_2: TextView
     private lateinit var mOnClickedListiner: ListItemClickListiner
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Rates_ViewHoler {
+
+//    init {
+//        Log.e(" Init mResults.size ",  "${mResults.size}")
+//                    Toast.makeText(mContext," Init mResults.size ${mResults.size}" ,Toast.LENGTH_SHORT).show()
+//
+//        getItemViewType(0)
+//    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatesViewHolder {
+        Log.e("onCreateViewHolder",  "Here ")
+
         val layoutResourceId = R.layout.rates_row_items
         val getCurrentContext = parent.context
         val layoutInflater = LayoutInflater.from(getCurrentContext)
         val newViewHolder = layoutInflater.inflate(layoutResourceId, parent, false)
-        return Rates_ViewHoler(newViewHolder)
+        return RatesViewHolder(newViewHolder)
     }
 
-    override fun onBindViewHolder(holder: Rates_ViewHoler, position: Int) {
+    override fun onBindViewHolder(holder: RatesViewHolder, position: Int) {
+        Log.e("position",  "${position}")
+
         holder.bind(position)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        Log.e("getItemViewType position",  "${position}")
+
+        return super.getItemViewType(position)
+    }
+
     override fun getItemCount(): Int {
+
+        Log.e(" mResults.size",  "${mResults.size}")
         return mResults.size
     }
 
@@ -44,7 +67,7 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
         fun onListItemClicked(clickditemindex: Int)
     }
 
-    inner class Rates_ViewHoler(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         fun bind(listIndex: Int) {
             var format: DecimalFormat? = null
             format = DecimalFormat()
@@ -72,6 +95,8 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
         }
 
         init {
+            Log.e("Init",  "Here ")
+
             itemView.setOnClickListener(this)
             exchangeRate_1 = itemView.findViewById<View>(R.id.btc_result) as TextView
             currencyAbr = itemView.findViewById<View>(R.id.currency_abr) as TextView
@@ -96,6 +121,11 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
     //adds data for the adapter to utilize
     fun add(results: Results) {
         mResults.add(results)
+        Log.e("results",Gson().toJson(results))
+        Log.e("resultAdapter size",Gson().toJson(mResults.size))
+//        notifyDataSetChanged()
+        notifyItemChanged(mResults.size)
+
     }
 
 }

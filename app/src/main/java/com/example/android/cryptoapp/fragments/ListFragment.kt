@@ -6,8 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +20,7 @@ import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
 import com.example.android.cryptoapp.rest.ApiClient
 import com.example.android.cryptoapp.rest.CryptoCurrencyService
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_list.*
 import java.util.ArrayList
 import kotlin.properties.Delegates
@@ -32,12 +35,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
+class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragment.OnDataGotten {
     // TODO: Rename and change types of parameters
    /* private var param1: String? = null
     private var param2: String? = null
 */
-    var resultRv: RecyclerView? = null
     var resultAdapter: RatesAdapter? = null
     var layoutManager: LinearLayoutManager? = null
     lateinit var results: MutableList<Results>
@@ -70,60 +72,81 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_list, container, false)
+        bundle = arguments
+
+
+        return   view
     }
 
      val TAG :String = "ListFragment"
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//
-//
-//        Log.e(TAG,"${(context as RatesAdapter.ListItemClickListiner).toString()} ${context.resources.getString(R.string.exception_message)}")
-//    }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
+        setupAdapter()
+//
+//        layoutManager = LinearLayoutManager(requireContext())
+//        results = ArrayList()
+//        soFar = ArrayList()
+//        rv_members!!.layoutManager = layoutManager
+//
+////        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
+//        resultAdapter = RatesAdapter(results,this)
+//        rv_members!!.adapter = resultAdapter
+//        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
 
-        bundle = arguments
 
 
-        check = bundle == null
         layoutManager = LinearLayoutManager(requireContext())
         results = ArrayList()
         soFar = ArrayList()
 //        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
-        resultAdapter = RatesAdapter(results,this)
-        resultRv = rv_members
-        resultRv!!.layoutManager = layoutManager
-        resultRv!!.adapter = resultAdapter
+        resultAdapter = RatesAdapter(requireContext(),results,this)
+        rv_members!!.layoutManager = layoutManager
+        rv_members!!.adapter = resultAdapter
         cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
+    }
+
+    private fun setupAdapter() {
+
+
+        check = bundle == null
+
+//
+
+
         if (!check) {
             image = bundle!!.getInt("image")
             btcRate = bundle!!.getDouble("btcRate")
-            currencyAbr = bundle?.getString("currencyAbr") ?:""
-            currencySymbol = bundle?.getString("currencySymbol") ?:""
-            currencyName = bundle?.getString("currencyName") ?:""
-            ethRate = bundle?.getDouble("ethRate") ?:0.00
-            resultRv!!.setHasFixedSize(true)
+            currencyAbr = bundle?.getString("currencyAbr") ?: ""
+            currencySymbol = bundle?.getString("currencySymbol") ?: ""
+            currencyName = bundle?.getString("currencyName") ?: ""
+            ethRate = bundle?.getDouble("ethRate") ?: 0.00
+//            rv_members!!.setHasFixedSize(true)
             output = Results(image, btcRate, ethRate, currencyName, currencyAbr, currencySymbol)
-            resultAdapter!!.add(output)
+//            resultAdapter!!.add(output)
+
+            Toast.makeText(requireContext(), Gson().toJson(output),Toast.LENGTH_SHORT).show()
+            results.add(output)
+
+            resultAdapter!!.notifyItemChanged(results.size)
         }
     }
 
-  /*  override fun onBackPressed() {
-        val builder: AlertDialog.Builder
-        builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Delete Entry")
-                .setMessage("Are sure you wat to exit?")
-                .setPositiveButton(android.R.string.yes
-                ) { dialog, which -> activity?.finish() }
-                .setNegativeButton(android.R.string.no
-                ) { dialog, which -> dialog.dismiss() }
-        val alertDialog = builder.create()
-        alertDialog.show()
-    }*/
+    /*  override fun onBackPressed() {
+          val builder: AlertDialog.Builder
+          builder = AlertDialog.Builder(requireContext())
+          builder.setTitle("Delete Entry")
+                  .setMessage("Are sure you wat to exit?")
+                  .setPositiveButton(android.R.string.yes
+                  ) { dialog, which -> activity?.finish() }
+                  .setNegativeButton(android.R.string.no
+                  ) { dialog, which -> dialog.dismiss() }
+          val alertDialog = builder.create()
+          alertDialog.show()
+      }*/
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         //Let ApCompactActivity call the onPrepareOptionsMenu(menu) method
@@ -156,11 +179,16 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
 //                startActivity(intent)
 
                 var editorFragment = EditorFragment()
-
-                activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.viewContainer,  editorFragment,null)
-                        ?.addToBackStack(null)
-                        ?.commit()
+                  editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
+//                  editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
+                  editorFragment.setTargetFragment(this@ListFragment,1)
+                  editorFragment.show(activity?.supportFragmentManager!!,null)
+//
+//                var editorFragment = EditorFragment()
+//                activity?.supportFragmentManager?.beginTransaction()
+//                        ?.replace(R.id.viewContainer,  editorFragment,null)
+//                        ?.addToBackStack(null)
+//                        ?.commit()
                 return true
             }
             R.id.about -> {
@@ -206,6 +234,12 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                     .commit()
 
         }
+    }
+
+    override fun data(bundle: Bundle) {
+        this.bundle = bundle
+        setupAdapter()
+
     }
 
 
