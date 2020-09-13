@@ -4,19 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
 import com.example.android.cryptoapp.currency_data.JsonResponse
 import com.example.android.cryptoapp.rest.ApiClient
 import com.example.android.cryptoapp.rest.CryptoCurrencyService
+import com.example.android.cryptoapp.viewmodel.EditorViewModel
 import kotlinx.android.synthetic.main.fragment_editor.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,17 +36,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class EditorFragment : DialogFragment() {
 
-    private var currencySpinner: Spinner? = null
-    var cryptoClient: CryptoCurrencyService? = null
-    var jsonResponse: JsonResponse? = null
-    var btcConversionRates: Btc? = null
-    var ethConversionRates: Eth? = null
-    var conversionFromBtc: Double? = null
-    var conversionFromEth: Double? = null
-    var currencyAbr: String? = null
-    var currencySymbol: String? = null
-    var _currencyName: String? = null
-    var image = 0
+
     private lateinit var mOnDataGotten:OnDataGotten
 //    var loading: RelativeLayout? = null
 
@@ -59,20 +51,28 @@ class EditorFragment : DialogFragment() {
         }*/
     }
 
+    // activity-ktx artifact
+    private val viewmodel: EditorViewModel by viewModels()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        return inflater.inflate(R.layout.fragment_editor, container, false)
+
+
+
+    //    return inflater.inflate(R.layout.fragment_editor, container, false)
 
         val view =  inflater.inflate(R.layout.fragment_editor, container, false)
         return view
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        viewmodel.cryptoClient= ApiClient.client?.create(CryptoCurrencyService::class.java)
 //        currencySpinner = findViewById<View>(R.id.currencyName) as Spinner
-        currencySpinner = currencyName
+        viewmodel.currencySpinner = currencyName
 //        loading = findViewById<View>(R.id.loading) as RelativeLayout
 //        loading =progressBarRL
         activity?.actionBar?.title =resources.getString(R.string.editor_activity_title)
@@ -94,26 +94,27 @@ class EditorFragment : DialogFragment() {
         currencySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
 
         // Apply the Adapter to the spinner
-        currencySpinner!!.adapter = currencySpinnerAdapter
+        viewmodel.currencySpinner!!.adapter = currencySpinnerAdapter
 
         // Set the currency Selected to the constant values
-        currencySpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        //TODO Try to lazily instantiate the adapter.onItemSelected interface
+        viewmodel.currencySpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val selection = parent.getItemAtPosition(position) as String
                 if (!TextUtils.isEmpty(selection)) {
 
                     //Use the position of item chosen to get the currencyAbr and currencyName
-                    currencyAbr = checkSpinner(position)
-                    _currencyName = selection
+                    viewmodel.currencyAbr = checkSpinner(position)
+                    viewmodel._currencyName = selection
                 } else {
-                    currencyAbr = getString(R.string.none)
-                    _currencyName = getString(R.string.none)
+                    viewmodel.currencyAbr = getString(R.string.none)
+                    viewmodel. _currencyName = getString(R.string.none)
                 }
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
-        return currencyAbr
+        return viewmodel.currencyAbr
     }
 
   //Used to transfer data between the fragments
@@ -125,31 +126,31 @@ class EditorFragment : DialogFragment() {
 //        loading!!.visibility = View.VISIBLE
         pbloading.visibility = View.VISIBLE
         textView.visibility = View.VISIBLE
-        val ok = cryptoClient!!.getJsonResponse(currencyAbr)
+        val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr)
         ok?.enqueue(object : Callback<JsonResponse?> {
             override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
-                jsonResponse = response.body()
-                if (jsonResponse != null) {
-                    btcConversionRates = jsonResponse!!.bTC
-                    ethConversionRates = jsonResponse!!.eTH
+                viewmodel.jsonResponse = response.body()
+                if (viewmodel.jsonResponse != null) {
+                    viewmodel.btcConversionRates = viewmodel.jsonResponse!!.bTC
+                    viewmodel.ethConversionRates = viewmodel.jsonResponse!!.eTH
 
                     //check for the BTC rates
-                    conversionFromBtc = confirmBtcRates(currencyAbr)
+                    viewmodel.conversionFromBtc = confirmBtcRates(viewmodel.currencyAbr)
 
                     //check for the Eth rates
-                    conversionFromEth = confirmEthRates(currencyAbr)
+                    viewmodel.conversionFromEth = confirmEthRates(viewmodel.currencyAbr)
                 }
 
 
 
 
                 val bundle = Bundle()
-                bundle.putInt("image", image)
-                bundle.putDouble("btcRate", conversionFromBtc?:0.00)
-                bundle.putString("currencySymbol", currencySymbol)
-                bundle.putDouble("ethRate", conversionFromEth ?:0.00)
-                bundle.putString("currencyAbr", currencyAbr)
-                bundle.putString("currencyName", _currencyName)
+                bundle.putInt("image", viewmodel.image)
+                bundle.putDouble("btcRate", viewmodel.conversionFromBtc?:0.00)
+                bundle.putString("currencySymbol", viewmodel.currencySymbol)
+                bundle.putDouble("ethRate", viewmodel.conversionFromEth ?:0.00)
+                bundle.putString("currencyAbr", viewmodel.currencyAbr)
+                bundle.putString("currencyName", viewmodel._currencyName)
 //                startActivity(intent)
                 mOnDataGotten.data(bundle)
 
@@ -179,9 +180,12 @@ class EditorFragment : DialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-          Log.e("targetFragment", "Name of fragment $targetFragment")
-          Log.e("targetFragment as targetFragment", "Name of fragment Cast  ${targetFragment as OnDataGotten} ")
+//          Log.e("targetFragment", "Name of fragment $targetFragment")
+//          Log.e("targetFragment as targetFragment", "Name of fragment Cast  ${targetFragment as OnDataGotten} ")
+//
+//        TODO Try to set the interface implementation to the activity Scope
          mOnDataGotten = targetFragment as OnDataGotten
+
     }
 
 
@@ -191,83 +195,83 @@ class EditorFragment : DialogFragment() {
         when (position) {
             1 -> {
                 CurrencyAbbreviation = getString(R.string.Australia_Dollar)
-                image = R.drawable.aud
+                viewmodel.image = R.drawable.aud
             }
             2 -> {
                 CurrencyAbbreviation = getString(R.string.Egypt_Pound)
-                image = R.drawable.egp
+                viewmodel.image = R.drawable.egp
             }
             3 -> {
                 CurrencyAbbreviation = getString(R.string.Great_Britain_Pound)
-                image = R.drawable.gbp
+                viewmodel. image = R.drawable.gbp
             }
             4 -> {
                 CurrencyAbbreviation = getString(R.string.German_Euro)
-                image = R.drawable.eur
+                viewmodel.image = R.drawable.eur
             }
             5 -> {
                 CurrencyAbbreviation = getString(R.string.Georgia_Lari)
-                image = R.drawable.gel
+                viewmodel.image = R.drawable.gel
             }
             6 -> {
                 CurrencyAbbreviation = getString(R.string.Ghana_New_Cedi)
-                image = R.drawable.ghs
+                viewmodel.image = R.drawable.ghs
             }
             7 -> {
                 CurrencyAbbreviation = getString(R.string.Hong_Kong_Dollar)
-                image = R.drawable.hdk
+                viewmodel.image = R.drawable.hdk
             }
             8 -> {
                 CurrencyAbbreviation = getString(R.string.Israel_New_Shekel)
-                image = R.drawable.ils
+                viewmodel.image = R.drawable.ils
             }
             9 -> {
                 CurrencyAbbreviation = getString(R.string.Jamaica_Dollar)
-                image = R.drawable.jmd
+                viewmodel. image = R.drawable.jmd
             }
             10 -> {
                 CurrencyAbbreviation = getString(R.string.Japan_Yen)
-                image = R.drawable.jpy
+                viewmodel.image = R.drawable.jpy
             }
             11 -> {
                 CurrencyAbbreviation = getString(R.string.Malaysia_Ringgit)
-                image = R.drawable.myr
+                viewmodel.image = R.drawable.myr
             }
             12 -> {
                 CurrencyAbbreviation = getString(R.string.Nigeria_Naira)
-                image = R.drawable.ngn
+                viewmodel.image = R.drawable.ngn
             }
             13 -> {
                 CurrencyAbbreviation = getString(R.string.Philippines_Peso)
-                image = R.drawable.php
+                viewmodel.image = R.drawable.php
             }
             14 -> {
                 CurrencyAbbreviation = getString(R.string.Qatar_Rial)
-                image = R.drawable.qar
+                viewmodel.image = R.drawable.qar
             }
             15 -> {
                 CurrencyAbbreviation = getString(R.string.Russia_Rouble)
-                image = R.drawable.rub
+                viewmodel.image = R.drawable.rub
             }
             16 -> {
                 CurrencyAbbreviation = getString(R.string.South_Africa_Rand)
-                image = R.drawable.zar
+                viewmodel. image = R.drawable.zar
             }
             17 -> {
                 CurrencyAbbreviation = getString(R.string.Switzerland_Franc)
-                image = R.drawable.chf
+                viewmodel.image = R.drawable.chf
             }
             18 -> {
                 CurrencyAbbreviation = getString(R.string.Taiwan_Dollar)
-                image = R.drawable.twd
+                viewmodel.image = R.drawable.twd
             }
             19 -> {
                 CurrencyAbbreviation = getString(R.string.Thailand_Baht)
-                image = R.drawable.thb
+                viewmodel.image = R.drawable.thb
             }
             20 -> {
                 CurrencyAbbreviation = getString(R.string.usa_Dollar)
-                image = R.drawable.usd
+                viewmodel.image = R.drawable.usd
             }
             else -> CurrencyAbbreviation = getString(R.string.none)
         }
@@ -278,26 +282,26 @@ class EditorFragment : DialogFragment() {
     fun confirmBtcRates(currency: String?): Double {
         val BtcRates: Double
         BtcRates = when (currency) {
-            "AUD" -> btcConversionRates?.AUD ?: 0.00
-            "EGP" -> btcConversionRates?.EGP ?: 0.00
-            "GBP" -> btcConversionRates?.GBP ?: 0.00
-            "EUR" -> btcConversionRates?.EUR ?: 0.00
-            "GEL" -> btcConversionRates?.GEL ?: 0.00
-            "GHS" -> btcConversionRates?.GHS ?: 0.00
-            "HKD" -> btcConversionRates?.HKD ?: 0.00
-            "ILS" -> btcConversionRates?.ILS ?: 0.00
-            "JMD" -> btcConversionRates?.JMD ?: 0.00
-            "JPY" -> btcConversionRates?.JPY ?: 0.00
-            "MYR" -> btcConversionRates?.MYR ?: 0.00
-            "NGN" -> btcConversionRates?.NGN ?: 0.00
-            "PHP" -> btcConversionRates?.PHP ?: 0.00
-            "QAR" -> btcConversionRates?.QAR ?: 0.00
-            "RUB" -> btcConversionRates?.RUB ?: 0.00
-            "ZAR" -> btcConversionRates?.ZAR ?: 0.00
-            "CHF" -> btcConversionRates?.CHF ?: 0.00
-            "TWD" -> btcConversionRates?.TWD ?: 0.00
-            "THB" -> btcConversionRates?.THB ?: 0.00
-            "USD" -> btcConversionRates?.USD ?: 0.00
+            "AUD" -> viewmodel.btcConversionRates?.AUD ?: 0.00
+            "EGP" -> viewmodel. btcConversionRates?.EGP ?: 0.00
+            "GBP" -> viewmodel. btcConversionRates?.GBP ?: 0.00
+            "EUR" -> viewmodel.btcConversionRates?.EUR ?: 0.00
+            "GEL" -> viewmodel.btcConversionRates?.GEL ?: 0.00
+            "GHS" -> viewmodel.btcConversionRates?.GHS ?: 0.00
+            "HKD" -> viewmodel.btcConversionRates?.HKD ?: 0.00
+            "ILS" -> viewmodel.btcConversionRates?.ILS ?: 0.00
+            "JMD" -> viewmodel.btcConversionRates?.JMD ?: 0.00
+            "JPY" -> viewmodel.btcConversionRates?.JPY ?: 0.00
+            "MYR" -> viewmodel.btcConversionRates?.MYR ?: 0.00
+            "NGN" -> viewmodel. btcConversionRates?.NGN ?: 0.00
+            "PHP" -> viewmodel.btcConversionRates?.PHP ?: 0.00
+            "QAR" -> viewmodel.btcConversionRates?.QAR ?: 0.00
+            "RUB" -> viewmodel.btcConversionRates?.RUB ?: 0.00
+            "ZAR" -> viewmodel.btcConversionRates?.ZAR ?: 0.00
+            "CHF" -> viewmodel. btcConversionRates?.CHF ?: 0.00
+            "TWD" -> viewmodel.btcConversionRates?.TWD ?: 0.00
+            "THB" -> viewmodel.btcConversionRates?.THB ?: 0.00
+            "USD" -> viewmodel.btcConversionRates?.USD ?: 0.00
             else -> 0.0
         } as Double
         return BtcRates
@@ -308,84 +312,84 @@ class EditorFragment : DialogFragment() {
         val ethRates: Double
         when (currency) {
             "AUD" -> {
-                ethRates = ethConversionRates?.AUD ?: 0.00
-                currencySymbol = ethConversionRates?.aUDSymbol
+                ethRates = viewmodel.ethConversionRates?.AUD ?: 0.00
+                viewmodel.currencySymbol = viewmodel.ethConversionRates?.aUDSymbol
             }
             "EGP" -> {
-                ethRates = ethConversionRates?.EGP ?: 0.00
-                currencySymbol = ethConversionRates?.eGPSymbol
+                ethRates = viewmodel.ethConversionRates?.EGP ?: 0.00
+                viewmodel.currencySymbol = viewmodel.ethConversionRates?.eGPSymbol
             }
             "EUR" -> {
-                ethRates = ethConversionRates?.EUR ?: 0.00
-                currencySymbol = ethConversionRates?.eURSymbol
+                ethRates =  viewmodel.ethConversionRates?.EUR ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.eURSymbol
             }
             "GBP" -> {
-                ethRates = ethConversionRates?.GBP ?: 0.00
-                currencySymbol = ethConversionRates?.gBPSymbol
+                ethRates =  viewmodel.ethConversionRates?.GBP ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.gBPSymbol
             }
             "GEL" -> {
-                ethRates = ethConversionRates?.GEL ?: 0.00
-                currencySymbol = ethConversionRates?.gELSymbol
+                ethRates =  viewmodel.ethConversionRates?.GEL ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.gELSymbol
             }
             "GHS" -> {
-                ethRates = ethConversionRates?.GHS ?: 0.00
-                currencySymbol = ethConversionRates?.gHSSymbol
+                ethRates =  viewmodel.ethConversionRates?.GHS ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.gHSSymbol
             }
             "HKD" -> {
-                ethRates = ethConversionRates?.HKD ?: 0.00
-                currencySymbol = ethConversionRates?.hKDSymbol
+                ethRates =  viewmodel.ethConversionRates?.HKD ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.hKDSymbol
             }
             "ILS" -> {
-                ethRates = ethConversionRates?.ILS ?: 0.00
-                currencySymbol = ethConversionRates?.iLSSymbol
+                ethRates =  viewmodel.ethConversionRates?.ILS ?: 0.00
+                viewmodel. currencySymbol =  viewmodel.ethConversionRates?.iLSSymbol
             }
             "JMD" -> {
-                ethRates = ethConversionRates?.JMD ?: 0.00
-                currencySymbol = ethConversionRates?.jMDSymbol
+                ethRates =  viewmodel.ethConversionRates?.JMD ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.jMDSymbol
             }
             "JPY" -> {
-                ethRates = ethConversionRates?.JPY ?: 0.00
-                currencySymbol = ethConversionRates?.jPYSymbol
+                ethRates =  viewmodel.ethConversionRates?.JPY ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.jPYSymbol
             }
             "MYR" -> {
-                ethRates = ethConversionRates?.MYR ?: 0.00
-                currencySymbol = ethConversionRates?.mYRSymbol
+                ethRates =  viewmodel.ethConversionRates?.MYR ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.mYRSymbol
             }
             "NGN" -> {
-                ethRates = ethConversionRates?.NGN ?: 0.00
-                currencySymbol = ethConversionRates?.nGNSymbol
+                ethRates =  viewmodel.ethConversionRates?.NGN ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.nGNSymbol
             }
             "PHP" -> {
-                ethRates = ethConversionRates?.PHP ?: 0.00
-                currencySymbol = ethConversionRates?.pHPSymbol
+                ethRates =  viewmodel.ethConversionRates?.PHP ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.pHPSymbol
             }
             "QAR" -> {
-                ethRates = ethConversionRates?.QAR ?: 0.00
-                currencySymbol = ethConversionRates?.qARSymbol
+                ethRates =  viewmodel.ethConversionRates?.QAR ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.qARSymbol
             }
             "RUB" -> {
-                ethRates = ethConversionRates?.RUB ?: 0.00
-                currencySymbol = ethConversionRates?.rUBSymbol
+                ethRates =  viewmodel.ethConversionRates?.RUB ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.rUBSymbol
             }
             "ZAR" -> {
-                ethRates = ethConversionRates?.ZAR ?: 0.00
-                currencySymbol = ethConversionRates?.zARSymbol
+                ethRates =  viewmodel.ethConversionRates?.ZAR ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.zARSymbol
             }
             "CHF" -> {
-                ethRates = ethConversionRates?.CHF ?: 0.00
-                currencySymbol = ethConversionRates?.cHFSymbol
+                ethRates =  viewmodel.ethConversionRates?.CHF ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.cHFSymbol
             }
             "TWD" -> {
-                ethRates = ethConversionRates?.TWD ?: 0.00
-                currencySymbol = ethConversionRates?.tWDSymbol
+                ethRates = viewmodel. ethConversionRates?.TWD ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.tWDSymbol
             }
             "THB" -> {
-                ethRates = ethConversionRates?.THB ?: 0.00
-                currencySymbol = ethConversionRates?.tHBSymbol
+                ethRates =  viewmodel.ethConversionRates?.THB ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.tHBSymbol
             }
             "USD" -> {
-                ethRates = ethConversionRates?.USD ?: 0.00
-                currencySymbol = ethConversionRates?.uSDSymbol
+                ethRates =  viewmodel.ethConversionRates?.USD ?: 0.00
+                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.uSDSymbol
             }
             else -> ethRates = 0.0
         }
