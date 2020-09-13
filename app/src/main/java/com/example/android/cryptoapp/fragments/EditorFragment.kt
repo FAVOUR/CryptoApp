@@ -97,6 +97,7 @@ class EditorFragment : DialogFragment() {
         viewmodel.currencySpinner!!.adapter = currencySpinnerAdapter
 
         // Set the currency Selected to the constant values
+        //TODO Try to lazily instantiate the adapter.onItemSelected interface
         viewmodel.currencySpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val selection = parent.getItemAtPosition(position) as String
@@ -181,7 +182,10 @@ class EditorFragment : DialogFragment() {
         super.onAttach(context)
 //          Log.e("targetFragment", "Name of fragment $targetFragment")
 //          Log.e("targetFragment as targetFragment", "Name of fragment Cast  ${targetFragment as OnDataGotten} ")
+//
+//        TODO Try to set the interface implementation to the activity Scope
          mOnDataGotten = targetFragment as OnDataGotten
+
     }
 
 
