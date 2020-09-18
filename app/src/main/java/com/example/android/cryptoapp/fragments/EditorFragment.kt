@@ -48,7 +48,6 @@ class EditorFragment : DialogFragment() {
 
 
 
-    //    return inflater.inflate(R.layout.fragment_editor, container, false)
 
         val view =  inflater.inflate(R.layout.fragment_editor, container, false)
         return view
