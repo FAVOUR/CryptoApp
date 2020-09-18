@@ -73,10 +73,7 @@ class ConversionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -106,6 +103,7 @@ class ConversionFragment : Fragment() {
         btc_amount!!.addTextChangedListener(generalWatcher)
         eth_amount!!.addTextChangedListener(generalWatcher)
         if (!viewmodel.check) {
+
             viewmodel.image = viewmodel.bundle?.getInt("image") ?:0
             viewmodel.btcRate = viewmodel.bundle?.getDouble("btcRate")
             viewmodel.currencyAbr =viewmodel. bundle?.getString("currencyAbr")
@@ -136,25 +134,6 @@ class ConversionFragment : Fragment() {
         currency_name!!.text = viewmodel.currencyName
     }
 
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment ConversionFragment.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//                ConversionFragment().apply {
-//                    arguments = Bundle().apply {
-//                        putString(ARG_PARAM1, param1)
-//                        putString(ARG_PARAM2, param2)
-//                    }
-//                }
-//    }
 
     private val generalWatcher: TextWatcher = object : TextWatcher {
         var ignore = true //This works fine with java but with kotlin
