@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.android.cryptoapp.R
+import com.example.android.cryptoapp.di.AppModule
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
 import com.example.android.cryptoapp.viewmodel.EditorViewModel
 import com.squareup.picasso.Picasso
@@ -113,17 +114,17 @@ class ConversionFragment : Fragment() {
         }
 
         //Set the currency Image
-        Picasso.get().load(viewmodel.image)
+        AppModule.providePicassoInstance().load(viewmodel.image)
                 .transform(CropCircleTransformation())
                 .into(currency_image)
 
         //Set the btc Image
-        Picasso.get().load(R.drawable.btc)
+        AppModule.providePicassoInstance().load(R.drawable.btc)
                 .transform(CropCircleTransformation())
                 .into(btc_logo)
 
         //Set the eth Image
-        Picasso.get().load(R.drawable.eth)
+        AppModule.providePicassoInstance().load(R.drawable.eth)
                 .transform(CropCircleTransformation())
                 .into(eth_logo)
         btc_exchangerate!!.text =   viewmodel.format!!.format(viewmodel.btcRate!!)

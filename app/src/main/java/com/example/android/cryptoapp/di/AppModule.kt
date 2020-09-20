@@ -1,8 +1,10 @@
 package com.example.android.cryptoapp.di
 
-class AppModule {
+import com.squareup.picasso.Picasso
 
-    fun providePicassoInstance (){
+ object AppModule {
 
+    fun providePicassoInstance ():Picasso {
+        return Picasso.get()
     }
 }
