@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.android.cryptoapp.R
+import com.example.android.cryptoapp.di.AppModule
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
 import com.example.android.cryptoapp.viewmodel.EditorViewModel
 import com.squareup.picasso.Picasso
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.fragment_conversion.eth_amount
 import kotlinx.android.synthetic.main.fragment_conversion.eth_exchangerate
 import kotlinx.android.synthetic.main.fragment_conversion.eth_logo
 import java.text.DecimalFormat
+import kotlin.properties.Delegates
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,15 +60,16 @@ class ConversionFragment : Fragment() {
 //    var currencySymbol_2: TextView? = null
 //    var currency_Name: TextView? = null
 //    var currencyAbbreviation: TextView? = null
-//    var image = 0
-//    var check = false
-//    var currencyAbr: String? = null
-//    var currencySymbol: String? = null
-//    var currencyName: String? = null
-//    var btcRate: Double? = null
-//    var ethRate: Double? = null
-//    var format: DecimalFormat? = null
-//    var bundle: Bundle? = null
+       var image :Int by Delegates.notNull<Int>()
+      private var check by Delegates.notNull<Boolean>()
+
+    private var currencyAbr: String  by Delegates.notNull<String>()
+    private var currencySymbol: String by  Delegates.notNull<String>()
+    private var currencyName: String  by  Delegates.notNull<String>()
+    private var btcRate: Double  by  Delegates.notNull<Double>()
+    private var ethRate: Double by Delegates.notNull<Double>()
+    private lateinit  var bundle: Bundle
+    private lateinit var format: DecimalFormat
 
 
     private val viewmodel: ConversionViewmodel by viewModels()
@@ -76,62 +79,66 @@ class ConversionFragment : Fragment() {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_conversion, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewmodel.bundle = arguments
-
+        viewmodel.bundle = requireArguments()
         viewmodel.check =   viewmodel.bundle == null
-//        btcExchangeRate = btc_exchangerate
-//        ethExchangeRate = eth_exchangerate
-//        currencySymbol_1 = currency_symbol
-//        currencySymbol_2 = currency_symbol_2
-//        currencyAbbreviation = abrivation
-//        currency_Name = currency_name
-          viewmodel.format = DecimalFormat()
-          viewmodel.format!!.isGroupingUsed = true
-          viewmodel.format!!.maximumIntegerDigits = 20
-          viewmodel.format!!.maximumFractionDigits = 3
+        viewmodel.format = DecimalFormat()
+
+        image = viewmodel.image
+        btcRate = viewmodel.btcRate
+        currencyAbr = viewmodel.currencyAbr
+        currencySymbol = viewmodel.currencySymbol
+        currencyName = viewmodel.currencyName
+        ethRate= viewmodel.ethRate
+        check = viewmodel.check
+        bundle = viewmodel.bundle
+
+          format.isGroupingUsed = true
+          format.maximumIntegerDigits = 20
+          format.maximumFractionDigits = 3
 //        currency_amount = currency_amount
 //        btc_amount = btc_amount
 //        eth_amount =eth_amount
         btc_amount!!.addTextChangedListener(generalWatcher)
         eth_amount!!.addTextChangedListener(generalWatcher)
-        if (!viewmodel.check) {
+        if (check) {
 
-            viewmodel.image = viewmodel.bundle?.getInt("image") ?:0
-            viewmodel.btcRate = viewmodel.bundle?.getDouble("btcRate")
-            viewmodel.currencyAbr =viewmodel. bundle?.getString("currencyAbr")
-            viewmodel.currencySymbol =viewmodel. bundle?.getString("currencySymbol")
-            viewmodel.currencyName = viewmodel.bundle?.getString("currencyName")
-            viewmodel.ethRate =  viewmodel.bundle?.getDouble("ethRate")
+            viewmodel.image = bundle.getInt("image") ?:0
+            viewmodel.btcRate = bundle.getDouble("btcRate")
+            viewmodel.currencyAbr =bundle.getString("currencyAbr")
+            viewmodel.currencySymbol =bundle.getString("currencySymbol")
+            viewmodel.currencyName = bundle.getString("currencyName")
+            viewmodel.ethRate =  bundle.getDouble("ethRate")
         }
 
         //Set the currency Image
-        Picasso.get().load(viewmodel.image)
+        AppModule.providePicassoInstance().load(image)
                 .transform(CropCircleTransformation())
                 .into(currency_image)
 
         //Set the btc Image
-        Picasso.get().load(R.drawable.btc)
+        AppModule.providePicassoInstance().load(R.drawable.btc)
                 .transform(CropCircleTransformation())
                 .into(btc_logo)
 
         //Set the eth Image
-        Picasso.get().load(R.drawable.eth)
+        AppModule.providePicassoInstance().load(R.drawable.eth)
                 .transform(CropCircleTransformation())
                 .into(eth_logo)
-        btc_exchangerate!!.text =   viewmodel.format!!.format(viewmodel.btcRate!!)
-        eth_exchangerate!!.text =   viewmodel.format!!.format(viewmodel.ethRate!!)
-        currency_symbol!!.text = viewmodel.currencySymbol
-        currency_symbol_2!!.text = viewmodel.currencySymbol
-        abrivation!!.text = viewmodel.currencyAbr
-        currency_name!!.text = viewmodel.currencyName
+
+        btc_exchangerate!!.text  =    format.format(btcRate)
+        eth_exchangerate!!.text  =    format.format(ethRate)
+
+        currency_symbol!!.text   =     currencySymbol
+        currency_symbol_2!!.text =     currencySymbol
+        abrivation!!.text        =     currencyAbr
+        currency_name!!.text     =     currencyName
     }
 
 
@@ -149,9 +156,9 @@ class ConversionFragment : Fragment() {
                         if (ignore) {
                             eth_amount!!.setText("")
                             fBtcValue = btc_amount!!.text.toString().trim { it <= ' ' }.toFloat()
-                            sBtcValue =   viewmodel.format!!.format(viewmodel.btcRate!! * fBtcValue)
+                            sBtcValue =   format.format(btcRate * fBtcValue)
                             currency_amount!!.setTextColor(Color.parseColor("#ab7d0b"))
-                            currency_amount!!.text = viewmodel.currencySymbol + sBtcValue
+                            currency_amount!!.text = currencySymbol + sBtcValue
                             return
                         } else {
                             currency_amount!!.text = ""
@@ -164,9 +171,9 @@ class ConversionFragment : Fragment() {
                         if (ignore) {
                             btc_amount!!.setText("")
                             val fEthValue = eth_amount!!.text.toString().trim { it <= ' ' }.toFloat()
-                            sEthValue =   viewmodel.format!!.format(viewmodel.ethRate!! * fEthValue)
+                            sEthValue =   format!!.format(ethRate!! * fEthValue)
                             currency_amount!!.setTextColor(Color.parseColor("#5b6abd"))
-                            currency_amount!!.text = viewmodel.currencySymbol + sEthValue
+                            currency_amount!!.text = currencySymbol + sEthValue
                             return
                         } else {
                             currency_amount!!.text = ""
