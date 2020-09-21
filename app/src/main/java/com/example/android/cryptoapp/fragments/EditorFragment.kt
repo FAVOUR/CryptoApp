@@ -12,8 +12,10 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.currency_data.Btc
+import com.example.android.cryptoapp.currency_data.Currency
 import com.example.android.cryptoapp.currency_data.Eth
 import com.example.android.cryptoapp.currency_data.JsonResponse
 import com.example.android.cryptoapp.rest.ApiClient
@@ -38,6 +40,8 @@ class EditorFragment : DialogFragment() {
 
 
     private lateinit var mOnDataGotten:OnDataGotten
+     var btcConversionRates: Btc?= null
+     var ethConversionRates: Eth?=null
 //    var loading: RelativeLayout? = nul
 
     // activity-ktx artifact
@@ -117,10 +121,14 @@ class EditorFragment : DialogFragment() {
         val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr)
         ok?.enqueue(object : Callback<JsonResponse?> {
             override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
-                viewmodel.jsonResponse = response.body()
-                if (viewmodel.jsonResponse != null) {
-                    viewmodel.btcConversionRates = viewmodel.jsonResponse!!.bTC
-                    viewmodel.ethConversionRates = viewmodel.jsonResponse!!.eTH
+
+                if (response.body() != null) {
+                    viewmodel.jsonResponse = response.body()!!
+                    viewmodel.btcConversionRates = viewmodel.jsonResponse.bTC ?: Btc()
+                    viewmodel.ethConversionRates = viewmodel.jsonResponse.eTH ?:Eth()
+
+                    btcConversionRates=viewmodel.btcConversionRates
+                    ethConversionRates=viewmodel.ethConversionRates
 
                     //check for the BTC rates
                     viewmodel.conversionFromBtc = confirmBtcRates(viewmodel.currencyAbr)
@@ -151,7 +159,7 @@ class EditorFragment : DialogFragment() {
 //                loading!!.visibility = View.GONE
                 pbloading.visibility = View.GONE
                 textView.visibility = View.GONE
-//                dismiss()
+                dismiss()
             }
 
             override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
@@ -298,89 +306,92 @@ class EditorFragment : DialogFragment() {
     //confirm ETH rates after putting the currency type as parameter of this method
     protected fun confirmEthRates(currency: String?): Double {
         val ethRates: Double
+        var currencySymbol: String =""
         when (currency) {
             "AUD" -> {
-                ethRates = viewmodel.ethConversionRates?.AUD ?: 0.00
-                viewmodel.currencySymbol = viewmodel.ethConversionRates?.aUDSymbol
+                ethRates = ethConversionRates?.AUD ?: 0.00
+                currencySymbol = Currency.AUD.name
             }
             "EGP" -> {
-                ethRates = viewmodel.ethConversionRates?.EGP ?: 0.00
-                viewmodel.currencySymbol = viewmodel.ethConversionRates?.eGPSymbol
+                ethRates =ethConversionRates?.EGP ?: 0.00
+                    currencySymbol =  Currency.EGP.name
             }
             "EUR" -> {
-                ethRates =  viewmodel.ethConversionRates?.EUR ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.eURSymbol
+                ethRates =  ethConversionRates?.EUR ?: 0.00
+                currencySymbol =   Currency.EUR.name
             }
             "GBP" -> {
-                ethRates =  viewmodel.ethConversionRates?.GBP ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.gBPSymbol
+                ethRates = ethConversionRates?.GBP ?: 0.00
+                currencySymbol =   Currency.GBP.name
             }
             "GEL" -> {
-                ethRates =  viewmodel.ethConversionRates?.GEL ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.gELSymbol
+                ethRates = ethConversionRates?.GEL ?: 0.00
+                currencySymbol =   Currency.GEL.name
             }
             "GHS" -> {
-                ethRates =  viewmodel.ethConversionRates?.GHS ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.gHSSymbol
+                ethRates = ethConversionRates?.GHS ?: 0.00
+                currencySymbol =   Currency.EUR.name
             }
             "HKD" -> {
-                ethRates =  viewmodel.ethConversionRates?.HKD ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.hKDSymbol
+                ethRates = ethConversionRates?.HKD ?: 0.00
+                currencySymbol =   Currency.HKD.name
             }
             "ILS" -> {
-                ethRates =  viewmodel.ethConversionRates?.ILS ?: 0.00
-                viewmodel. currencySymbol =  viewmodel.ethConversionRates?.iLSSymbol
+                ethRates = ethConversionRates?.ILS ?: 0.00
+                currencySymbol =   Currency.ILS.name
             }
             "JMD" -> {
-                ethRates =  viewmodel.ethConversionRates?.JMD ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.jMDSymbol
+                ethRates = ethConversionRates?.JMD ?: 0.00
+                currencySymbol =   Currency.JMD.name
             }
             "JPY" -> {
-                ethRates =  viewmodel.ethConversionRates?.JPY ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.jPYSymbol
+                ethRates = ethConversionRates?.JPY ?: 0.00
+                currencySymbol =   Currency.JPY.name
             }
             "MYR" -> {
-                ethRates =  viewmodel.ethConversionRates?.MYR ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.mYRSymbol
+                ethRates = ethConversionRates?.MYR ?: 0.00
+                currencySymbol =   Currency.MYR.name
             }
             "NGN" -> {
-                ethRates =  viewmodel.ethConversionRates?.NGN ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.nGNSymbol
+                ethRates = ethConversionRates?.NGN ?: 0.00
+                currencySymbol =   Currency.NGN.name
             }
             "PHP" -> {
-                ethRates =  viewmodel.ethConversionRates?.PHP ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.pHPSymbol
+                ethRates = ethConversionRates?.PHP ?: 0.00
+                currencySymbol =   Currency.PHP.name
             }
             "QAR" -> {
-                ethRates =  viewmodel.ethConversionRates?.QAR ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.qARSymbol
+                ethRates = ethConversionRates?.QAR ?: 0.00
+                currencySymbol =   Currency.QAR.name
             }
             "RUB" -> {
-                ethRates =  viewmodel.ethConversionRates?.RUB ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.rUBSymbol
+                ethRates = ethConversionRates?.RUB ?: 0.00
+                currencySymbol =   Currency.RUB.name
             }
             "ZAR" -> {
-                ethRates =  viewmodel.ethConversionRates?.ZAR ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.zARSymbol
+                ethRates = ethConversionRates?.ZAR ?: 0.00
+                currencySymbol =   Currency.ZAR.name
             }
             "CHF" -> {
-                ethRates =  viewmodel.ethConversionRates?.CHF ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.cHFSymbol
+                ethRates = ethConversionRates?.CHF ?: 0.00
+                currencySymbol =   Currency.CHF.name
             }
             "TWD" -> {
-                ethRates = viewmodel. ethConversionRates?.TWD ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.tWDSymbol
+                ethRates = ethConversionRates?.TWD ?: 0.00
+                currencySymbol =   Currency.TWD.name
             }
             "THB" -> {
-                ethRates =  viewmodel.ethConversionRates?.THB ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.tHBSymbol
+                ethRates = ethConversionRates?.THB ?: 0.00
+                currencySymbol =   Currency.THB.name
             }
             "USD" -> {
-                ethRates =  viewmodel.ethConversionRates?.USD ?: 0.00
-                viewmodel.currencySymbol =  viewmodel.ethConversionRates?.uSDSymbol
+                ethRates = ethConversionRates?.USD ?: 0.00
+                currencySymbol =   Currency.USD.name
             }
             else -> ethRates = 0.0
         }
+
+        viewmodel.currencySymbol =currencySymbol
         return ethRates
     }
 

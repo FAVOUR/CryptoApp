@@ -11,8 +11,8 @@ import kotlin.properties.Delegates
 class EditorViewModel :ViewModel() {
     var currencySpinner: Spinner? = null
     var cryptoClient: CryptoCurrencyService? = null
-    lateinit  var btcConversionRates: Btc
-    lateinit var ethConversionRates: Eth
+      var btcConversionRates: Btc?=null
+      var ethConversionRates: Eth?= null
     var conversionFromBtc: Double by Delegates.notNull<Double>()
     var conversionFromEth: Double by Delegates.notNull<Double>()
     lateinit var currencyAbr: String
