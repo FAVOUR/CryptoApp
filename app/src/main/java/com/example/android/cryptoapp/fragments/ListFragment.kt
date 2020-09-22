@@ -36,10 +36,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragment.OnDataGotten {
-    // TODO: Rename and change types of parameters
-   /* private var param1: String? = null
-    private var param2: String? = null
-*/
+
     var resultAdapter: RatesAdapter? = null
     var layoutManager: LinearLayoutManager? = null
     lateinit var results: MutableList<Results>
@@ -60,11 +57,6 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-     /*   arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
-
 
 
     }
