@@ -102,6 +102,7 @@ class ConversionFragment : Fragment() {
           format.isGroupingUsed = true
           format.maximumIntegerDigits = 20
           format.maximumFractionDigits = 3
+
 //        currency_amount = currency_amount
 //        btc_amount = btc_amount
 //        eth_amount =eth_amount
