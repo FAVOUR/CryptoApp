@@ -23,7 +23,7 @@ class ListViewModel:ViewModel() {
     lateinit var currencyAbr: String
     lateinit var currencySymbol: String
     lateinit var currencyName: String
-    var check by Delegates.notNull<Boolean>()
+    var check :Boolean = true
     var btcRate by Delegates.notNull<Double>()
     var ethRate by  Delegates.notNull<Double>()
     var cryptoClient: CryptoCurrencyService? = null

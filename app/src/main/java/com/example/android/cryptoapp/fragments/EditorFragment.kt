@@ -73,7 +73,7 @@ class EditorFragment : DialogFragment() {
     /**
      * Setup the dropdown spinner that allows the user to select the currency of choice.
      */
-    private fun spinnerForCurrency(): String? {
+    private fun spinnerForCurrency(){
         // Create Adapter for spinner. The list options are from the String array
         val currencySpinnerAdapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(requireContext(),
                 R.array.currency_options, android.R.layout.simple_spinner_item)
@@ -102,7 +102,6 @@ class EditorFragment : DialogFragment() {
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
-        return viewmodel.currencyAbr
     }
 
   //Used to transfer data between the fragments
