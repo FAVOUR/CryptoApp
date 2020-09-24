@@ -148,8 +148,8 @@ class EditorFragment : DialogFragment() {
 //                val listFragment =ListFragment()
 //                listFragment.arguments=bundle
 //                val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
-//                                                  .replace(R.id.viewContainer,listFragment,null)
-//                                                  .commit()
+//                                                     .replace(R.id.viewContainer,listFragment,null)
+//                                                     .commit()
 
 //                loading!!.visibility = View.GONE
                 pbloading.visibility = View.GONE
