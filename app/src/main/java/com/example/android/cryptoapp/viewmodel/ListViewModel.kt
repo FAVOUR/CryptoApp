@@ -1,16 +1,22 @@
 package com.example.android.cryptoapp.viewmodel
 
 import android.os.Bundle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.cryptoapp.Results
 import com.example.android.cryptoapp.adapter.RatesAdapter
 import com.example.android.cryptoapp.currency_data.Btc
 import com.example.android.cryptoapp.currency_data.Eth
+import com.example.android.cryptoapp.database.CryptoCurrencyData
+import com.example.android.cryptoapp.database.CurrencyDao
 import com.example.android.cryptoapp.rest.CryptoCurrencyService
+import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-class ListViewModel:ViewModel() {
+class ListViewModel(val currencyDao: CurrencyDao):ViewModel() {
 
 
     var resultAdapter: RatesAdapter? = null
@@ -30,4 +36,17 @@ class ListViewModel:ViewModel() {
     var btcConversionRates: Btc? = null
     var ethConversionRates: Eth? = null
     var bundle: Bundle? = null
+    var _cryptoCurrencyData =MutableLiveData <List<CryptoCurrencyData>>()
+    val  cryptoCurrencyData :LiveData<List<CryptoCurrencyData>>
+     get() = _cryptoCurrencyData
+
+
+     //Gets the list of Data in the database
+    fun getCurrencies()= viewModelScope.launch {
+
+         _cryptoCurrencyData.value =  currencyDao.getSavedCurrencies()
+    }
+
+
+
 }
