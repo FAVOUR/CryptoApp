@@ -1,6 +1,6 @@
 package com.example.android.cryptoapp.currency_data
 
-enum class Currency(symbol:String) {
+enum class CurrencySymbol(symbol:String) {
 
     AUD("$"),
 
