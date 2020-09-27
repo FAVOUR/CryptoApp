@@ -1,0 +1,50 @@
+package com.example.android.cryptoapp.currency_data
+
+enum class CurrencyName(currencyName:String) {
+
+        AUSTRALIA_DOLLAR("AUSTRALIA DOLLAR"),
+
+        SWITZERLAND_FRANC("SWITZERLAND FRANC"),
+
+        EGYPT_POUND( "EGYPT POUND"),
+
+        GERMAN_EURO("GERMAN EURO"),
+
+        GREAT_BRITAIN_POUNDS( "GREAT BRITAIN POUNDS"),
+
+        GEORGIA_LARI("GEORGIA LARI"),
+
+        GHANA_NEW_CEDI( "GHANA NEW CEDI"),
+
+        HONG_KONG_DOLLAR( "HONG KONG DOLLAR"),
+
+        ISRAEL_NEW_SHEKEL("ISRAEL NEW SHEKEL"),
+
+        JAMAICA_DOLLAR( "JAMAICA DOLLAR"),
+
+        JAPAN_YEN("JAPAN YEN"),
+
+        MALAYSIA_RINGGIT("MALAYSIA RINGGIT"),
+
+        NIGERIA_NAIRA("NIGERIA NAIRA"),
+
+        PHILIPPINES_PESO("PHILIPPINES PESO"),
+
+        QATAR_RIAL( "QATAR RIAL"),
+
+        RUSSIAN_ROUBLE("RUSSIAN ROUBLE"),
+
+        THAILAND_BAHT("THAILAND BAHT"),
+
+        TAIWAN_DOLLAR( "TAIWAN DOLLAR"),
+
+        USA_DOLLAR("USA DOLLAR"),
+
+        SOUTH_AFRICA_RAND("SOUTH AFRICA RAND"),
+
+        NONE("")
+
+
+
+
+}

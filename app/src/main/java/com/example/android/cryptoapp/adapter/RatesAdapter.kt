@@ -18,7 +18,7 @@ import java.text.DecimalFormat
 
 
 //class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private val mOnClickedListiner: ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
-class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private  val mListItemClickListiner :ListItemClickListiner) : RecyclerView.Adapter<RatesViewHolder>() {
+class RatesAdapter( private val mResults: MutableList<Results>, private  val mListItemClickListiner :ListItemClickListiner) : RecyclerView.Adapter<RatesViewHolder>() {
     private var clickedPosition = 0
     private lateinit var currencyImage: ImageView
     private lateinit var currencyAbr: TextView
@@ -46,13 +46,13 @@ class RatesAdapter(private val mContext: Context, private val mResults: MutableL
     }
 
     override fun onBindViewHolder(holder: RatesViewHolder, position: Int) {
-        Log.e("position",  "${position}")
+//        Log.e("position",  "${position}")
 
         holder.bind(position)
     }
 
     override fun getItemViewType(position: Int): Int {
-        Log.e("getItemViewType position",  "${position}")
+//        Log.e("getItemViewType position",  "${position}")
 
         return super.getItemViewType(position)
     }
