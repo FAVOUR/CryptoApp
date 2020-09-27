@@ -40,5 +40,8 @@ enum class CurrencySymbol(symbol:String) {
 
      USD("$"), 
 
-     ZAR("R")
+     ZAR("R"),
+
+     NONE("")
+
 }
