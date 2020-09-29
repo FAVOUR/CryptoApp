@@ -1,4 +1,4 @@
-package com.example.android.cryptoapp.data.local.db
+package com.example.android.cryptoapp.data.source.local.db
 
 import androidx.room.Dao
 import androidx.room.Insert

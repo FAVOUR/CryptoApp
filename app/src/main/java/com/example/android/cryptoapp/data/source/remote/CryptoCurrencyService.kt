@@ -1,4 +1,4 @@
-package com.example.android.cryptoapp.rest
+package com.example.android.cryptoapp.data.source.remote
 
 import com.example.android.cryptoapp.currency_data.JsonResponse
 import retrofit2.Call

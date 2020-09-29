@@ -1,4 +1,4 @@
-package com.example.android.cryptoapp.rest
+package com.example.android.cryptoapp.data.source.remote
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
