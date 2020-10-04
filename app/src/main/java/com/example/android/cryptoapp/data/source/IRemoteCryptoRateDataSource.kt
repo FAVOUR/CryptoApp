@@ -8,7 +8,7 @@ import com.example.android.cryptoapp.util.Result
 interface  IRemoteCryptoRateDataSource: CommonCryptoRatesDataSource {
 
     suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation)
-    suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>>
+    suspend fun getCryptoRate( currencyAbbreviation :CurrencyAbbreviation): Result<CryptoCurrencyData>
 
 
 }

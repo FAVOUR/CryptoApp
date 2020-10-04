@@ -7,6 +7,6 @@ import com.example.android.cryptoapp.util.Result
 
 interface CommonCryptoRatesDataSource {
 
-    suspend fun getCryptoRates(cryptoCurrencyAbbreviation: String): Result<List<CryptoCurrencyData>>
+    suspend fun getCryptoRates( currencyAbbreviation : Array<out CurrencyAbbreviation?>? =null): Result<List<CryptoCurrencyData>>
 
 }

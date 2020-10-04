@@ -7,16 +7,16 @@ import androidx.room.*
 interface CurrencyDao {
 
     @Query("Select * from CryptoCurrencyData")
-   suspend fun  getLocalCryptoRates(): List<CryptoCurrencyData>
+   suspend fun  getLocalCryptoRates(): List<CryptoCurrencyData>?
 
     @Query("Select * from CryptoCurrencyData")
      fun ObserveCryptoRates():LiveData<List<CryptoCurrencyData>>
 
     @Query("Select * from CryptoCurrencyData where id = :rateId")
-    fun getCryptoRateById(rateId:Int):List<CryptoCurrencyData>
+    fun getCryptoRateById(rateId:Int):CryptoCurrencyData?
 
     @Query("Delete from CryptoCurrencyData ")
-    fun deleteAllCryptoRates():List<CryptoCurrencyData>
+    fun deleteAllCryptoRates()
 
     @Delete
     fun deleteCryptoRate(cryptoCurrencyData: CryptoCurrencyData)

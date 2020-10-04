@@ -1,7 +1,5 @@
 package com.example.android.cryptoapp.fragments
 
-import android.app.DialogFragment.STYLE_NORMAL
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,19 +8,22 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
-import com.example.android.cryptoapp.Results
+import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter
-import com.example.android.cryptoapp.currency_data.Btc
-import com.example.android.cryptoapp.currency_data.Eth
-import com.example.android.cryptoapp.rest.ApiClient
-import com.example.android.cryptoapp.rest.CryptoCurrencyService
+import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
+import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
+import com.example.android.cryptoapp.data.source.remote.ApiClient
+import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
+import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
+import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
 import com.example.android.cryptoapp.viewmodel.ListViewModel
+import com.example.android.cryptoapp.viewmodel.ViewModelFactory
 import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.fragment_list.*
 import java.util.ArrayList
 import kotlin.properties.Delegates
@@ -41,16 +42,16 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
 
     var resultAdapter: RatesAdapter? = null
     var layoutManager: LinearLayoutManager? = null
-    lateinit var results: MutableList<Results>
+    lateinit var results: MutableList<CryptoCurrencyRates>
 
-    var soFar: List<Results>? = null
+    var soFar: List<CryptoCurrencyRates>? = null
 //    lateinit var output: Results
 //    var image = 0
 //    lateinit var currencyAbr: String
 //    lateinit var currencySymbol: String
 //    lateinit var currencyName: String
     var check by Delegates.notNull<Boolean>()
-    var btcRate by Delegates.notNull<Double>()
+//    var btcRate by Delegates.notNull<Double>()
 //    var ethRate by  Delegates.notNull<Double>()
 //    var cryptoClient: CryptoCurrencyService? = null
 //    var btcConversionRates: Btc? = null
@@ -63,8 +64,11 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
 
     }
 
+     val viewmodel  by activityViewModels<ListViewModel> {
+         val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
+         val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
 
-     val viewmodel  by activityViewModels<ListViewModel>()
+         ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(),DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource)) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -80,10 +84,25 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
 
      val TAG :String = "ListFragment"
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         setHasOptionsMenu(true)
+
         setupAdapter()
+
+
+        Log.e("onViewCreated ", "getCurrencies is called ")
+//        viewmodel.getCurrencies()
+
+                viewmodel.cryptoCurrencyData.observe(viewLifecycleOwner, Observer { cryptoCurrencyData ->
+
+            for (it in cryptoCurrencyData) {
+                results.add(CryptoCurrencyRates(it.image, it.btcRate, it.ethRate, it.currencyName, it.currencyAbbreviation, it.currencySymbol))
+            }
+            resultAdapter!!.notifyItemChanged(results.size)
+        })
+
 
         layoutManager = LinearLayoutManager(requireContext())
         results = ArrayList()
@@ -103,6 +122,15 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
         Log.e("bundle",Gson().toJson(bundle))
 //
 
+//        viewmodel.getCurrencies().observe(viewLifecycleOwner, Observer {
+
+//            if(it !=null) {
+//                results.add(Results(it.image, it.btcRate, it.ethRate, it.currencyName, it.currencyAbbreviation, it.currencySymbol))
+//            }
+//            resultAdapter!!.notifyItemChanged(results.size)
+////        })
+
+
         if (!(check && this.bundle == null)) {
 //            if (!(check || this.bundle == null)) {
                 viewmodel.image = bundle!!.getInt("image")
@@ -112,7 +140,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
                 viewmodel.currencyName = bundle?.getString("currencyName") ?: ""
                 viewmodel.ethRate = bundle?.getDouble("ethRate") ?: 0.00
 //            rv_members!!.setHasFixedSize(true)
-                var output = Results(viewmodel.image, viewmodel.btcRate, viewmodel.ethRate, viewmodel.currencyName, viewmodel.currencyAbr, viewmodel.currencySymbol)
+                var output = CryptoCurrencyRates(viewmodel.image, viewmodel.btcRate, viewmodel.ethRate, viewmodel.currencyName, viewmodel.currencyAbr, viewmodel.currencySymbol)
 //            resultAdapter!!.add(output)
 
                 Toast.makeText(requireContext(), Gson().toJson(output), Toast.LENGTH_SHORT).show()
@@ -138,16 +166,16 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
     override fun onPrepareOptionsMenu(menu: Menu) {
         //Let ApCompactActivity call the onPrepareOptionsMenu(menu) method
         super.onPrepareOptionsMenu(menu)
-        val menuItem_1: MenuItem
-        if (resultAdapter!!.itemCount > 0) {
-            val menuItem = menu.findItem(R.id.add_new_card)
-            menuItem.isVisible = false
-            menuItem_1 = menu.findItem(R.id.replace)
-            menuItem_1.isVisible = true
-        } else {
-            menuItem_1 = menu.findItem(R.id.replace)
-            menuItem_1.isVisible = false
-        }
+//        val menuItem_1: MenuItem
+//        if (resultAdapter!!.itemCount > 0) {
+//            val menuItem = menu.findItem(R.id.add_new_card)
+//            menuItem.isVisible = false
+//            menuItem_1 = menu.findItem(R.id.replace)
+//            menuItem_1.isVisible = true
+//        } else {
+//            menuItem_1 = menu.findItem(R.id.replace)
+//            menuItem_1.isVisible = false
+//        }
 //        return true
     }
 
@@ -201,26 +229,26 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onListItemClicked(clickditemindex: Int) {
-//          val conversionFragment = ConversionFragment()
-//
-//         val bundle = Bundle()
-//        bundle.putInt("image", image)
-//        bundle.putDouble("btcRate", btcRate)
-//        bundle.putString("currencySymbol", currencySymbol)
-//        bundle.putDouble("ethRate", ethRate)
-//        bundle.putString("currencyAbr", currencyAbr)
-//        bundle.putString("currencyName", currencyName)
-//
-//        conversionFragment.arguments = bundle
-//
-//        val fragmentManager = activity?.let{activity ->
-//            activity.supportFragmentManager.beginTransaction()
-//                    .replace(R.id.viewContainer,conversionFragment,null)
-//                    .addToBackStack(null)
-//                    .commit()
-//
-//        }
+    override fun onListItemClicked(result: CryptoCurrencyRates) {
+          val conversionFragment = ConversionFragment()
+
+         val bundle = Bundle()
+        bundle.putInt("image", result.image)
+        bundle.putDouble("btcRate", result.firstExRate)
+        bundle.putString("currencySymbol", result.symbol)
+        bundle.putDouble("ethRate", result.secondExRate)
+        bundle.putString("currencyAbr", result.abbrivation)
+        bundle.putString("currencyName", result.name)
+
+        conversionFragment.arguments = bundle
+
+        val fragmentManager = activity?.let{activity ->
+            activity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.viewContainer,conversionFragment,null)
+                    .addToBackStack(null)
+                    .commit()
+
+        }
     }
 
     override fun data(bundle: Bundle) {

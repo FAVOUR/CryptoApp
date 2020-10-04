@@ -1,7 +1,6 @@
 package com.example.android.cryptoapp.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -12,15 +11,19 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import com.example.android.cryptoapp.R
-import com.example.android.cryptoapp.currency_data.Btc
-import com.example.android.cryptoapp.currency_data.Currency
-import com.example.android.cryptoapp.currency_data.Eth
-import com.example.android.cryptoapp.currency_data.JsonResponse
-import com.example.android.cryptoapp.rest.ApiClient
-import com.example.android.cryptoapp.rest.CryptoCurrencyService
+import com.example.android.cryptoapp.currency_data.*
+import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
+import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
+import com.example.android.cryptoapp.data.source.remote.ApiClient
+import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
+import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
+import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
+import com.example.android.cryptoapp.util.*
 import com.example.android.cryptoapp.viewmodel.EditorViewModel
+import com.example.android.cryptoapp.viewmodel.ListViewModel
+import com.example.android.cryptoapp.viewmodel.ViewModelFactory
+import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.fragment_editor.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,8 +43,15 @@ class EditorFragment : DialogFragment() {
      var ethConversionRates: Eth?=null
 //    var loading: RelativeLayout? = nul
 
+
+
     // activity-ktx artifact
-    private val viewmodel: EditorViewModel by viewModels()
+    private val viewmodel: EditorViewModel by viewModels{
+        val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
+        val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
+
+
+        ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(), DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource)) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -92,11 +102,13 @@ class EditorFragment : DialogFragment() {
                 if (!TextUtils.isEmpty(selection)) {
 
                     //Use the position of item chosen to get the currencyAbr and currencyName
-                    viewmodel.currencyAbr = checkSpinner(position)
+                    viewmodel.currencyAbr = getCurrencyAbbrFromSpinner(position)
                     viewmodel._currencyName = selection
+                    viewmodel.currencySymbol = getSymbol( viewmodel.currencyAbr)
+                    viewmodel.image = getCurrencyImage( viewmodel.currencyAbr)
                 } else {
-                    viewmodel.currencyAbr = getString(R.string.none)
-                    viewmodel. _currencyName = getString(R.string.none)
+                    viewmodel.currencyAbr =  CurrencyAbbreviation.NONE
+                    viewmodel. _currencyName = ""
                 }
             }
 
@@ -113,7 +125,7 @@ class EditorFragment : DialogFragment() {
 //        loading!!.visibility = View.VISIBLE
         pbloading.visibility = View.VISIBLE
         textView.visibility = View.VISIBLE
-        val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr)
+        val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr.name)
         ok?.enqueue(object : Callback<JsonResponse?> {
             override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
 
@@ -126,35 +138,35 @@ class EditorFragment : DialogFragment() {
                     ethConversionRates=viewmodel.ethConversionRates
 
                     //check for the BTC rates
-                    viewmodel.conversionFromBtc = confirmBtcRates(viewmodel.currencyAbr)
+                    viewmodel.conversionFromBtc = getBtcRate(viewmodel.currencyAbr,btcConversionRates)
 
                     //check for the Eth rates
-                    viewmodel.conversionFromEth = confirmEthRates(viewmodel.currencyAbr)
+                    viewmodel.conversionFromEth = getEthRate(viewmodel.currencyAbr,ethConversionRates)
+
+
+                    val bundle = Bundle()
+                    bundle.putInt("image", viewmodel.image)
+                    bundle.putDouble("btcRate", viewmodel.conversionFromBtc?:0.00)
+                    bundle.putString("currencySymbol", viewmodel.currencySymbol.name)
+                    bundle.putDouble("ethRate", viewmodel.conversionFromEth ?:0.00)
+                    bundle.putString("currencyAbr", viewmodel.currencyAbr.name)
+                    bundle.putString("currencyName", viewmodel._currencyName)
+
+                    viewmodel.saveData()
+//                startActivity(intent)
+                    mOnDataGotten.data(bundle)
+
+//                loading!!.visibility = View.GONE
+                    pbloading.visibility = View.GONE
+                    textView.visibility = View.GONE
+                    dismiss()
+
                 }
 
 
 
 
-                val bundle = Bundle()
-                bundle.putInt("image", viewmodel.image)
-                bundle.putDouble("btcRate", viewmodel.conversionFromBtc?:0.00)
-                bundle.putString("currencySymbol", viewmodel.currencySymbol)
-                bundle.putDouble("ethRate", viewmodel.conversionFromEth ?:0.00)
-                bundle.putString("currencyAbr", viewmodel.currencyAbr)
-                bundle.putString("currencyName", viewmodel._currencyName)
-//                startActivity(intent)
-                mOnDataGotten.data(bundle)
 
-//                val listFragment =ListFragment()
-//                listFragment.arguments=bundle
-//                val supportFragment    =   activity!!.supportFragmentManager.beginTransaction()
-//                                                     .replace(R.id.viewContainer,listFragment,null)
-//                                                     .commit()
-
-//                loading!!.visibility = View.GONE
-                pbloading.visibility = View.GONE
-                textView.visibility = View.GONE
-                dismiss()
             }
 
             override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
@@ -180,215 +192,9 @@ class EditorFragment : DialogFragment() {
     }
 
 
-    //    Checks the spinner and returns the abbreviation and image resource of the currency selected
-    private fun checkSpinner(position: Int): String {
-        val CurrencyAbbreviation: String
-        when (position) {
-            1 -> {
-                CurrencyAbbreviation = getString(R.string.Australia_Dollar)
-                viewmodel.image = R.drawable.aud
-            }
-            2 -> {
-                CurrencyAbbreviation = getString(R.string.Egypt_Pound)
-                viewmodel.image = R.drawable.egp
-            }
-            3 -> {
-                CurrencyAbbreviation = getString(R.string.Great_Britain_Pound)
-                viewmodel. image = R.drawable.gbp
-            }
-            4 -> {
-                CurrencyAbbreviation = getString(R.string.German_Euro)
-                viewmodel.image = R.drawable.eur
-            }
-            5 -> {
-                CurrencyAbbreviation = getString(R.string.Georgia_Lari)
-                viewmodel.image = R.drawable.gel
-            }
-            6 -> {
-                CurrencyAbbreviation = getString(R.string.Ghana_New_Cedi)
-                viewmodel.image = R.drawable.ghs
-            }
-            7 -> {
-                CurrencyAbbreviation = getString(R.string.Hong_Kong_Dollar)
-                viewmodel.image = R.drawable.hdk
-            }
-            8 -> {
-                CurrencyAbbreviation = getString(R.string.Israel_New_Shekel)
-                viewmodel.image = R.drawable.ils
-            }
-            9 -> {
-                CurrencyAbbreviation = getString(R.string.Jamaica_Dollar)
-                viewmodel. image = R.drawable.jmd
-            }
-            10 -> {
-                CurrencyAbbreviation = getString(R.string.Japan_Yen)
-                viewmodel.image = R.drawable.jpy
-            }
-            11 -> {
-                CurrencyAbbreviation = getString(R.string.Malaysia_Ringgit)
-                viewmodel.image = R.drawable.myr
-            }
-            12 -> {
-                CurrencyAbbreviation = getString(R.string.Nigeria_Naira)
-                viewmodel.image = R.drawable.ngn
-            }
-            13 -> {
-                CurrencyAbbreviation = getString(R.string.Philippines_Peso)
-                viewmodel.image = R.drawable.php
-            }
-            14 -> {
-                CurrencyAbbreviation = getString(R.string.Qatar_Rial)
-                viewmodel.image = R.drawable.qar
-            }
-            15 -> {
-                CurrencyAbbreviation = getString(R.string.Russia_Rouble)
-                viewmodel.image = R.drawable.rub
-            }
-            16 -> {
-                CurrencyAbbreviation = getString(R.string.South_Africa_Rand)
-                viewmodel. image = R.drawable.zar
-            }
-            17 -> {
-                CurrencyAbbreviation = getString(R.string.Switzerland_Franc)
-                viewmodel.image = R.drawable.chf
-            }
-            18 -> {
-                CurrencyAbbreviation = getString(R.string.Taiwan_Dollar)
-                viewmodel.image = R.drawable.twd
-            }
-            19 -> {
-                CurrencyAbbreviation = getString(R.string.Thailand_Baht)
-                viewmodel.image = R.drawable.thb
-            }
-            20 -> {
-                CurrencyAbbreviation = getString(R.string.usa_Dollar)
-                viewmodel.image = R.drawable.usd
-            }
-            else -> CurrencyAbbreviation = getString(R.string.none)
-        }
-        return CurrencyAbbreviation
-    }
 
-    //confirm BTC rates after putting  the currency type as parameter of this method
-    fun confirmBtcRates(currency: String?): Double {
-        val BtcRates: Double
-        BtcRates = when (currency) {
-            "AUD" -> viewmodel.btcConversionRates?.AUD ?: 0.00
-            "EGP" -> viewmodel. btcConversionRates?.EGP ?: 0.00
-            "GBP" -> viewmodel. btcConversionRates?.GBP ?: 0.00
-            "EUR" -> viewmodel.btcConversionRates?.EUR ?: 0.00
-            "GEL" -> viewmodel.btcConversionRates?.GEL ?: 0.00
-            "GHS" -> viewmodel.btcConversionRates?.GHS ?: 0.00
-            "HKD" -> viewmodel.btcConversionRates?.HKD ?: 0.00
-            "ILS" -> viewmodel.btcConversionRates?.ILS ?: 0.00
-            "JMD" -> viewmodel.btcConversionRates?.JMD ?: 0.00
-            "JPY" -> viewmodel.btcConversionRates?.JPY ?: 0.00
-            "MYR" -> viewmodel.btcConversionRates?.MYR ?: 0.00
-            "NGN" -> viewmodel. btcConversionRates?.NGN ?: 0.00
-            "PHP" -> viewmodel.btcConversionRates?.PHP ?: 0.00
-            "QAR" -> viewmodel.btcConversionRates?.QAR ?: 0.00
-            "RUB" -> viewmodel.btcConversionRates?.RUB ?: 0.00
-            "ZAR" -> viewmodel.btcConversionRates?.ZAR ?: 0.00
-            "CHF" -> viewmodel. btcConversionRates?.CHF ?: 0.00
-            "TWD" -> viewmodel.btcConversionRates?.TWD ?: 0.00
-            "THB" -> viewmodel.btcConversionRates?.THB ?: 0.00
-            "USD" -> viewmodel.btcConversionRates?.USD ?: 0.00
-            else -> 0.0
-        } as Double
-        return BtcRates
-    }
 
-    //confirm ETH rates after putting the currency type as parameter of this method
-    protected fun confirmEthRates(currency: String?): Double {
-        val ethRates: Double
-        var currencySymbol: String =""
-        when (currency) {
-            "AUD" -> {
-                ethRates = ethConversionRates?.AUD ?: 0.00
-                currencySymbol = Currency.AUD.name
-            }
-            "EGP" -> {
-                ethRates =ethConversionRates?.EGP ?: 0.00
-                    currencySymbol =  Currency.EGP.name
-            }
-            "EUR" -> {
-                ethRates =  ethConversionRates?.EUR ?: 0.00
-                currencySymbol =   Currency.EUR.name
-            }
-            "GBP" -> {
-                ethRates = ethConversionRates?.GBP ?: 0.00
-                currencySymbol =   Currency.GBP.name
-            }
-            "GEL" -> {
-                ethRates = ethConversionRates?.GEL ?: 0.00
-                currencySymbol =   Currency.GEL.name
-            }
-            "GHS" -> {
-                ethRates = ethConversionRates?.GHS ?: 0.00
-                currencySymbol =   Currency.EUR.name
-            }
-            "HKD" -> {
-                ethRates = ethConversionRates?.HKD ?: 0.00
-                currencySymbol =   Currency.HKD.name
-            }
-            "ILS" -> {
-                ethRates = ethConversionRates?.ILS ?: 0.00
-                currencySymbol =   Currency.ILS.name
-            }
-            "JMD" -> {
-                ethRates = ethConversionRates?.JMD ?: 0.00
-                currencySymbol =   Currency.JMD.name
-            }
-            "JPY" -> {
-                ethRates = ethConversionRates?.JPY ?: 0.00
-                currencySymbol =   Currency.JPY.name
-            }
-            "MYR" -> {
-                ethRates = ethConversionRates?.MYR ?: 0.00
-                currencySymbol =   Currency.MYR.name
-            }
-            "NGN" -> {
-                ethRates = ethConversionRates?.NGN ?: 0.00
-                currencySymbol =   Currency.NGN.name
-            }
-            "PHP" -> {
-                ethRates = ethConversionRates?.PHP ?: 0.00
-                currencySymbol =   Currency.PHP.name
-            }
-            "QAR" -> {
-                ethRates = ethConversionRates?.QAR ?: 0.00
-                currencySymbol =   Currency.QAR.name
-            }
-            "RUB" -> {
-                ethRates = ethConversionRates?.RUB ?: 0.00
-                currencySymbol =   Currency.RUB.name
-            }
-            "ZAR" -> {
-                ethRates = ethConversionRates?.ZAR ?: 0.00
-                currencySymbol =   Currency.ZAR.name
-            }
-            "CHF" -> {
-                ethRates = ethConversionRates?.CHF ?: 0.00
-                currencySymbol =   Currency.CHF.name
-            }
-            "TWD" -> {
-                ethRates = ethConversionRates?.TWD ?: 0.00
-                currencySymbol =   Currency.TWD.name
-            }
-            "THB" -> {
-                ethRates = ethConversionRates?.THB ?: 0.00
-                currencySymbol =   Currency.THB.name
-            }
-            "USD" -> {
-                ethRates = ethConversionRates?.USD ?: 0.00
-                currencySymbol =   Currency.USD.name
-            }
-            else -> ethRates = 0.0
-        }
 
-        viewmodel.currencySymbol =currencySymbol
-        return ethRates
-    }
 
 
 }

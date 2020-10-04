@@ -11,9 +11,9 @@ interface ILocalCryptoRatesDataSource : CommonCryptoRatesDataSource {
 
     fun observeCryptoRates(): LiveData<Result<List<CryptoCurrencyData>>>
 
-    suspend fun getCryptoRateById(id: Int): Result<List<CryptoCurrencyData>>
+    suspend fun getCryptoRateById(id: Int): Result<CryptoCurrencyData>
 
-    suspend fun saveCryptoRate(cryptoRateData : List<CryptoCurrencyData>)
+    suspend fun saveCryptoRates(cryptoRateData : List<CryptoCurrencyData>)
 
     suspend fun saveCryptoRate(cryptoRateData : CryptoCurrencyData)
 

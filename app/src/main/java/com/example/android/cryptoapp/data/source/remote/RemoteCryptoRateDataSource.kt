@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,16 +22,14 @@ import timber.log.Timber
 import java.io.IOException
 import java.lang.Exception
 
-class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val dispatcher: CoroutineDispatcher = Dispatchers.IO,val moshi: Moshi):IRemoteCryptoRateDataSource,BaseApiService() {
-    override suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation) {
-
-
+class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,val moshi: Moshi):IRemoteCryptoRateDataSource,BaseApiService() {
+    override suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation) = withContext(ioDispatcher) {
     }
 
-    override suspend fun getCryptoRates(cryptoCurrencyAbbreviation: String): Result<List<CryptoCurrencyData>> {
+    override suspend fun getCryptoRates( currencyAbbreviation : Array<out CurrencyAbbreviation?>?): Result<List<CryptoCurrencyData>> = withContext(ioDispatcher) {
        var  result :Result<List<CryptoCurrencyData>>  = Result.Loading //TODO Test to see if there is need for this
         val client = ApiClient.MainApiClient.client?.create(CryptoCurrencyService::class.java)
-        val cryptoList = apiCall { client?.getJsonResponses_(cryptoCurrencyAbbreviation)!!  }
+        val cryptoList = apiCall { client?.getJsonResponses_(currencyAbbreviation?: arrayOf(CurrencyAbbreviation.NONE))!!  }
 
            //TODO Find out a better way to deal with this the domain model at this stage
            result = when(cryptoList){
@@ -45,19 +44,20 @@ class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val d
                }
             }
 
-        return  result
+        return@withContext result
 
     }
 
-    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>> {
-        var  result :Result<List<CryptoCurrencyData>>  = Result.Loading //TODO Test to see if there is need for this
+    override suspend fun getCryptoRate( currencyAbbreviation : CurrencyAbbreviation): Result<CryptoCurrencyData> = withContext(ioDispatcher)  {
+        var  result :Result<CryptoCurrencyData>  = Result.Loading //TODO Test to see if there is need for this
         val client = ApiClient.MainApiClient.client?.create(CryptoCurrencyService::class.java)
-        val cryptoList = apiCall { client?.getJsonResponses_(cryptoCurrencyAbbreviation.name)!!  }
+        val cryptoList = apiCall { client?.getJsonResponse_(currencyAbbreviation.toString())!!}
 
         //TODO Find out a better way to deal with this the domain model at this stage
         result = when(cryptoList){
             is Result.Success->{
-                Result.Success(cryptoList.data.asDataBaseModel(cryptoCurrencyAbbreviation))
+
+                Result.Success(cryptoList.data.asDataBaseModel(currencyAbbreviation))
             }
             is Result.Error->{
                 Result.Error(cryptoList.errorMessage)
@@ -67,11 +67,11 @@ class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val d
             }
         }
 
-        return  result
+        return@withContext  result
 
     }
 
-    override fun mapResponseThrowable(e: Throwable): String {
+     override fun mapResponseThrowable(e: Throwable): String {
         return  when (e) {
             is HttpException -> {
                 Timber.e(Gson().toJson(e))
