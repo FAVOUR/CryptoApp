@@ -13,7 +13,7 @@ interface CurrencyDao {
      fun ObserveCryptoRates():LiveData<List<CryptoCurrencyData>>
 
     @Query("Select * from CryptoCurrencyData where id = :rateId")
-    fun getCryptoRateById(rateId:String):List<CryptoCurrencyData>
+    fun getCryptoRateById(rateId:Int):List<CryptoCurrencyData>
 
     @Query("Delete from CryptoCurrencyData ")
     fun deleteAllCryptoRates():List<CryptoCurrencyData>
