@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +16,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.android.cryptoapp.R
+import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
+import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
+import com.example.android.cryptoapp.data.source.remote.ApiClient
+import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
+import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
 import com.example.android.cryptoapp.di.AppModule
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
 import com.example.android.cryptoapp.viewmodel.EditorViewModel
+import com.example.android.cryptoapp.viewmodel.ViewModelFactory
+import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_conversion.*
@@ -68,11 +77,16 @@ class ConversionFragment : Fragment() {
     private var currencyName: String  by  Delegates.notNull<String>()
     private var btcRate: Double  by  Delegates.notNull<Double>()
     private var ethRate: Double by Delegates.notNull<Double>()
-    private lateinit  var bundle: Bundle
+    private   var bundle: Bundle? = null
     private lateinit var format: DecimalFormat
 
 
-    private val viewmodel: ConversionViewmodel by viewModels()
+    private val viewmodel: ConversionViewmodel by viewModels    {
+        val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
+        val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
+
+        ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(), DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource)) }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,17 +101,11 @@ class ConversionFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewmodel.bundle = requireArguments()
-        viewmodel.check =   viewmodel.bundle == null
-        viewmodel.format = DecimalFormat()
 
-        image = viewmodel.image
-        btcRate = viewmodel.btcRate
-        currencyAbr = viewmodel.currencyAbr
-        currencySymbol = viewmodel.currencySymbol
-        currencyName = viewmodel.currencyName
-        ethRate= viewmodel.ethRate
-        check = viewmodel.check
+        check =viewmodel.check
+        format = viewmodel.format
         bundle = viewmodel.bundle
+        Log.e("  conversion frag bundle", Gson().toJson(bundle))
 
           format.isGroupingUsed = true
           format.maximumIntegerDigits = 20
@@ -108,14 +116,33 @@ class ConversionFragment : Fragment() {
 //        eth_amount =eth_amount
         btc_amount!!.addTextChangedListener(generalWatcher)
         eth_amount!!.addTextChangedListener(generalWatcher)
-        if (check) {
 
-            viewmodel.image = bundle.getInt("image") ?:0
-            viewmodel.btcRate = bundle.getDouble("btcRate")
-            viewmodel.currencyAbr =bundle.getString("currencyAbr")
-            viewmodel.currencySymbol =bundle.getString("currencySymbol")
-            viewmodel.currencyName = bundle.getString("currencyName")
-            viewmodel.ethRate =  bundle.getDouble("ethRate")
+        //TODO this check may be irrelevant
+        if (check) {
+//
+//            viewmodel.image = bundle.getInt("image") ?:0
+//            viewmodel.btcRate = bundle.getDouble("btcRate")
+//            viewmodel.currencyAbr =bundle.getString("currencyAbr")
+//            viewmodel.currencySymbol =bundle.getString("currencySymbol")
+//            viewmodel.currencyName = bundle.getString("currencyName")
+//            viewmodel.ethRate =  bundle.getDouble("ethRate")
+
+        //  TODO Consider using a switch statement instead of the boring initialization of classes
+            viewmodel.image = bundle!!.getInt("image")
+            viewmodel.btcRate = bundle!!.getDouble("btcRate")
+            viewmodel.currencyAbr = bundle?.getString("currencyAbr") ?: ""
+            viewmodel.currencySymbol = bundle?.getString("currencySymbol") ?: ""
+            viewmodel.currencyName = bundle?.getString("currencyName") ?: ""
+            viewmodel.ethRate = bundle?.getDouble("ethRate") ?: 0.00
+
+
+            image = viewmodel.image
+            btcRate = viewmodel.btcRate
+            currencyAbr = viewmodel.currencyAbr
+            currencySymbol = viewmodel.currencySymbol
+            currencyName = viewmodel.currencyName
+            ethRate= viewmodel.ethRate
+            check = viewmodel.check
         }
 
         //Set the currency Image

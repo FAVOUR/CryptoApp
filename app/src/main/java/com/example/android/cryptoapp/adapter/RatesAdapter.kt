@@ -1,24 +1,21 @@
 package com.example.android.cryptoapp.adapter
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
-import com.example.android.cryptoapp.Results
+import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter.RatesViewHolder
 import com.google.gson.Gson
 import java.text.DecimalFormat
 
 
 //class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private val mOnClickedListiner: ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
-class RatesAdapter( private val mResults: MutableList<Results>, private  val mListItemClickListiner :ListItemClickListiner) : RecyclerView.Adapter<RatesViewHolder>() {
+class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, private  val mListItemClickListiner :ListItemClickListiner) : RecyclerView.Adapter<RatesViewHolder>() {
     private var clickedPosition = 0
     private lateinit var currencyImage: ImageView
     private lateinit var currencyAbr: TextView
@@ -64,7 +61,7 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
     }
 
     interface ListItemClickListiner {
-        fun onListItemClicked(clickditemindex: Int)
+        fun onListItemClicked(result: CryptoCurrencyRates)
     }
 
     inner class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -91,7 +88,7 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
 
 
 //             This invokes the onclick listener of the other class by passing clickedPosition value
-            mOnClickedListiner.onListItemClicked(clickedPosition)
+            mOnClickedListiner.onListItemClicked(mResults[clickedPosition])
         }
 
         init {
@@ -119,8 +116,8 @@ class RatesAdapter( private val mResults: MutableList<Results>, private  val mLi
     }
 
     //adds data for the adapter to utilize
-    fun add(results: Results) {
-        mResults.add(results)
+    fun add(results: List<CryptoCurrencyRates>) {
+        mResults.addAll(results)
         Log.e("results",Gson().toJson(results))
         Log.e("resultAdapter size",Gson().toJson(mResults.size))
 //        notifyDataSetChanged()

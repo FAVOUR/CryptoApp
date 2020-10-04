@@ -2,10 +2,13 @@ package com.example.android.cryptoapp.viewmodel
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
+import com.example.android.cryptoapp.data.source.local.db.CurrencyDao
+import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import java.text.DecimalFormat
 import kotlin.properties.Delegates
 
-class ConversionViewmodel:ViewModel() {
+class ConversionViewmodel(val currencyDao: CurrencyDao, val repository: CryptoRepository):ViewModel() {
+
     var image = 0
     lateinit var currencyAbr: String
     lateinit var currencySymbol: String
