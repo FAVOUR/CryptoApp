@@ -38,7 +38,7 @@ class DefaultCryptoRepository (val remoteCryptoRateDataSource: RemoteCryptoRateD
 //    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>> {
     override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation) {
 
-        remoteCryptoRateDataSource.getCryptoRate(cryptoCurrencyAbbreviation)
+//        remoteCryptoRateDataSource.getCryptoRate(cryptoCurrencyAbbreviation)
 
         fetchCryptoRateFromRemoteDataSource(cryptoCurrencyAbbreviation)
     }

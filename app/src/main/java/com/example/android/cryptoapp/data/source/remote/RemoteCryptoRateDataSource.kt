@@ -51,7 +51,7 @@ class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val i
     override suspend fun getCryptoRate( currencyAbbreviation : CurrencyAbbreviation): Result<CryptoCurrencyData> = withContext(ioDispatcher)  {
         var  result :Result<CryptoCurrencyData>  = Result.Loading //TODO Test to see if there is need for this
         val client = ApiClient.MainApiClient.client?.create(CryptoCurrencyService::class.java)
-        val cryptoList = apiCall { client?.getJsonResponse_(currencyAbbreviation.toString())!!}
+        val cryptoList = apiCall { client?.getJsonResponse_(currencyAbbreviation.abbr)!!}
 
         //TODO Find out a better way to deal with this the domain model at this stage
         result = when(cryptoList){

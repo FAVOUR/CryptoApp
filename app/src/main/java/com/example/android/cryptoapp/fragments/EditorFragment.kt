@@ -100,7 +100,6 @@ class EditorFragment : DialogFragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val selection = parent.getItemAtPosition(position) as String
                 if (!TextUtils.isEmpty(selection)) {
-
                     //Use the position of item chosen to get the currencyAbr and currencyName
                     viewmodel.currencyAbr = getCurrencyAbbrFromSpinner(position)
                     viewmodel._currencyName = selection
@@ -121,11 +120,76 @@ class EditorFragment : DialogFragment() {
        fun data (bundle: Bundle)
     }
 
+//    fun addCurrency() {
+////        loading!!.visibility = View.VISIBLE
+//        pbloading.visibility = View.VISIBLE
+//        textView.visibility = View.VISIBLE
+//        val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr.name)
+//        ok?.enqueue(object : Callback<JsonResponse?> {
+//            override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
+//
+//                if (response.body() != null) {
+//                    viewmodel.jsonResponse = response.body()!!
+//                    viewmodel.btcConversionRates = viewmodel.jsonResponse.bTC ?: Btc()
+//                    viewmodel.ethConversionRates = viewmodel.jsonResponse.eTH ?:Eth()
+//
+//                    btcConversionRates=viewmodel.btcConversionRates
+//                    ethConversionRates=viewmodel.ethConversionRates
+//
+//                    //check for the BTC rates
+//                    viewmodel.conversionFromBtc = getBtcRate(viewmodel.currencyAbr,btcConversionRates)
+//
+//                    //check for the Eth rates
+//                    viewmodel.conversionFromEth = getEthRate(viewmodel.currencyAbr,ethConversionRates)
+//
+//
+//                    val bundle = Bundle()
+//                    bundle.putInt("image", viewmodel.image)
+//                    bundle.putDouble("btcRate", viewmodel.conversionFromBtc?:0.00)
+//                    bundle.putString("currencySymbol", viewmodel.currencySymbol.name)
+//                    bundle.putDouble("ethRate", viewmodel.conversionFromEth ?:0.00)
+//                    bundle.putString("currencyAbr", viewmodel.currencyAbr.name)
+//                    bundle.putString("currencyName", viewmodel._currencyName)
+//
+//                    viewmodel.saveData()
+////                startActivity(intent)
+//                    mOnDataGotten.data(bundle)
+//
+////                loading!!.visibility = View.GONE
+//                    pbloading.visibility = View.GONE
+//                    textView.visibility = View.GONE
+//                    dismiss()
+//
+//                }
+//
+//
+//
+//
+//
+//            }
+//
+//            override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
+////                loading!!.visibility = View.GONE
+//
+//                pbloading.visibility = View.GONE
+//                textView.visibility = View.GONE
+//                Toast.makeText(requireContext(), "Check your internet connection ", Toast.LENGTH_LONG).show()
+//            }
+//        }
+//        )
+//    }
+
+
     fun addCurrency() {
 //        loading!!.visibility = View.VISIBLE
         pbloading.visibility = View.VISIBLE
         textView.visibility = View.VISIBLE
-        val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr.name)
+          viewmodel.getCryptoRate()
+        pbloading.visibility = View.GONE
+        textView.visibility = View.GONE
+        dismiss()
+
+     /*   val ok = viewmodel.cryptoClient!!.getJsonResponse_(viewmodel.currencyAbr.name)
         ok?.enqueue(object : Callback<JsonResponse?> {
             override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
 
@@ -157,9 +221,7 @@ class EditorFragment : DialogFragment() {
                     mOnDataGotten.data(bundle)
 
 //                loading!!.visibility = View.GONE
-                    pbloading.visibility = View.GONE
-                    textView.visibility = View.GONE
-                    dismiss()
+
 
                 }
 
@@ -177,7 +239,7 @@ class EditorFragment : DialogFragment() {
                 Toast.makeText(requireContext(), "Check your internet connection ", Toast.LENGTH_LONG).show()
             }
         }
-        )
+        )*/
     }
 
 

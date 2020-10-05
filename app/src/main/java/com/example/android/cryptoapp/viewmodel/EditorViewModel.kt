@@ -36,6 +36,8 @@ class EditorViewModel(val currencyDao: CurrencyDao,val repository: CryptoReposit
 
 
 
-
+        fun getCryptoRate() = viewModelScope.launch {
+            repository.getCryptoRate(currencyAbr)
+        }
 
 }

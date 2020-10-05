@@ -80,6 +80,11 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:2.6.2"
 
 
+//    Okhttp-Interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:4.0.1"
+
+
+
     //fetching image and transforming it
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
