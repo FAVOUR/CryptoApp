@@ -26,7 +26,7 @@ class DefaultCryptoRepository (val remoteCryptoRateDataSource: RemoteCryptoRateD
             return localCryptoRatesDataSource.saveCryptoRates(cryptoRateData)
     }
 
-    override suspend fun saveCryptoRate(cryptoRateData: CryptoCurrencyData) {
+    override suspend fun saveCryptoRate(cryptoRateData: CryptoCurrencyData):Long {
         return localCryptoRatesDataSource.saveCryptoRate(cryptoRateData)
     }
 
@@ -36,11 +36,11 @@ class DefaultCryptoRepository (val remoteCryptoRateDataSource: RemoteCryptoRateD
     }
 
 //    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>> {
-    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation) {
+    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation):Result<CryptoCurrencyData> {
 
 //        remoteCryptoRateDataSource.getCryptoRate(cryptoCurrencyAbbreviation)
 
-        fetchCryptoRateFromRemoteDataSource(cryptoCurrencyAbbreviation)
+        return fetchCryptoRateFromRemoteDataSource(cryptoCurrencyAbbreviation)
     }
 
 /*
@@ -76,18 +76,31 @@ class DefaultCryptoRepository (val remoteCryptoRateDataSource: RemoteCryptoRateD
 
     }
 
-    private suspend fun fetchCryptoRateFromRemoteDataSource( currencyAbbreviation :CurrencyAbbreviation){
+    private suspend fun fetchCryptoRateFromRemoteDataSource( currencyAbbreviation :CurrencyAbbreviation):Result<CryptoCurrencyData>{
 
             val remoteDataSource = remoteCryptoRateDataSource.getCryptoRate(currencyAbbreviation)
-            when (remoteDataSource) {
+            val value:Long =0L
+
+         return when (remoteDataSource) {
                 is Result.Success ->
-                    saveCryptoRate(remoteDataSource.data)
-                is Result.Error -> {
-                    throw Throwable(remoteDataSource.errorMessage)
-                }
-            }
+                    returnRateSaved{  saveCryptoRate(remoteDataSource.data) }  //Todo Re-evaluate  this approach later
+//                 localCryptoRatesDataSource.getCryptoRateById(id)
+
+                 is Result.Error -> {
+                    throw Throwable(remoteDataSource.errorMessage) }
+
+                 is Result.Loading ->{
+                     Result.Loading
+                 }
+
+         }
 
 
+    }
+
+    suspend fun returnRateSaved( id : suspend () -> Long ):Result<CryptoCurrencyData>{  //Todo Re - evaluate You can use result<Long>
+        val id =id.invoke().toInt()
+        return  localCryptoRatesDataSource.getCryptoRateById(id)
 
     }
 
