@@ -22,6 +22,7 @@ object ApiClient {
             if (retrofit == null) {
                 retrofit = Retrofit.Builder().baseUrl(CRYPTOCOMPARE_BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
+                        .client(MainApiClient.okHttpclient)
                         .build()
             }
             return retrofit

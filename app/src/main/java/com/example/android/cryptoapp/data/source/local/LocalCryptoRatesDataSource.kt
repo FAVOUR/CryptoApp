@@ -23,7 +23,7 @@ class LocalCryptoRatesDataSource (private val cryptoRateDao: CurrencyDao,  priva
          cryptoRateDao.saveCryptoCurrencyRates(cryptoRateData)
     }
 
-    override suspend fun saveCryptoRate(cryptoRateData: CryptoCurrencyData)= withContext(ioDispatcher)  {
+    override suspend fun saveCryptoRate(cryptoRateData: CryptoCurrencyData) = withContext(ioDispatcher)  {
         cryptoRateDao.saveCryptoCurrencyRate(cryptoRateData)
     }
 

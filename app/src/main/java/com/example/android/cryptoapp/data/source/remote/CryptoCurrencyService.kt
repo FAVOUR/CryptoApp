@@ -12,7 +12,8 @@ import retrofit2.http.Query
  */
 interface CryptoCurrencyService {
     @GET("pricemulti?fsyms=BTC,ETH")
-    fun getJsonResponse(@Query("tsyms") tsyms: String?): Call<JsonResponse?>?
+//    suspend fun getJsonResponse(@Query("tsyms") tsyms: String?): Call<JsonResponse?>?
+     fun getJsonResponse(@Query("tsyms") tsyms: String?): Call<JsonResponse?>?
 
     @GET("pricemulti?fsyms=BTC,ETH")
     suspend fun getJsonResponse_(@Query("tsyms") tsyms: String?): Response<JsonResponse>

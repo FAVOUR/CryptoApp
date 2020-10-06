@@ -87,8 +87,9 @@ class DefaultCryptoRepository (val remoteCryptoRateDataSource: RemoteCryptoRateD
 //                 localCryptoRatesDataSource.getCryptoRateById(id)
 
                  is Result.Error -> {
-                    throw Throwable(remoteDataSource.errorMessage) }
-
+                     Result.Error(remoteDataSource.errorMessage)
+//                    throw Throwable(remoteDataSource.errorMessage)   //TODO Find out if it is reasonable to have a domain sealed class as well as that for  Datatransfer
+                 }
                  is Result.Loading ->{
                      Result.Loading
                  }

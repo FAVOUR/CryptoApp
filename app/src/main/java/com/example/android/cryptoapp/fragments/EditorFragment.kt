@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.currency_data.*
 import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
@@ -25,9 +26,11 @@ import com.example.android.cryptoapp.viewmodel.ListViewModel
 import com.example.android.cryptoapp.viewmodel.ViewModelFactory
 import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.fragment_editor.*
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 
 /**
@@ -74,10 +77,28 @@ class EditorFragment : DialogFragment() {
 //        loading = findViewById<View>(R.id.loading) as RelativeLayout
 //        loading =progressBarRL
         activity?.actionBar?.title =resources.getString(R.string.editor_activity_title)
+
+        indicateRemoteRequest()
+
+
         spinnerForCurrency()
         ExchangeRateBTN.setOnClickListener {
             addCurrency()
         }
+    }
+
+    private fun indicateRemoteRequest() {
+        viewmodel.isLoading.observe(viewLifecycleOwner, Observer { isMakingNetworkRequest ->
+            Timber.e(isMakingNetworkRequest.toString())
+            if (isMakingNetworkRequest) {
+                pbloading.visibility = View.VISIBLE
+                textView.visibility = View.VISIBLE
+            } else {
+                pbloading.visibility = View.GONE
+                textView.visibility = View.GONE
+                dismiss()
+            }
+        })
     }
 
     /**
@@ -120,76 +141,79 @@ class EditorFragment : DialogFragment() {
        fun data (bundle: Bundle)
     }
 
-//    fun addCurrency() {
-////        loading!!.visibility = View.VISIBLE
-//        pbloading.visibility = View.VISIBLE
-//        textView.visibility = View.VISIBLE
-//        val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr.name)
-//        ok?.enqueue(object : Callback<JsonResponse?> {
-//            override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
-//
-//                if (response.body() != null) {
-//                    viewmodel.jsonResponse = response.body()!!
-//                    viewmodel.btcConversionRates = viewmodel.jsonResponse.bTC ?: Btc()
-//                    viewmodel.ethConversionRates = viewmodel.jsonResponse.eTH ?:Eth()
-//
-//                    btcConversionRates=viewmodel.btcConversionRates
-//                    ethConversionRates=viewmodel.ethConversionRates
-//
-//                    //check for the BTC rates
-//                    viewmodel.conversionFromBtc = getBtcRate(viewmodel.currencyAbr,btcConversionRates)
-//
-//                    //check for the Eth rates
-//                    viewmodel.conversionFromEth = getEthRate(viewmodel.currencyAbr,ethConversionRates)
-//
-//
-//                    val bundle = Bundle()
-//                    bundle.putInt("image", viewmodel.image)
-//                    bundle.putDouble("btcRate", viewmodel.conversionFromBtc?:0.00)
-//                    bundle.putString("currencySymbol", viewmodel.currencySymbol.name)
-//                    bundle.putDouble("ethRate", viewmodel.conversionFromEth ?:0.00)
-//                    bundle.putString("currencyAbr", viewmodel.currencyAbr.name)
-//                    bundle.putString("currencyName", viewmodel._currencyName)
-//
-//                    viewmodel.saveData()
-////                startActivity(intent)
-//                    mOnDataGotten.data(bundle)
-//
-////                loading!!.visibility = View.GONE
-//                    pbloading.visibility = View.GONE
-//                    textView.visibility = View.GONE
-//                    dismiss()
-//
-//                }
-//
-//
-//
-//
-//
-//            }
-//
-//            override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
-////                loading!!.visibility = View.GONE
-//
-//                pbloading.visibility = View.GONE
-//                textView.visibility = View.GONE
-//                Toast.makeText(requireContext(), "Check your internet connection ", Toast.LENGTH_LONG).show()
-//            }
+/*    fun addCurrency() {
+//        loading!!.visibility = View.VISIBLE
+        pbloading.visibility = View.VISIBLE
+        textView.visibility = View.VISIBLE
+
+//        GlobalScope.launch (Dispatchers.IO){
+            val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr.name)
+
+            ok?.enqueue(object : Callback<JsonResponse?> {
+                override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
+
+                    if (response.body() != null) {
+                        viewmodel.jsonResponse = response.body()!!
+                        viewmodel.btcConversionRates = viewmodel.jsonResponse.bTC ?: Btc()
+                        viewmodel.ethConversionRates = viewmodel.jsonResponse.eTH ?: Eth()
+
+                        btcConversionRates = viewmodel.btcConversionRates
+                        ethConversionRates = viewmodel.ethConversionRates
+
+                        //check for the BTC rates
+                        viewmodel.conversionFromBtc = getBtcRate(viewmodel.currencyAbr, btcConversionRates)
+
+                        //check for the Eth rates
+                        viewmodel.conversionFromEth = getEthRate(viewmodel.currencyAbr, ethConversionRates)
+
+
+                        val bundle = Bundle()
+                        bundle.putInt("image", viewmodel.image)
+                        bundle.putDouble("btcRate", viewmodel.conversionFromBtc ?: 0.00)
+                        bundle.putString("currencySymbol", viewmodel.currencySymbol.name)
+                        bundle.putDouble("ethRate", viewmodel.conversionFromEth ?: 0.00)
+                        bundle.putString("currencyAbr", viewmodel.currencyAbr.name)
+                        bundle.putString("currencyName", viewmodel._currencyName)
+
+                        viewmodel.saveData()
+//                startActivity(intent)
+                        mOnDataGotten.data(bundle)
+
+//                loading!!.visibility = View.GONE
+                        pbloading.visibility = View.GONE
+                        textView.visibility = View.GONE
+                        dismiss()
+
+                    }
+
+
+                }
+
+                override fun onFailure(call: Call<JsonResponse?>, t: Throwable) {
+//                loading!!.visibility = View.GONE
+
+                    pbloading.visibility = View.GONE
+                    textView.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Check your internet connection ", Toast.LENGTH_LONG).show()
+                }
+            }
+            )
 //        }
-//        )
-//    }
+    }*/
+
+
 
 
     fun addCurrency() {
 //        loading!!.visibility = View.VISIBLE
-        pbloading.visibility = View.VISIBLE
-        textView.visibility = View.VISIBLE
-          viewmodel.getCryptoRate()
-        pbloading.visibility = View.GONE
-        textView.visibility = View.GONE
-        dismiss()
 
-     /*   val ok = viewmodel.cryptoClient!!.getJsonResponse_(viewmodel.currencyAbr.name)
+
+
+        viewmodel.getCryptoRate()
+
+
+
+   /*     val ok = viewmodel.cryptoClient!!.getJsonResponse_(viewmodel.currencyAbr.name)
         ok?.enqueue(object : Callback<JsonResponse?> {
             override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
 

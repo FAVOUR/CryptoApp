@@ -49,7 +49,7 @@ class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val i
     }
 
     override suspend fun getCryptoRate( currencyAbbreviation : CurrencyAbbreviation): Result<CryptoCurrencyData>  {
-        var  result :Result<CryptoCurrencyData>  = Result.Loading //TODO Test to see if there is need for this
+        var  result :Result<CryptoCurrencyData>  = Result.Loading //Workout to see that loading is emitted first before other options in the sealed class
         val client = ApiClient.MainApiClient.client?.create(CryptoCurrencyService::class.java)
         val cryptoList = apiCall { client?.getJsonResponse_(currencyAbbreviation.abbr)!!}
 
