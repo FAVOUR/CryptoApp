@@ -13,7 +13,7 @@ interface CurrencyDao {
      fun ObserveCryptoRates():LiveData<List<CryptoCurrencyData>>
 
     @Query("Select * from CryptoCurrencyData where id = :rateId")
-    fun getCryptoRateById(rateId:Int):CryptoCurrencyData?
+    fun getCryptoRateById(rateId:Int):CryptoCurrencyData
 
     @Query("Delete from CryptoCurrencyData ")
     fun deleteAllCryptoRates()
@@ -22,7 +22,7 @@ interface CurrencyDao {
     fun deleteCryptoRate(cryptoCurrencyData: CryptoCurrencyData)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend  fun saveCryptoCurrencyRate(cryptoCurrencyData: CryptoCurrencyData)
+    suspend  fun saveCryptoCurrencyRate(cryptoCurrencyData: CryptoCurrencyData):Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend  fun saveCryptoCurrencyRates(cryptoCurrencyData: List<CryptoCurrencyData>)
