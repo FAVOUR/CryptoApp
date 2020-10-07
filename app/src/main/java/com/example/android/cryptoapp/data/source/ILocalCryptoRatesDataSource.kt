@@ -15,7 +15,7 @@ interface ILocalCryptoRatesDataSource : CommonCryptoRatesDataSource {
 
     suspend fun saveCryptoRates(cryptoRateData : List<CryptoCurrencyData>)
 
-    suspend fun saveCryptoRate(cryptoRateData : CryptoCurrencyData)
+    suspend fun saveCryptoRate(cryptoRateData : CryptoCurrencyData):Long
 
     suspend fun deleteCryptoRate(cryptoCurrencyData: CryptoCurrencyData)
 

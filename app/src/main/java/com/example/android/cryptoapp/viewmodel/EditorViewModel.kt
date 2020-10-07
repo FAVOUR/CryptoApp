@@ -1,14 +1,17 @@
 package com.example.android.cryptoapp.viewmodel
 
+import android.util.Log
 import android.widget.Spinner
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.android.cryptoapp.currency_data.*
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
 import com.example.android.cryptoapp.data.source.local.db.CurrencyDao
 import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
 import com.example.android.cryptoapp.data.source.repository.CryptoRepository
+import com.example.android.cryptoapp.util.Result
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 class EditorViewModel(val currencyDao: CurrencyDao,val repository: CryptoRepository):ViewModel() {
@@ -24,6 +27,14 @@ class EditorViewModel(val currencyDao: CurrencyDao,val repository: CryptoReposit
      var image : Int by Delegates.notNull<Int>()
     lateinit var jsonResponse: JsonResponse
 
+    private var _isLoading=MutableLiveData<Boolean>()
+     val isLoading:LiveData<Boolean>
+       get() = _isLoading
+    private var _errorMessage=MutableLiveData<String>()
+     val errorMessage:LiveData<String>
+       get() = _errorMessage
+
+
 
        fun saveData() = viewModelScope.launch{
 
@@ -36,6 +47,39 @@ class EditorViewModel(val currencyDao: CurrencyDao,val repository: CryptoReposit
 
 
 
+        fun  getCryptoRate() = viewModelScope.launch {
+//                liveData<Result<Unit>> {
+            /*  var rates =  kotlin.runCatching { //Serves same function as try catch
+                repository.getCryptoRate(currencyAbr)
+            }
+                  rates  .onFailure {
 
+               Log.e("yeah " , Gson().toJson(it))
+           }*/  //TODO If you consider this approach then reconsider the need for having loading as part of the sealed class
+//        }
+
+            _isLoading.value=true
+
+            var response=   repository.getCryptoRate(currencyAbr)
+
+
+            when (response) {
+                is Result.Success ->{
+                    Timber.e(Gson().toJson(response.data))
+                    _isLoading.value=false
+                }
+                is Result.Error -> {
+                    _isLoading.value=false
+                    _errorMessage.value=response.errorMessage
+                }
+                is Result.Loading ->{
+                    _isLoading.value=true
+
+                }
+
+            }
+
+
+        }
 
 }

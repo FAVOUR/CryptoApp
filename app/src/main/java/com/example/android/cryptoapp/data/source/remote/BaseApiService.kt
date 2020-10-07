@@ -1,5 +1,7 @@
 package com.example.android.cryptoapp.data.source.remote
 
+import android.nfc.Tag
+import android.util.Log
 import com.example.android.cryptoapp.util.Result
 import com.google.gson.Gson
 import okhttp3.ResponseBody
@@ -16,12 +18,14 @@ abstract class BaseApiService {
            response= networkRequest.invoke()
 
         }catch (e:Throwable){
-           Timber.e(Gson().toJson(e))
+           Log.e("Tag", Gson().toJson(e.message))
            return Result.Error( mapResponseThrowable(e))
         }
 
        return  if(response.isSuccessful){
-                   Result.Success(response.body()!!)
+//           Timber.e(Gson().toJson(response))
+
+           Result.Success(response.body()!!)
        } else {
          return  if (response.body() == null) {
              Result.Error("No response from Server")

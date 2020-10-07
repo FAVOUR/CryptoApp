@@ -96,7 +96,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
 //        viewmodel.getCurrencies()
 
                 viewmodel.cryptoCurrencyData.observe(viewLifecycleOwner, Observer { cryptoCurrencyData ->
-
+                    results.clear() //Use a more optimal solution id pulling  just the new data you have as opposed to pulling everything again
             for (it in cryptoCurrencyData) {
                 results.add(CryptoCurrencyRates(it.image, it.btcRate, it.ethRate, it.currencyName, it.currencyAbbreviation, it.currencySymbol))
             }
