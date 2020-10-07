@@ -48,15 +48,16 @@ class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val i
 
     }
 
-    override suspend fun getCryptoRate( currencyAbbreviation : CurrencyAbbreviation): Result<CryptoCurrencyData> = withContext(ioDispatcher)  {
-        var  result :Result<CryptoCurrencyData>  = Result.Loading //TODO Test to see if there is need for this
+    override suspend fun getCryptoRate( currencyAbbreviation : CurrencyAbbreviation): Result<CryptoCurrencyData>  {
+        var  result :Result<CryptoCurrencyData>  = Result.Loading //Workout to see that loading is emitted first before other options in the sealed class
         val client = ApiClient.MainApiClient.client?.create(CryptoCurrencyService::class.java)
-        val cryptoList = apiCall { client?.getJsonResponse_(currencyAbbreviation.toString())!!}
+        val cryptoList = apiCall { client?.getJsonResponse_(currencyAbbreviation.abbr)!!}
+        Timber.e(Gson().toJson(cryptoList))
 
         //TODO Find out a better way to deal with this the domain model at this stage
         result = when(cryptoList){
             is Result.Success->{
-
+                 Timber.d(Gson().toJson(cryptoList.data))
                 Result.Success(cryptoList.data.asDataBaseModel(currencyAbbreviation))
             }
             is Result.Error->{
@@ -67,7 +68,7 @@ class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val i
             }
         }
 
-        return@withContext  result
+        return  result
 
     }
 

@@ -13,11 +13,11 @@ interface CryptoRepository {
 
     suspend fun saveCryptoRates(cryptoRateData : List<CryptoCurrencyData>)
 
-    suspend fun saveCryptoRate(cryptoRateData : CryptoCurrencyData)
+    suspend fun saveCryptoRate(cryptoRateData : CryptoCurrencyData):Long
 
     suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation)
 
-    suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation)
+    suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation):Result<CryptoCurrencyData>
 //    suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>>
 
 

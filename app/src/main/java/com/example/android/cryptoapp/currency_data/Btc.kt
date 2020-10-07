@@ -2,86 +2,89 @@ package com.example.android.cryptoapp.currency_data
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-class Btc {
-    @SerializedName("AUD")
-    @Expose
-    val AUD: Double? = null
+@JsonClass(generateAdapter = true)
+data class Btc (
+ @Json(name ="AUD")
+//    @Expose
+    val AUD: Double? = null,
 
-    @SerializedName("EGP")
-    @Expose
-    val EGP: Double? = null
+ @Json(name ="EGP")
+//    @Expose
+    val EGP: Double? = null,
 
-    @SerializedName("GBP")
-    @Expose
-    val GBP: Double? = null
+ @Json(name ="GBP")
+//    @Expose
+    val GBP: Double? = null,
 
-    @SerializedName("EUR")
-    @Expose
-    val EUR: Double? = null
+ @Json(name ="EUR")
+//    @Expose
+    val EUR: Double? = null,
 
-    @SerializedName("GEL")
-    @Expose
-    val GEL: Double? = null
+ @Json(name ="GEL")
+//    @Expose
+    val GEL: Double? = null,
 
-    @SerializedName("GHS")
-    @Expose
-    val GHS: Double? = null
+ @Json(name ="GHS")
+//    @Expose
+    val GHS: Double? = null,
 
-    @SerializedName("HKD")
-    @Expose
-    val HKD: Double? = null
+ @Json(name ="HKD")
+//    @Expose
+    val HKD: Double? = null,
 
-    @SerializedName("ILS")
-    @Expose
-    val ILS: Double? = null
+ @Json(name ="ILS")
+//    @Expose
+    val ILS: Double? = null,
 
-    @SerializedName("JMD")
-    @Expose
-    val JMD: Double? = null
+ @Json(name ="JMD")
+//    @Expose
+    val JMD: Double? = null,
 
-    @SerializedName("JPY")
-    @Expose
-    val JPY: Double? = null
+ @Json(name ="JPY")
+//    @Expose
+    val JPY: Double? = null,
 
-    @SerializedName("MYR")
-    @Expose
-    val MYR: Double? = null
+ @Json(name ="MYR")
+//    @Expose
+    val MYR: Double? = null,
 
-    @SerializedName("NGN")
-    @Expose
-    val NGN: Double? = null
+ @Json(name ="NGN")
+//    @Expose
+    val NGN: Double? = null,
 
-    @SerializedName("PHP")
-    @Expose
-    val PHP: Double? = null
+ @Json(name ="PHP")
+//    @Expose
+    val PHP: Double? = null,
 
-    @SerializedName("QAR")
-    @Expose
-    val QAR: Double? = null
+ @Json(name ="QAR")
+//    @Expose
+    val QAR: Double? = null,
 
-    @SerializedName("RUB")
-    @Expose
-    val RUB: Double? = null
+ @Json(name ="RUB")
+//    @Expose
+    val RUB: Double? = null,
 
-    @SerializedName("ZAR")
-    @Expose
-    val ZAR: Double? = null
+ @Json(name ="ZAR")
+//    @Expose
+    val ZAR: Double? = null,
 
-    @SerializedName("CHF")
-    @Expose
-    val CHF: Double? = null
+ @Json(name ="CHF")
+//    @Expose
+    val CHF: Double? = null,
 
-    @SerializedName("TWD")
-    @Expose
-    val TWD: Double? = null
+ @Json(name ="TWD")
+//    @Expose
+    val TWD: Double? = null,
 
-    @SerializedName("THB")
-    @Expose
-    val THB: Double? = null
+ @Json(name ="THB")
+//    @Expose
+    val THB: Double? = null,
 
-    @SerializedName("USD")
-    @Expose
+ @Json(name ="USD")
+//    @Expose
     val USD: Double? = null
 
-}
+)
