@@ -141,13 +141,14 @@ class EditorFragment : DialogFragment() {
        fun data (bundle: Bundle)
     }
 
-/*    fun addCurrency() {
+/*
+    fun addCurrency() {
 //        loading!!.visibility = View.VISIBLE
         pbloading.visibility = View.VISIBLE
         textView.visibility = View.VISIBLE
 
 //        GlobalScope.launch (Dispatchers.IO){
-            val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr.name)
+            val ok = viewmodel.cryptoClient!!.getJsonResponse(viewmodel.currencyAbr.abbr)
 
             ok?.enqueue(object : Callback<JsonResponse?> {
                 override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
@@ -199,7 +200,8 @@ class EditorFragment : DialogFragment() {
             }
             )
 //        }
-    }*/
+    }
+*/
 
 
 
@@ -208,12 +210,11 @@ class EditorFragment : DialogFragment() {
 //        loading!!.visibility = View.VISIBLE
 
 
-
         viewmodel.getCryptoRate()
 
+    }
 
-
-   /*     val ok = viewmodel.cryptoClient!!.getJsonResponse_(viewmodel.currencyAbr.name)
+/*     val ok = viewmodel.cryptoClient!!.getJsonResponse_(viewmodel.currencyAbr.name)
         ok?.enqueue(object : Callback<JsonResponse?> {
             override fun onResponse(call: Call<JsonResponse?>, response: Response<JsonResponse?>) {
 
@@ -263,8 +264,10 @@ class EditorFragment : DialogFragment() {
                 Toast.makeText(requireContext(), "Check your internet connection ", Toast.LENGTH_LONG).show()
             }
         }
-        )*/
-    }
+        )*//*
+
+//    }
+*/
 
 
     override fun onAttach(context: Context) {

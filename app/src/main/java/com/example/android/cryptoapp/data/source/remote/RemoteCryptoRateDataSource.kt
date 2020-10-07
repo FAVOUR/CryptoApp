@@ -52,11 +52,12 @@ class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val i
         var  result :Result<CryptoCurrencyData>  = Result.Loading //Workout to see that loading is emitted first before other options in the sealed class
         val client = ApiClient.MainApiClient.client?.create(CryptoCurrencyService::class.java)
         val cryptoList = apiCall { client?.getJsonResponse_(currencyAbbreviation.abbr)!!}
+        Timber.e(Gson().toJson(cryptoList))
 
         //TODO Find out a better way to deal with this the domain model at this stage
         result = when(cryptoList){
             is Result.Success->{
-
+                 Timber.d(Gson().toJson(cryptoList.data))
                 Result.Success(cryptoList.data.asDataBaseModel(currencyAbbreviation))
             }
             is Result.Error->{

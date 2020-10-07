@@ -24,7 +24,7 @@ fun List<JsonResponse?>?.asDataBaseModel(abbreviation: CurrencyAbbreviation):  L
 
 fun JsonResponse?.asDataBaseModel(abbreviation: CurrencyAbbreviation):  CryptoCurrencyData{
 
-    val cryptoRate = CryptoCurrencyData(currencySymbol= getSymbol(abbreviation).name, currencyName = getCurrencyName(abbreviation).name,currencyAbbreviation = abbreviation.name,
+    val cryptoRate = CryptoCurrencyData(currencySymbol= getSymbol(abbreviation).symbol, currencyName = getCurrencyName(abbreviation).currencyName,currencyAbbreviation = abbreviation.abbr,
                 btcRate =  getBtcRate(abbreviation,this?.bTC), ethRate = getEthRate(abbreviation,this?.eTH),image = getCurrencyImage(abbreviation))
 
 

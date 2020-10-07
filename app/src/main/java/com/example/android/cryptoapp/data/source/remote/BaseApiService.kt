@@ -23,7 +23,9 @@ abstract class BaseApiService {
         }
 
        return  if(response.isSuccessful){
-                   Result.Success(response.body()!!)
+//           Timber.e(Gson().toJson(response))
+
+           Result.Success(response.body()!!)
        } else {
          return  if (response.body() == null) {
              Result.Error("No response from Server")
