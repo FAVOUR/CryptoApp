@@ -26,14 +26,8 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
     private lateinit var currencySymbol_2: TextView
     private lateinit var mOnClickedListiner: ListItemClickListiner
 
-//    init {
-//        Log.e(" Init mResults.size ",  "${mResults.size}")
-//                    Toast.makeText(mContext," Init mResults.size ${mResults.size}" ,Toast.LENGTH_SHORT).show()
-//
-//        getItemViewType(0)
-//    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatesViewHolder {
-        Log.e("onCreateViewHolder",  "Here ")
 
         val layoutResourceId = R.layout.rates_row_items
         val getCurrentContext = parent.context
@@ -103,13 +97,8 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
             exchangeRate_2 = itemView.findViewById<View>(R.id.eth_result) as TextView
             currencySymbol_2 = itemView.findViewById<View>(R.id.currency_symbol_1) as TextView
 
+             mOnClickedListiner =mListItemClickListiner
 
-//            if (mListItemClickListiner is ListItemClickListiner) {
-                mOnClickedListiner =mListItemClickListiner
-//            } else {
-//                throw ClassCastException(mContext.toString()
-//                        + mContext.resources.getString(R.string.exception_message))
-//            }
 
 
         }
@@ -117,11 +106,11 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
 
     //adds data for the adapter to utilize
     fun add(results: List<CryptoCurrencyRates>) {
+        mResults.clear()
         mResults.addAll(results)
         Log.e("results",Gson().toJson(results))
-        Log.e("resultAdapter size",Gson().toJson(mResults.size))
-//        notifyDataSetChanged()
-        notifyItemChanged(mResults.size)
+        notifyDataSetChanged()
+//        notifyItemChanged(mResults.size)
 
     }
 

@@ -41,7 +41,7 @@ import timber.log.Timber
 class EditorFragment : DialogFragment() {
 
 
-    private lateinit var mOnDataGotten:OnDataGotten
+//    private lateinit var mOnDataGotten:OnDataGotten
      var btcConversionRates: Btc?= null
      var ethConversionRates: Eth?=null
 //    var loading: RelativeLayout? = nul
@@ -71,9 +71,9 @@ class EditorFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        viewmodel.cryptoClient= ApiClient.client?.create(CryptoCurrencyService::class.java)
+//        viewmodel.cryptoClient= ApiClient.client?.create(CryptoCurrencyService::class.java)
 //        currencySpinner = findViewById<View>(R.id.currencyName) as Spinner
-        viewmodel.currencySpinner = currencyName
+//        viewmodel.currencySpinner = currencyName //Todo You may want to reconsider
 //        loading = findViewById<View>(R.id.loading) as RelativeLayout
 //        loading =progressBarRL
         activity?.actionBar?.title =resources.getString(R.string.editor_activity_title)
@@ -113,11 +113,12 @@ class EditorFragment : DialogFragment() {
         currencySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
 
         // Apply the Adapter to the spinner
-        viewmodel.currencySpinner!!.adapter = currencySpinnerAdapter
+//        viewmodel.currencySpinner!!.adapter = currencySpinnerAdapter
+        currencyName.adapter = currencySpinnerAdapter
 
         // Set the currency Selected to the constant values
         //TODO Try to lazily instantiate the adapter.onItemSelected interface
-        viewmodel.currencySpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        currencyName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val selection = parent.getItemAtPosition(position) as String
                 if (!TextUtils.isEmpty(selection)) {
@@ -137,9 +138,9 @@ class EditorFragment : DialogFragment() {
     }
 
   //Used to transfer data between the fragments
-    interface OnDataGotten{
-       fun data (bundle: Bundle)
-    }
+//    interface OnDataGotten{
+//       fun data (bundle: Bundle)
+//    }
 
 /*
     fun addCurrency() {
@@ -207,11 +208,7 @@ class EditorFragment : DialogFragment() {
 
 
     fun addCurrency() {
-//        loading!!.visibility = View.VISIBLE
-
-
         viewmodel.getCryptoRate()
-
     }
 
 /*     val ok = viewmodel.cryptoClient!!.getJsonResponse_(viewmodel.currencyAbr.name)
@@ -270,7 +267,7 @@ class EditorFragment : DialogFragment() {
 */
 
 
-    override fun onAttach(context: Context) {
+ /*   override fun onAttach(context: Context) {
         super.onAttach(context)
 //          Log.e("targetFragment", "Name of fragment $targetFragment")
 //          Log.e("targetFragment as targetFragment", "Name of fragment Cast  ${targetFragment as OnDataGotten} ")
@@ -278,7 +275,7 @@ class EditorFragment : DialogFragment() {
 //        TODO Try to set the interface implementation to the activity Scope
          mOnDataGotten = targetFragment as OnDataGotten
 
-    }
+    }*/
 
 
 

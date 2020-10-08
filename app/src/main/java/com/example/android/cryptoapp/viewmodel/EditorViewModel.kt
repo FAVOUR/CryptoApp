@@ -15,12 +15,10 @@ import timber.log.Timber
 import kotlin.properties.Delegates
 
 class EditorViewModel(val currencyDao: CurrencyDao,val repository: CryptoRepository):ViewModel() {
-    var currencySpinner: Spinner? = null
-    var cryptoClient: CryptoCurrencyService? = null
-      var btcConversionRates: Btc?=null
-      var ethConversionRates: Eth?= null
-    var conversionFromBtc: Double by Delegates.notNull<Double>()
-    var conversionFromEth: Double by Delegates.notNull<Double>()
+//    var currencySpinner: Spinner? = null
+//    var cryptoClient: CryptoCurrencyService? = null
+//    var conversionFromBtc: Double by Delegates.notNull<Double>()
+//    var conversionFromEth: Double by Delegates.notNull<Double>()
     lateinit var currencyAbr: CurrencyAbbreviation
     lateinit var currencySymbol: CurrencySymbol
     lateinit var _currencyName: String
@@ -35,7 +33,7 @@ class EditorViewModel(val currencyDao: CurrencyDao,val repository: CryptoReposit
        get() = _errorMessage
 
 
-
+/*
        fun saveData() = viewModelScope.launch{
 
 //           currencyDao.saveCurrency(CryptoCurrencyData(currencySymbol=currencySymbol.name, currencyName = _currencyName,currencyAbbreviation = currencyAbr.name,
@@ -43,7 +41,7 @@ class EditorViewModel(val currencyDao: CurrencyDao,val repository: CryptoReposit
 
                repository.saveCryptoRate(cryptoRateData = CryptoCurrencyData(currencySymbol=currencySymbol.name, currencyName = _currencyName,currencyAbbreviation = currencyAbr.name,
                                                         btcRate = conversionFromBtc, ethRate = conversionFromEth,image = image))
-       }
+       }*/
 
 
 

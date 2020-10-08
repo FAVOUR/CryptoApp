@@ -20,11 +20,13 @@ import com.example.android.cryptoapp.data.source.remote.ApiClient
 import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
 import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
 import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
+import com.example.android.cryptoapp.domain.model.asDomainModel
 import com.example.android.cryptoapp.viewmodel.ListViewModel
 import com.example.android.cryptoapp.viewmodel.ViewModelFactory
 import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.fragment_list.*
+import timber.log.Timber
 import java.util.ArrayList
 import kotlin.properties.Delegates
 
@@ -38,24 +40,16 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragment.OnDataGotten {
+//class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragment.OnDataGotten {
+class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
 
-    var resultAdapter: RatesAdapter? = null
+    lateinit var resultAdapter: RatesAdapter
     var layoutManager: LinearLayoutManager? = null
     lateinit var results: MutableList<CryptoCurrencyRates>
 
     var soFar: List<CryptoCurrencyRates>? = null
-//    lateinit var output: Results
-//    var image = 0
-//    lateinit var currencyAbr: String
-//    lateinit var currencySymbol: String
-//    lateinit var currencyName: String
-    var check by Delegates.notNull<Boolean>()
-//    var btcRate by Delegates.notNull<Double>()
-//    var ethRate by  Delegates.notNull<Double>()
-//    var cryptoClient: CryptoCurrencyService? = null
-//    var btcConversionRates: Btc? = null
-//    var ethConversionRates: Eth? = null
+//    var check by Delegates.notNull<Boolean>()
+
         var bundle: Bundle? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,37 +66,18 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_list, container, false)
-        viewmodel.bundle = arguments
-        check = viewmodel.check
-        bundle = viewmodel.bundle
+
 
         return   view
     }
-
-     val TAG :String = "ListFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setHasOptionsMenu(true)
-
-        setupAdapter()
-
-
-        Log.e("onViewCreated ", "getCurrencies is called ")
-//        viewmodel.getCurrencies()
-
-                viewmodel.cryptoCurrencyData.observe(viewLifecycleOwner, Observer { cryptoCurrencyData ->
-                    results.clear() //Use a more optimal solution id pulling  just the new data you have as opposed to pulling everything again
-            for (it in cryptoCurrencyData) {
-                results.add(CryptoCurrencyRates(it.image, it.btcRate, it.ethRate, it.currencyName, it.currencyAbbreviation, it.currencySymbol))
-            }
-            resultAdapter!!.notifyItemChanged(results.size)
-        })
-
 
         layoutManager = LinearLayoutManager(requireContext())
         results = ArrayList()
@@ -111,73 +86,28 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
         resultAdapter = RatesAdapter(results,this)
         rv_members!!.layoutManager = layoutManager
         rv_members!!.adapter = resultAdapter
-        viewmodel.cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
-    }
 
-    private fun setupAdapter() {
+        viewmodel.cryptoCurrencyData.observe(viewLifecycleOwner, Observer { cryptoCurrencyData ->
 
 
-        check = bundle == null
-
-        Log.e("bundle",Gson().toJson(bundle))
-//
-
-//        viewmodel.getCurrencies().observe(viewLifecycleOwner, Observer {
-
-//            if(it !=null) {
-//                results.add(Results(it.image, it.btcRate, it.ethRate, it.currencyName, it.currencyAbbreviation, it.currencySymbol))
+            Timber.e(Gson().toJson(cryptoCurrencyData))
+            if(cryptoCurrencyData !=null) {
+                val data = cryptoCurrencyData.asDomainModel()
+                resultAdapter.add(data)
+            }
+//            for (it in cryptoCurrencyData) {
+//                results.add(CryptoCurrencyRates(it.image, it.btcRate, it.ethRate, it.currencyName, it.currencyAbbreviation, it.currencySymbol))
 //            }
 //            resultAdapter!!.notifyItemChanged(results.size)
-////        })
+        })
 
 
-        if (!(check && this.bundle == null)) {
-//            if (!(check || this.bundle == null)) {
-                viewmodel.image = bundle!!.getInt("image")
-                viewmodel.btcRate = bundle!!.getDouble("btcRate")
-                viewmodel.currencyAbr = bundle?.getString("currencyAbr") ?: ""
-                viewmodel.currencySymbol = bundle?.getString("currencySymbol") ?: ""
-                viewmodel.currencyName = bundle?.getString("currencyName") ?: ""
-                viewmodel.ethRate = bundle?.getDouble("ethRate") ?: 0.00
-//            rv_members!!.setHasFixedSize(true)
-                var output = CryptoCurrencyRates(viewmodel.image, viewmodel.btcRate, viewmodel.ethRate, viewmodel.currencyName, viewmodel.currencyAbr, viewmodel.currencySymbol)
-//            resultAdapter!!.add(output)
 
-                Toast.makeText(requireContext(), Gson().toJson(output), Toast.LENGTH_SHORT).show()
-                results.add(output)
-
-                resultAdapter!!.notifyItemChanged(results.size)
-//            }
-        }
+//        viewmodel.cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
     }
-    /*  override fun onBackPressed() {
-          val builder: AlertDialog.Builder
-          builder = AlertDialog.Builder(requireContext())
-          builder.setTitle("Delete Entry")
-                  .setMessage("Are sure you wat to exit?")
-                  .setPositiveButton(android.R.string.yes
-                  ) { dialog, which -> activity?.finish() }
-                  .setNegativeButton(android.R.string.no
-                  ) { dialog, which -> dialog.dismiss() }
-          val alertDialog = builder.create()
-          alertDialog.show()
-      }*/
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        //Let ApCompactActivity call the onPrepareOptionsMenu(menu) method
-        super.onPrepareOptionsMenu(menu)
-//        val menuItem_1: MenuItem
-//        if (resultAdapter!!.itemCount > 0) {
-//            val menuItem = menu.findItem(R.id.add_new_card)
-//            menuItem.isVisible = false
-//            menuItem_1 = menu.findItem(R.id.replace)
-//            menuItem_1.isVisible = true
-//        } else {
-//            menuItem_1 = menu.findItem(R.id.replace)
-//            menuItem_1.isVisible = false
-//        }
-//        return true
-    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu,inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_list, menu)
@@ -190,20 +120,13 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
         val intent: Intent
         when (item.itemId) {
             R.id.add_new_card -> {
-//                intent = Intent(requireContext(), EditorActivity::class.java)
-//                startActivity(intent)
 
                 var editorFragment = EditorFragment()
                   editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
 //                  editorFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.EditorTheme);
                   editorFragment.setTargetFragment(this@ListFragment,1)
                   editorFragment.show(activity?.supportFragmentManager!!,null)
-//
-//                var editorFragment = EditorFragment()
-//                activity?.supportFragmentManager?.beginTransaction()
-//                        ?.replace(R.id.viewContainer,  editorFragment,null)
-//                        ?.addToBackStack(null)
-//                        ?.commit()
+
                 return true
             }
             R.id.about -> {
@@ -215,16 +138,16 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
                 alertDialog.show()
                 return true
             }
-            R.id.replace -> {
-                      val editorFragment = EditorFragment()
-                val fragmentManager = activity?.let {   activity ->
-                                activity.supportFragmentManager.beginTransaction()
-                                        .replace(R.id.viewContainer,editorFragment,null)
-                                        .addToBackStack(null)
-                                        .commit()
-                    }
-                return true
-            }
+//            R.id.replace -> {
+//                      val editorFragment = EditorFragment()
+//                val fragmentManager = activity?.let {   activity ->
+//                                activity.supportFragmentManager.beginTransaction()
+//                                        .replace(R.id.viewContainer,editorFragment,null)
+//                                        .addToBackStack(null)
+//                                        .commit()
+//                    }
+//                return true
+//            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -251,11 +174,11 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragm
         }
     }
 
-    override fun data(bundle: Bundle) {
-        this.bundle = bundle
-        setupAdapter()
-
-    }
+//    override fun data(bundle: Bundle) {
+//        this.bundle = bundle
+////        setupAdapter()
+//
+//    }
 
 
     /* companion object {
