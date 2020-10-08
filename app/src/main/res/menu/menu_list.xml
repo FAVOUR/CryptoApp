@@ -9,11 +9,11 @@
         android:visible="true"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/replace"
-        android:title="replace"
-        android:visible="true"
-        app:showAsAction="always"/>
+<!--    <item-->
+<!--        android:id="@+id/replace"-->
+<!--        android:title="replace"-->
+<!--        android:visible="true"-->
+<!--        app:showAsAction="always"/>-->
 
 
     <item
