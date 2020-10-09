@@ -53,22 +53,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ConversionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-//    private var param1: String? = null
-//    private var param2: String? = null
 
-//    var btc_amount: EditText? = null
-//    var eth_amount: EditText? = null
-//    var currencyImage: ImageView? = null
-//    var btcImage: ImageView? = null
-//    var ethImage: ImageView? = null
-//    var currency_amount: TextView? = null
-//    var btcExchangeRate: TextView? = null
-//    var ethExchangeRate: TextView? = null
-//    var currencySymbol_1: TextView? = null
-//    var currencySymbol_2: TextView? = null
-//    var currency_Name: TextView? = null
-//    var currencyAbbreviation: TextView? = null
        var image :Int by Delegates.notNull<Int>()
       private var check by Delegates.notNull<Boolean>()
 
@@ -98,7 +83,9 @@ class ConversionFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_conversion, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         super.onActivityCreated(savedInstanceState)
         viewmodel.bundle = requireArguments()
 
@@ -119,13 +106,6 @@ class ConversionFragment : Fragment() {
 
         //TODO this check may be irrelevant
         if (check) {
-//
-//            viewmodel.image = bundle.getInt("image") ?:0
-//            viewmodel.btcRate = bundle.getDouble("btcRate")
-//            viewmodel.currencyAbr =bundle.getString("currencyAbr")
-//            viewmodel.currencySymbol =bundle.getString("currencySymbol")
-//            viewmodel.currencyName = bundle.getString("currencyName")
-//            viewmodel.ethRate =  bundle.getDouble("ethRate")
 
         //  TODO Consider using a switch statement instead of the boring initialization of classes
             viewmodel.image = bundle!!.getInt("image")

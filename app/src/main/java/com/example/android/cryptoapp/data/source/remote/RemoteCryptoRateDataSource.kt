@@ -82,7 +82,7 @@ class RemoteCryptoRateDataSource( private val apiClient:ApiClient, private val i
                   val moshiInsatnce=  moshi.adapter(RequestError::class.java)
                 val requestError =   moshiInsatnce .fromJson(it)
                     requestError!!.message
-                } ?:"Server Error"
+                } ?: "Server Error"
 
             }catch (e:Throwable){
                 "Server Error"
