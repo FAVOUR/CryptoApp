@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
-object AppModule {
+class AppModule {
 
 
     //Provide an instance of Picasso
