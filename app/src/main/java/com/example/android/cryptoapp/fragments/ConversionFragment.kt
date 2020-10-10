@@ -10,26 +10,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
 import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
 import com.example.android.cryptoapp.data.source.remote.ApiClient
 import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
 import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
+import com.example.android.cryptoapp.di.AppComponent
 import com.example.android.cryptoapp.di.AppModule
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
-import com.example.android.cryptoapp.viewmodel.EditorViewModel
 import com.example.android.cryptoapp.viewmodel.ViewModelFactory
 import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.activity_conversion.*
 import kotlinx.android.synthetic.main.fragment_conversion.*
 import kotlinx.android.synthetic.main.fragment_conversion.btc_amount
 import kotlinx.android.synthetic.main.fragment_conversion.btc_exchangerate
@@ -40,6 +37,7 @@ import kotlinx.android.synthetic.main.fragment_conversion.eth_amount
 import kotlinx.android.synthetic.main.fragment_conversion.eth_exchangerate
 import kotlinx.android.synthetic.main.fragment_conversion.eth_logo
 import java.text.DecimalFormat
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 // TODO: Rename parameter arguments, choose names that match
@@ -64,7 +62,10 @@ class ConversionFragment : Fragment() {
     private var ethRate: Double by Delegates.notNull<Double>()
     private   var bundle: Bundle? = null
     private lateinit var format: DecimalFormat
+    private lateinit  var appComponent:AppComponent
 
+    @Inject
+    lateinit  var picasso:Picasso
 
     private val viewmodel: ConversionViewmodel by viewModels    {
         val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
@@ -73,9 +74,10 @@ class ConversionFragment : Fragment() {
         ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(), DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource)) }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+         appComponent = ( requireActivity().application as App).appComponent
+        val conversionFragment = appComponent.create(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
@@ -126,17 +128,17 @@ class ConversionFragment : Fragment() {
         }
 
         //Set the currency Image
-        AppModule.providePicassoInstance().load(image)
+        picasso.load(image)
                 .transform(CropCircleTransformation())
                 .into(currency_image)
 
         //Set the btc Image
-        AppModule.providePicassoInstance().load(R.drawable.btc)
+        picasso.load(R.drawable.btc)
                 .transform(CropCircleTransformation())
                 .into(btc_logo)
 
         //Set the eth Image
-        AppModule.providePicassoInstance().load(R.drawable.eth)
+        picasso.load(R.drawable.eth)
                 .transform(CropCircleTransformation())
                 .into(eth_logo)
 
