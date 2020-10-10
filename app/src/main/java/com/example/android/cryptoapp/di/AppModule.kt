@@ -4,14 +4,15 @@ import com.example.android.cryptoapp.util.Constants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.picasso.Picasso
+import dagger.Module
 import dagger.Provides
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
+@Module
 class AppModule {
 
 
@@ -23,10 +24,10 @@ class AppModule {
     }
 
     //Provide an instance of Moshi
-    @Singleton //This indicates that it is tied to the livecycleScope
+     @Singleton //This indicates that it is tied to the lifecycleScope
      @Provides
      fun provideMoshiInstance() :Moshi{
-         return Moshi.Builder()
+         return   Moshi.Builder()
                  .add(KotlinJsonAdapterFactory())
                  .build()
      }
@@ -43,7 +44,7 @@ class AppModule {
     //Provide instance of okhttpclient
     @Singleton
     @Provides
-    fun provideOkHttpClient( htttpInterceptor:HttpLoggingInterceptor):OkHttpClient{
+    fun provideOkHttpClient(htttpInterceptor:HttpLoggingInterceptor):OkHttpClient{
            return OkHttpClient.Builder()
                    .addInterceptor(htttpInterceptor)
                    .build()
