@@ -19,8 +19,7 @@ import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
 import com.example.android.cryptoapp.data.source.remote.ApiClient
 import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
 import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
-import com.example.android.cryptoapp.di.AppComponent
-import com.example.android.cryptoapp.di.AppModule
+import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
 import com.example.android.cryptoapp.viewmodel.ViewModelFactory
 import com.google.gson.Gson
@@ -62,16 +61,22 @@ class ConversionFragment : Fragment() {
     private var ethRate: Double by Delegates.notNull<Double>()
     private   var bundle: Bundle? = null
     private lateinit var format: DecimalFormat
-    private lateinit  var appComponent:AppComponent
+    private lateinit  var appComponent: AppComponent
 
     @Inject
     lateinit  var picasso:Picasso
 
-    private val viewmodel: ConversionViewmodel by viewModels    {
-        val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
-        val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
+    @Inject
+    lateinit  var viewModelFactory:ViewModelFactory
 
-        ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(), DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource)) }
+    private val viewmodel: ConversionViewmodel by viewModels    {
+//
+//        val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
+//        val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
+//
+//        ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(), DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource))
+        viewModelFactory
+    }
 
 
     override fun onAttach(context: Context) {
@@ -88,7 +93,6 @@ class ConversionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        super.onActivityCreated(savedInstanceState)
         viewmodel.bundle = requireArguments()
 
         check =viewmodel.check
