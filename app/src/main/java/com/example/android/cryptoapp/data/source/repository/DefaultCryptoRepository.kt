@@ -9,8 +9,9 @@ import com.example.android.cryptoapp.util.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class DefaultCryptoRepository (val remoteCryptoRateDataSource: RemoteCryptoRateDataSource,
+class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource: RemoteCryptoRateDataSource,
                                val localCryptoRatesDataSource: LocalCryptoRatesDataSource,
                                val dispatcher: CoroutineDispatcher =Dispatchers.IO):CryptoRepository{
     override fun observeCryptoRates(): LiveData<Result<List<CryptoCurrencyData>>> {

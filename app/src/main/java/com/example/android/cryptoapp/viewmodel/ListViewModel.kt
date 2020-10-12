@@ -14,9 +14,10 @@ import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import com.example.android.cryptoapp.util.Result
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class ListViewModel(val currencyDao: CurrencyDao,val repository: CryptoRepository ):ViewModel() {
+class ListViewModel @Inject constructor(val currencyDao: CurrencyDao,val repository: CryptoRepository ):ViewModel() {
 
 
     var resultAdapter: RatesAdapter? = null
