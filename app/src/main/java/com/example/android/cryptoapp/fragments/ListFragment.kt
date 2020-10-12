@@ -1,5 +1,6 @@
 package com.example.android.cryptoapp.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter
@@ -20,6 +23,7 @@ import com.example.android.cryptoapp.data.source.remote.ApiClient
 import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
 import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
 import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
+import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.domain.model.asDomainModel
 import com.example.android.cryptoapp.viewmodel.ListViewModel
 import com.example.android.cryptoapp.viewmodel.ViewModelFactory
@@ -28,6 +32,7 @@ import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.fragment_list.*
 import timber.log.Timber
 import java.util.ArrayList
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 // TODO: Rename parameter arguments, choose names that match
@@ -46,6 +51,8 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
     lateinit var resultAdapter: RatesAdapter
     var layoutManager: LinearLayoutManager? = null
     lateinit var results: MutableList<CryptoCurrencyRates>
+    private lateinit  var appComponent: AppComponent
+
 
     var soFar: List<CryptoCurrencyRates>? = null
 //    var check by Delegates.notNull<Boolean>()
@@ -58,11 +65,23 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
 
     }
 
-     val viewmodel  by activityViewModels<ListViewModel> {
-         val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
-         val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
+    @Inject
+    lateinit var viewModelFactory:ViewModelFactory
 
-         ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(),DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource)) }
+    val viewmodel : ListViewModel by viewModels {
+//         val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
+//         val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
+//
+//         ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(),DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource))
+//
+        viewModelFactory
+     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        appComponent = ( requireActivity().application as App).appComponent
+        val conversionFragment = appComponent.create(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
