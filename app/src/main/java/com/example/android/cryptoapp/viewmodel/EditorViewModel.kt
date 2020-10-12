@@ -12,9 +12,10 @@ import com.example.android.cryptoapp.util.Result
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class EditorViewModel(val currencyDao: CurrencyDao,val repository: CryptoRepository):ViewModel() {
+class EditorViewModel @Inject constructor(val currencyDao: CurrencyDao,val repository: CryptoRepository):ViewModel() {
 //    var currencySpinner: Spinner? = null
 //    var cryptoClient: CryptoCurrencyService? = null
 //    var conversionFromBtc: Double by Delegates.notNull<Double>()
