@@ -1,7 +1,7 @@
 package com.example.android.cryptoapp
 
 import android.app.Application
-import com.example.android.cryptoapp.di.DaggerAppComponent
+import com.example.android.cryptoapp.di.component.DaggerAppComponent
 import timber.log.Timber
 
 class App :Application() {
