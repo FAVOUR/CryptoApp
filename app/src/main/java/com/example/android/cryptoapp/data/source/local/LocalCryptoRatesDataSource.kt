@@ -10,8 +10,9 @@ import com.example.android.cryptoapp.util.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class LocalCryptoRatesDataSource (private val cryptoRateDao: CurrencyDao,  private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO):ILocalCryptoRatesDataSource {
+class LocalCryptoRatesDataSource @Inject constructor (private val cryptoRateDao: CurrencyDao,  private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO):ILocalCryptoRatesDataSource {
     override fun observeCryptoRates(): LiveData<Result<List<CryptoCurrencyData>>> {
 
     return cryptoRateDao.ObserveCryptoRates().map {
