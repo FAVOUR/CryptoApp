@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.example.android.cryptoapp.data.source.local.db.CurrencyDao
 import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import java.text.DecimalFormat
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class ConversionViewmodel(val currencyDao: CurrencyDao, val repository: CryptoRepository):ViewModel() {
+class ConversionViewmodel @Inject constructor(val currencyDao: CurrencyDao, val repository: CryptoRepository):ViewModel() {
 
     var image = 0
     lateinit var currencyAbr: String
