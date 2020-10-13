@@ -83,7 +83,7 @@ class AppModule {
     //Provide an instance of the CurrencyDao
     @Singleton
     @Provides
-    fun provideDispatchersInstance(context: Context): CoroutineDispatcher {
+    fun provideDispatchersInstance( ): CoroutineDispatcher {
 
         return  Dispatchers.IO
 

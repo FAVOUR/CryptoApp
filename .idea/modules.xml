@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CryptoApp.iml" filepath="$PROJECT_DIR$/CryptoApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CryptoApp-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CryptoApp-app.iml" group="CryptoApp/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Portfolio-CryptoApp.iml" filepath="$PROJECT_DIR$/.idea/modules/Portfolio-CryptoApp.iml" group="CryptoApp" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CryptoApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CryptoApp.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Portfolio.CryptoApp.iml" filepath="$PROJECT_DIR$/.idea/modules/Portfolio.CryptoApp.iml" />
     </modules>
   </component>
 </project>
