@@ -98,22 +98,6 @@ class AppModule {
     }
 
 
-//    @Provides
-//    fun providesFactory(creator:MutableMap<Class<out ViewModel>, Provider<ViewModel>>,currencyDao: CurrencyDao,  repository: CryptoRepository): ViewModelProvider.Factory{
-//            return ViewModelFactory(creator,currencyDao,repository)
-//    }
-
-/*
-    //Provide an instance of the CurrencyDao
-    @Singleton
-    @Provides
-    fun provideDispatchersInstance(localCryptoRatesDataSource : LocalCryptoRatesDataSource): CoroutineDispatcher {
-
-        return  Dispatchers.IO
-
-    }*/
-
-
 
 
 
