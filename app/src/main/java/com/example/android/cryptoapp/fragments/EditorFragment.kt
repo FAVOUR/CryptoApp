@@ -61,7 +61,6 @@ class EditorFragment : DialogFragment() {
 //        val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
 //
 //
-//        ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(), DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource))
         viewModelFactory
     }
 //
