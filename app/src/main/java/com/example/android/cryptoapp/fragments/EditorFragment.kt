@@ -44,10 +44,7 @@ import javax.inject.Inject
 class EditorFragment : DialogFragment() {
 
 
-//    private lateinit var mOnDataGotten:OnDataGotten
-     var btcConversionRates: Btc?= null
-     var ethConversionRates: Eth?=null
-//    var loading: RelativeLayout? = nul
+
 
     private lateinit  var appComponent: AppComponent
 
