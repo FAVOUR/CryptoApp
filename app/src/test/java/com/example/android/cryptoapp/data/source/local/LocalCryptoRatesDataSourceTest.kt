@@ -2,6 +2,7 @@ package com.example.android.cryptoapp.data.source.local
 
 import android.content.Context
 import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import org.junit.After
 import org.junit.Before
 
@@ -17,8 +18,8 @@ class LocalCryptoRatesDataSourceTest {
 
     @Before
     fun setUp() {
-        context =
-        db = Room.databaseBuilder()
+        context =ApplicationProvider.getApplicationContext()
+//        db = Room.inMemoryDatabaseBuilder(context)
 
     }
 
