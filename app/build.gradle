@@ -145,8 +145,9 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
 
     //Truth asertion Library
-    testImplementation "com.google.truth:truth:1.0.1"
+//    testImplementation "com.google.truth:truth:1.0.1"
 
+    testImplementation "com.google.truth:truth:1.1"
 
 
     implementation 'androidx.cardview:cardview:1.0.0'
