@@ -1,6 +1,7 @@
 package com.example.android.cryptoapp.data.source.local
 
 import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -25,7 +26,7 @@ class LocalCryptoRatesDataSourceTest {
 //    lateinit var
 
     @get:Rule
-    val task :Instant =InstantTask
+    val instantTaskExecutorRule =InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
@@ -44,7 +45,7 @@ class LocalCryptoRatesDataSourceTest {
     }
 
     @Test
-    fun `create and save Rate return rates`() = runBlocking{
+    fun `create_and_save_Rate_return_rates`() = runBlocking{
         val rate = CryptoCurrencyData(currencyName = "Nigeria", currencyAbbreviation = "NGN",currencySymbol = "",image =12345,btcRate = 3.65,ethRate = 234.56)
 
          dao.saveCryptoCurrencyRate(rate)

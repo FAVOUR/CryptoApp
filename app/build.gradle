@@ -127,6 +127,9 @@ dependencies {
     def androidXTestCoreVersion = '1.2.0'
    def  robolectricVersion = '4.3.1'
     def androidXTestExtKotlinRunnerVersion = '1.1.1'
+     def archTestingVersion = '2.0.0'
+
+
 //    androidXTestRulesVersion = '1.2.0-beta01'
 
     // Room
@@ -145,9 +148,13 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
 
     //Truth asertion Library
-//    testImplementation "com.google.truth:truth:1.0.1"
-
     testImplementation "com.google.truth:truth:1.1"
+
+    // AndroidX Test - Instrumented testing
+    //Core
+    androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    androidTestImplementation "com.google.truth:truth:1.1"
+    androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
 
 
     implementation 'androidx.cardview:cardview:1.0.0'
