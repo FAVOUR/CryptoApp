@@ -18,11 +18,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class LocalCryptoRatesDataSourceTest {
+class CurrencyDaoTest {
 
     lateinit var  db :CurrencyRoomDatabase
     lateinit var  context:Context
     lateinit var  dao:CurrencyDao
+    lateinit var rate:CryptoCurrencyData
 //    lateinit var
 
     @get:Rule
@@ -31,6 +32,8 @@ class LocalCryptoRatesDataSourceTest {
     @Before
     fun setUp() {
         context =ApplicationProvider.getApplicationContext()
+        rate = CryptoCurrencyData(currencyName = "Nigeria", currencyAbbreviation = "NGN",currencySymbol = "",image =12345,btcRate = 3.65,ethRate = 234.56)
+
         db = Room.inMemoryDatabaseBuilder(context,CurrencyRoomDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
@@ -45,14 +48,17 @@ class LocalCryptoRatesDataSourceTest {
     }
 
     @Test
-    fun `create_and_save_Rate_return_rates`() = runBlocking{
-        val rate = CryptoCurrencyData(currencyName = "Nigeria", currencyAbbreviation = "NGN",currencySymbol = "",image =12345,btcRate = 3.65,ethRate = 234.56)
+    fun saveRate_return_rates() = runBlocking{
+        dao.saveCryptoCurrencyRate(rate)
 
-         dao.saveCryptoCurrencyRate(rate)
 
         val savedData= dao.getLocalCryptoRates()?.get(0)
 
          assertThat(rate).isEqualTo(savedData)
 
     }
+
+//  TODO Write the test for
+//    @Test
+//    fun `save_and_update_rates`()
 }
