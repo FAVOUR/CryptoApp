@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class ListViewModel @Inject constructor(val currencyDao: CurrencyDao,val repository: CryptoRepository ):ViewModel() {
+class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewModel() {
 
 
     var resultAdapter: RatesAdapter? = null
