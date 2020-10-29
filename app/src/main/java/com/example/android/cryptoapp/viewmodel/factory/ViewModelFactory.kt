@@ -1,4 +1,4 @@
-package com.example.android.cryptoapp.viewmodel
+package com.example.android.cryptoapp.viewmodel.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,7 +7,7 @@ import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import javax.inject.Inject
 import javax.inject.Provider
 
-class  ViewModelFactory @Inject constructor(val creators: MutableMap<Class<out ViewModel>, Provider<ViewModel>>,val currencyDao: CurrencyDao, val repository: CryptoRepository):ViewModelProvider.Factory {
+class  ViewModelFactory @Inject constructor(val creators: MutableMap<Class<out ViewModel>, Provider<ViewModel>>,val repository: CryptoRepository):ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
 
