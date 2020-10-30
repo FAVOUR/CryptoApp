@@ -6,8 +6,6 @@ import androidx.lifecycle.Observer
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-//class LiveDataUtil {
-//}
 
 fun <T> LiveData<T>.getOrAwaitNextValue(
         time:Long =2 ,

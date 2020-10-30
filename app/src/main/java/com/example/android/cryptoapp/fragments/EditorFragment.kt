@@ -9,29 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.currency_data.*
-import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
-import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
-import com.example.android.cryptoapp.data.source.remote.ApiClient
-import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
-import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
-import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
 import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.util.*
 import com.example.android.cryptoapp.viewmodel.EditorViewModel
-import com.example.android.cryptoapp.viewmodel.ListViewModel
-import com.example.android.cryptoapp.viewmodel.ViewModelFactory
-import com.squareup.moshi.Moshi
+import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_editor.*
-import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -50,7 +37,7 @@ class EditorFragment : DialogFragment() {
 
 
     @Inject
-    lateinit var viewModelFactory:ViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
 
     // activity-ktx artifact
     private val viewmodel: EditorViewModel by viewModels{

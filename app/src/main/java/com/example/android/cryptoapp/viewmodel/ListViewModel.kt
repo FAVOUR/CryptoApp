@@ -1,21 +1,15 @@
 package com.example.android.cryptoapp.viewmodel
 
-import android.os.Bundle
+import android.net.UrlQuerySanitizer
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter
-import com.example.android.cryptoapp.currency_data.Btc
-import com.example.android.cryptoapp.currency_data.Eth
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
-import com.example.android.cryptoapp.data.source.local.db.CurrencyDao
-import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
 import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import com.example.android.cryptoapp.util.Result
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.lang.Error
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewModel() {
 
@@ -40,21 +34,32 @@ class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewM
     var _cryptoCurrencyData =MutableLiveData <List<CryptoCurrencyData>>()
     val  cryptoCurrencyData :LiveData<List<CryptoCurrencyData>>
             get () =repository.observeCryptoRates().switchMap {
-         filterCryptoRates(it)
+//                 getResult(it)
+                _cryptoCurrencyData.value = getActualDataFromRepositoryData(it)
+                _cryptoCurrencyData
      }
 //     get() = _cryptoCurrencyData
 
 
+   private fun <T> getActualDataFromRepositoryData(result:Result<T>): T {
 
-    private fun filterCryptoRates(cryptoRates:Result<List<CryptoCurrencyData>>):LiveData<List<CryptoCurrencyData>>{
+     return  when(result){
+           is Result.Success<T> ->{
+               result.data
+           }
+            else ->throw NoSuchElementException("Expected data wrapped with  ${Result.Success::class.java} class but got $result ")
+       }
+   }
+
+    private fun getResult(cryptoRates:Result<List<CryptoCurrencyData>>):LiveData<List<CryptoCurrencyData>>{
 
     if(cryptoRates is Result.Success){
         //Todo
         //Add loadingDataError mutable live data false
-        viewModelScope.launch {
+//        viewModelScope.launch {
             _cryptoCurrencyData.value =cryptoRates.data
 
-        }
+//        }
     }else{
         _cryptoCurrencyData.value = emptyList()
           //Todo
