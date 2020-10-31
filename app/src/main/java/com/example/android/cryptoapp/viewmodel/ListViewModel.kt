@@ -25,33 +25,30 @@ class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewM
     lateinit var currencySymbol: String
     lateinit var currencyName: String
     var check :Boolean = true
-//    var btcRate by Delegates.notNull<Double>()
-//    var ethRate by  Delegates.notNull<Double>()
-//    var cryptoClient: CryptoCurrencyService? = null
-//    var btcConversionRates: Btc? = null
-//    var ethConversionRates: Eth? = null
-//    var bundle: Bundle? = null
     var _cryptoCurrencyData =MutableLiveData <List<CryptoCurrencyData>>()
     val  cryptoCurrencyData :LiveData<List<CryptoCurrencyData>>
             get () =repository.observeCryptoRates().switchMap {
 //                 getResult(it)
-                _cryptoCurrencyData.value = getActualDataFromRepositoryData(it)
-                _cryptoCurrencyData
+                 getActualDataFromRepositoryData(it)
+
      }
 //     get() = _cryptoCurrencyData
 
 
-   private fun <T> getActualDataFromRepositoryData(result:Result<T>): T {
+   private fun <T> getActualDataFromRepositoryData(response:Result<T>): LiveData<T> {
+       val result = MutableLiveData<T>()
 
-     return  when(result){
+       result.value=  when(response){
            is Result.Success<T> ->{
-               result.data
+            response.data
+
            }
             else ->throw NoSuchElementException("Expected data wrapped with  ${Result.Success::class.java} class but got $result ")
        }
+       return result
    }
 
-    private fun getResult(cryptoRates:Result<List<CryptoCurrencyData>>):LiveData<List<CryptoCurrencyData>>{
+ /*   private fun getResult(cryptoRates:Result<List<CryptoCurrencyData>>):LiveData<List<CryptoCurrencyData>>{
 
     if(cryptoRates is Result.Success){
         //Todo
@@ -68,7 +65,7 @@ class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewM
     }
          return _cryptoCurrencyData
     }
-
+*/
 
 
 /*     //Gets the list of Data in the database
