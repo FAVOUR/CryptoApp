@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit
 
 
 fun <T> LiveData<T>.getOrAwaitNextValue(
-        time:Long =2 ,
+        time:Long =2L ,
        timeUnit: TimeUnit=TimeUnit.SECONDS,
-        code:()->Unit):T{
+        code:()->Unit={}):T{
 
         val latch = CountDownLatch(1)
          var data_:T? =null
@@ -24,10 +24,20 @@ fun <T> LiveData<T>.getOrAwaitNextValue(
 
         this.observeForever(observer)
 
-        if(!latch.await(time,timeUnit)){
-                code.invoke()
-                this.removeObserver(observer)
-        }
+        try {
 
+
+                code.invoke()
+
+                if (!latch.await(time, timeUnit)) {
+                        this.removeObserver(observer)
+                }
+        }catch (e:Throwable){
+                this.removeObserver(observer)
+
+        }finally {
+                this.removeObserver(observer)
+
+        }
         return data_ as T
 }
