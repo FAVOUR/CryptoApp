@@ -28,5 +28,5 @@ class GetCryptoRateTest {
 
 
 
-
+//    {"BTC":{"RUB":1089805.4},"ETH":{"RUB":31085.57}}
 }
