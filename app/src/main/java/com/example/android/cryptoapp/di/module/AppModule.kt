@@ -83,7 +83,7 @@ class AppModule {
     //Provide an instance of the CurrencyDao
     @Singleton
     @Provides
-    fun provideDispatchersInstance(context: Context): CoroutineDispatcher {
+    fun provideDispatchersInstance( ): CoroutineDispatcher {
 
         return  Dispatchers.IO
 
@@ -96,22 +96,6 @@ class AppModule {
         return retrofit.create(CryptoCurrencyService::class.java)
 
     }
-
-
-//    @Provides
-//    fun providesFactory(creator:MutableMap<Class<out ViewModel>, Provider<ViewModel>>,currencyDao: CurrencyDao,  repository: CryptoRepository): ViewModelProvider.Factory{
-//            return ViewModelFactory(creator,currencyDao,repository)
-//    }
-
-/*
-    //Provide an instance of the CurrencyDao
-    @Singleton
-    @Provides
-    fun provideDispatchersInstance(localCryptoRatesDataSource : LocalCryptoRatesDataSource): CoroutineDispatcher {
-
-        return  Dispatchers.IO
-
-    }*/
 
 
 

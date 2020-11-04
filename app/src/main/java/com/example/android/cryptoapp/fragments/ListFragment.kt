@@ -3,13 +3,10 @@ package com.example.android.cryptoapp.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,23 +14,15 @@ import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter
-import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
-import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
-import com.example.android.cryptoapp.data.source.remote.ApiClient
-import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
-import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
-import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
 import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.domain.model.asDomainModel
 import com.example.android.cryptoapp.viewmodel.ListViewModel
-import com.example.android.cryptoapp.viewmodel.ViewModelFactory
+import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import com.google.gson.Gson
-import com.squareup.moshi.Moshi
 import kotlinx.android.synthetic.main.fragment_list.*
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,7 +55,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
     }
 
     @Inject
-    lateinit var viewModelFactory:ViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
 
     val viewmodel : ListViewModel by viewModels {
 //         val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())

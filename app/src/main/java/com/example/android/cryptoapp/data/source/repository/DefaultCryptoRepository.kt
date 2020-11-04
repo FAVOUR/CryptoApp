@@ -83,7 +83,7 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
             val value:Long =0L
 
          return when (remoteDataSource) {
-                is Result.Success ->
+                is Result.Success -> //Could be  successDOT and the one that finally gets to the viewmodel is now just SUCCESS
                     returnRateSaved{  saveCryptoRate(remoteDataSource.data) }  //Todo Re-evaluate  this approach later
 //                 localCryptoRatesDataSource.getCryptoRateById(id)
 

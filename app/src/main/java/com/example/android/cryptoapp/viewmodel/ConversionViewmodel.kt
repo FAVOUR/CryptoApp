@@ -8,7 +8,7 @@ import java.text.DecimalFormat
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class ConversionViewmodel @Inject constructor(val currencyDao: CurrencyDao, val repository: CryptoRepository):ViewModel() {
+class ConversionViewmodel @Inject constructor( val repository: CryptoRepository):ViewModel() {
 
     var image = 0
     lateinit var currencyAbr: String

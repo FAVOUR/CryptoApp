@@ -14,16 +14,10 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
-import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
-import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
-import com.example.android.cryptoapp.data.source.remote.ApiClient
-import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
-import com.example.android.cryptoapp.data.source.repository.DefaultCryptoRepository
 import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
-import com.example.android.cryptoapp.viewmodel.ViewModelFactory
+import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import com.google.gson.Gson
-import com.squareup.moshi.Moshi
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_conversion.*
@@ -67,7 +61,7 @@ class ConversionFragment : Fragment() {
     lateinit  var picasso:Picasso
 
     @Inject
-    lateinit  var viewModelFactory:ViewModelFactory
+    lateinit  var viewModelFactory: ViewModelFactory
 
     private val viewmodel: ConversionViewmodel by viewModels    {
 //

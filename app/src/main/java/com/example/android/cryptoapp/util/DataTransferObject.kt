@@ -32,3 +32,17 @@ fun JsonResponse?.asDataBaseModel(abbreviation: CurrencyAbbreviation):  CryptoCu
 
 }
 
+  //With this I am rest Assured any dataType can bear "asdatabasemodel" as done with the list and just DTO object suffix
+  fun CryptoCurrencyData.asDataBaseModel(){
+
+  }
+
+
+  //  OR better still you can make T be an interface that must be implemented by all DTO
+   interface DataTransferObject<T> {
+      fun T.asDataBaseModel()
+      fun List<T>.asDataBaseModel()
+
+  }
+
+
