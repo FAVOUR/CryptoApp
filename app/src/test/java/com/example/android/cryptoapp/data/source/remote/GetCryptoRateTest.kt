@@ -1,6 +1,7 @@
 package com.example.android.cryptoapp.data.source.remote
 
 import androidx.test.core.app.ApplicationProvider
+import com.example.android.cryptoapp.util.MockResponseFileReader
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.mockwebserver.MockResponse
@@ -43,8 +44,8 @@ class GetCryptoRateTest {
 
 
     fun makeANetworkRequestAndCheckResult(){
-        val mockServer = MockWebServer().enqueue(MockResponse().setBody(startTrigger("").co))
-
+        val mockServer = MockWebServer().enqueue(MockResponse().setBody(MockResponseFileReader("rates.json").content))
+        
     }
 
 }
