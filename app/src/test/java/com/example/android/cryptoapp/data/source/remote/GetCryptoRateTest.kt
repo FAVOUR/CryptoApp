@@ -45,7 +45,7 @@ class GetCryptoRateTest {
 
     fun makeANetworkRequestAndCheckResult(){
         val mockServer = MockWebServer().enqueue(MockResponse().setBody(MockResponseFileReader("rates.json").content))
-        
+
     }
 
 }
