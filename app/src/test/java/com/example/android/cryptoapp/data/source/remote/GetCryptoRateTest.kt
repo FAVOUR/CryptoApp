@@ -55,13 +55,13 @@ class GetCryptoRateTest {
     @Test
     fun makeANetworkRequestAndCheckResult(){
 //        mockServer.enqueue(MockResponse().setBody(MockResponseFileReader("rates.json").content))
-        mockServer.dispatcher = object : Dispatcher() {
+      /*  mockServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
 
                  return  MockResponse().setStatus("200").setBody(MockResponseFileReader("rates.json").content)
 
             }
-        }
+        }*/
 
     }
 
