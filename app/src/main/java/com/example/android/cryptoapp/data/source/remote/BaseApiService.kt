@@ -11,7 +11,7 @@ import java.lang.Exception
 
 abstract class BaseApiService {
      val  TAG :String = "BaseApiService"
-    protected suspend fun <T:Any> apiCall(networkRequest :suspend  () ->Response<T>):Result<T>{
+    protected suspend fun <T> apiCall(networkRequest :suspend  () ->Response<T>):Result<T>{
 
         val response: Response<T>
         try {
