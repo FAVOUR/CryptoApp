@@ -23,14 +23,12 @@ import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
 
-//class RemoteCryptoRateDataSource @Inject constructor( private val apiClient:ApiClient, private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,val moshi: Moshi):IRemoteCryptoRateDataSource,BaseApiService() {
 class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoCurrencyService, private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,val moshi: Moshi):IRemoteCryptoRateDataSource,BaseApiService() {
     override suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation) = withContext(ioDispatcher) {
     }
 
     override suspend fun getCryptoRates( currencyAbbreviation : Array<out CurrencyAbbreviation?>?): Result<List<CryptoCurrencyData>> = withContext(ioDispatcher) {
        var  result :Result<List<CryptoCurrencyData>>  = Result.Loading //TODO Test to see if there is need for this
-//        val client = apiClient.MainApiClient.client?.create(CryptoCurrencyService::class.java)
         val cryptoList = apiCall { client?.getJsonResponses_(currencyAbbreviation?: arrayOf(CurrencyAbbreviation.NONE))!!  }
 
            //TODO Find out a better way to deal with this the domain model at this stage
