@@ -16,10 +16,7 @@ import javax.inject.Inject
 import kotlin.properties.Delegates
 
 class EditorViewModel @Inject constructor(val repository: CryptoRepository):ViewModel() {
-//    var currencySpinner: Spinner? = null
-//    var cryptoClient: CryptoCurrencyService? = null
-//    var conversionFromBtc: Double by Delegates.notNull<Double>()
-//    var conversionFromEth: Double by Delegates.notNull<Double>()
+
     lateinit var currencyAbr: CurrencyAbbreviation
     lateinit var currencySymbol: CurrencySymbol
     lateinit var _currencyName: String
