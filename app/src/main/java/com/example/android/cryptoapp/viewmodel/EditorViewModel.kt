@@ -31,17 +31,6 @@ class EditorViewModel @Inject constructor(val repository: CryptoRepository):View
        get() = _errorMessage
 
 
-/*
-       fun saveData() = viewModelScope.launch{
-
-//           currencyDao.saveCurrency(CryptoCurrencyData(currencySymbol=currencySymbol.name, currencyName = _currencyName,currencyAbbreviation = currencyAbr.name,
-//                                                        btcRate = conversionFromBtc, ethRate = conversionFromEth,image = image))
-
-               repository.saveCryptoRate(cryptoRateData = CryptoCurrencyData(currencySymbol=currencySymbol.name, currencyName = _currencyName,currencyAbbreviation = currencyAbr.name,
-                                                        btcRate = conversionFromBtc, ethRate = conversionFromEth,image = image))
-       }*/
-
-
 
         fun  getCryptoRate() = viewModelScope.launch {
 //                liveData<Result<Unit>> {
