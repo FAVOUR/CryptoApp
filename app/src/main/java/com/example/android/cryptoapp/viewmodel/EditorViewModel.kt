@@ -33,15 +33,6 @@ class EditorViewModel @Inject constructor(val repository: CryptoRepository):View
 
 
         fun  getCryptoRate() = viewModelScope.launch {
-//                liveData<Result<Unit>> {
-            /*  var rates =  kotlin.runCatching { //Serves same function as try catch
-                repository.getCryptoRate(currencyAbr)
-            }
-                  rates  .onFailure {
-
-               Log.e("yeah " , Gson().toJson(it))
-           }*/  //TODO If you consider this approach then reconsider the need for having loading as part of the sealed class
-//        }
 
             _isLoading.value=true
 
