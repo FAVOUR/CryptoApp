@@ -1,3 +1,4 @@
+/*
 package com.example.android.cryptoapp.viewmodel
 
 import android.util.Log
@@ -36,7 +37,8 @@ class ListViewModelTest{
     }
 
 //    @Test
-  /*  fun  getResult_filterResponse() = runBlocking{
+  */
+/*  fun  getResult_filterResponse() = runBlocking{
     val cryptoData =CryptoCurrencyData(currencyName = "Nigeria", currencyAbbreviation = "NGN",currencySymbol = "",image =12345,btcRate = 3.65,ethRate = 234.56)
 
         listViewModel.addNewData()
@@ -51,6 +53,7 @@ class ListViewModelTest{
 
         assertThat(response.value).isNotEmpty()
 
-    }*/
+    }*//*
 
-}
+
+}*/
