@@ -18,10 +18,6 @@ interface CryptoRepository {
     suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation)
 
     suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation):Result<CryptoCurrencyData>
-//    suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>>
-
-
-//    suspend fun getCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>>
 
     suspend fun deleteCryptoRate(cryptoCurrencyData: CryptoCurrencyData)
 
