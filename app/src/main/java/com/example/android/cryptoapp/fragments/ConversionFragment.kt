@@ -89,7 +89,7 @@ class ConversionFragment : Fragment() {
         check =viewmodel.check
         format = viewmodel.format
         bundle = viewmodel.bundle
-        Log.e("  conversion frag bundle", Gson().toJson(bundle))
+//        Log.e("  conversion frag bundle", Gson().toJson(bundle))
 
           format.isGroupingUsed = true
           format.maximumIntegerDigits = 20
