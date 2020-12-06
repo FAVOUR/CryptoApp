@@ -20,7 +20,6 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
 
     override suspend fun getCryptoRateById(id: Int): Result<CryptoCurrencyData> {
        return localCryptoRatesDataSource.getCryptoRateById(id)
-
     }
 
     override suspend fun saveCryptoRates(cryptoRateData: List<CryptoCurrencyData>) {
