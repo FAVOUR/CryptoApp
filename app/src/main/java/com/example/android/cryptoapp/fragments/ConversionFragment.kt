@@ -20,15 +20,15 @@ import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.fragment_conversion.*
-import kotlinx.android.synthetic.main.fragment_conversion.btc_amount
-import kotlinx.android.synthetic.main.fragment_conversion.btc_exchangerate
-import kotlinx.android.synthetic.main.fragment_conversion.btc_logo
-import kotlinx.android.synthetic.main.fragment_conversion.currency_amount
-import kotlinx.android.synthetic.main.fragment_conversion.currency_image
-import kotlinx.android.synthetic.main.fragment_conversion.eth_amount
-import kotlinx.android.synthetic.main.fragment_conversion.eth_exchangerate
-import kotlinx.android.synthetic.main.fragment_conversion.eth_logo
+//import kotlinx.android.synthetic.main.fragment_conversion.*
+//import kotlinx.android.synthetic.main.fragment_conversion.btc_amount
+//import kotlinx.android.synthetic.main.fragment_conversion.btc_exchangerate
+//import kotlinx.android.synthetic.main.fragment_conversion.btc_logo
+//import kotlinx.android.synthetic.main.fragment_conversion.currency_amount
+//import kotlinx.android.synthetic.main.fragment_conversion.currency_image
+//import kotlinx.android.synthetic.main.fragment_conversion.eth_amount
+//import kotlinx.android.synthetic.main.fragment_conversion.eth_exchangerate
+//import kotlinx.android.synthetic.main.fragment_conversion.eth_logo
 import java.text.DecimalFormat
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -53,6 +53,7 @@ class ConversionFragment : Fragment() {
     private   var bundle: Bundle? = null
     private lateinit var format: DecimalFormat
     private lateinit  var appComponent: AppComponent
+//    private lateinit  var appComponent:
 
     @Inject
     lateinit  var picasso:Picasso
