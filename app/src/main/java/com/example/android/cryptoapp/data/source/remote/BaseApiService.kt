@@ -18,8 +18,9 @@ abstract class BaseApiService {
            response= networkRequest.invoke()
 
         }catch (e:Throwable){
-           Log.e("Tag", Gson().toJson(e.message))
-           return Result.Error( mapResponseThrowable(e))
+//           Log.e("Tag", Gson().toJson(e.message))
+//           return Result.Error( mapResponseThrowable(e))
+           return Result.Error("Error from Server ")
         }
 
        return  if(response.isSuccessful){
