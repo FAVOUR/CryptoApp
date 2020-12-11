@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
+import com.example.android.cryptoapp.databinding.FragmentConversionBinding
 import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
 import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
@@ -53,7 +54,9 @@ class ConversionFragment : Fragment() {
     private   var bundle: Bundle? = null
     private lateinit var format: DecimalFormat
     private lateinit  var appComponent: AppComponent
-//    private lateinit  var appComponent:
+    private lateinit  var _binding : FragmentConversionBinding
+    private val  binding : FragmentConversionBinding
+    get() = _binding
 
     @Inject
     lateinit  var picasso:Picasso
@@ -79,7 +82,8 @@ class ConversionFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_conversion, container, false)
+        _binding= FragmentConversionBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -99,8 +103,8 @@ class ConversionFragment : Fragment() {
 //        currency_amount = currency_amount
 //        btc_amount = btc_amount
 //        eth_amount =eth_amount
-        btc_amount!!.addTextChangedListener(generalWatcher)
-        eth_amount!!.addTextChangedListener(generalWatcher)
+        binding.btcAmount.addTextChangedListener(generalWatcher)
+        binding.ethAmount.addTextChangedListener(generalWatcher)
 
         //TODO this check may be irrelevant
         if (check) {
@@ -126,25 +130,25 @@ class ConversionFragment : Fragment() {
         //Set the currency Image
         picasso.load(image)
                 .transform(CropCircleTransformation())
-                .into(currency_image)
+                .into(binding.currencyImage)
 
         //Set the btc Image
         picasso.load(R.drawable.btc)
                 .transform(CropCircleTransformation())
-                .into(btc_logo)
+                .into(binding.btcLogo)
 
         //Set the eth Image
         picasso.load(R.drawable.eth)
                 .transform(CropCircleTransformation())
-                .into(eth_logo)
+                .into(binding.ethLogo)
 
-        btc_exchangerate!!.text  =    format.format(btcRate)
-        eth_exchangerate!!.text  =    format.format(ethRate)
+        binding.btcExchangerate.text  =    format.format(btcRate)
+        binding.ethExchangerate.text  =    format.format(ethRate)
 
-        currency_symbol!!.text   =     currencySymbol
-        currency_symbol_2!!.text =     currencySymbol
-        abrivation!!.text        =     currencyAbr
-        currency_name!!.text     =     currencyName
+        binding.currencySymbol.text   =     currencySymbol
+        binding.currencySymbol2.text =     currencySymbol
+        binding.abrivation.text        =     currencyAbr
+        binding.currencyName!!.text     =     currencyName
     }
 
 
@@ -157,40 +161,40 @@ class ConversionFragment : Fragment() {
             try {
                 val fBtcValue: Float
                 val sBtcValue: String
-                if (btc_amount!!.text.hashCode() == editable.hashCode()) {
+                if (binding.btcAmount.text.hashCode() == editable.hashCode()) {
                     if (editable.length > 0) {
                         if (ignore) {
-                            eth_amount!!.setText("")
-                            fBtcValue = btc_amount!!.text.toString().trim { it <= ' ' }.toFloat()
+                            binding.ethAmount.setText("")
+                            fBtcValue = binding.btcAmount.text.toString().trim { it <= ' ' }.toFloat()
                             sBtcValue =   format.format(btcRate * fBtcValue)
-                            currency_amount!!.setTextColor(Color.parseColor("#ab7d0b"))
-                            currency_amount!!.text = currencySymbol + sBtcValue
+                            binding.currencySymbol.setTextColor(Color.parseColor("#ab7d0b"))
+                            binding.currencyAmount.text = currencySymbol + sBtcValue
                             return
                         } else {
-                            currency_amount!!.text = ""
+                            binding.currencyAmount.text = ""
                         }
                         ignore = false
                     }
-                } else if (eth_amount!!.text.hashCode() == editable.hashCode()) {
+                } else if (binding.ethAmount.text.hashCode() == editable.hashCode()) {
                     val sEthValue: String
                     if (editable.length > 0) {
                         if (ignore) {
-                            btc_amount!!.setText("")
-                            val fEthValue = eth_amount!!.text.toString().trim { it <= ' ' }.toFloat()
-                            sEthValue =   format!!.format(ethRate!! * fEthValue)
-                            currency_amount!!.setTextColor(Color.parseColor("#5b6abd"))
-                            currency_amount!!.text = currencySymbol + sEthValue
+                            binding.btcAmount.setText("")
+                            val fEthValue = binding.ethAmount.text.toString().trim { it <= ' ' }.toFloat()
+                            sEthValue =   format.format(ethRate * fEthValue)
+                            binding.currencyAmount.setTextColor(Color.parseColor("#5b6abd"))
+                            binding.currencyAmount.text = currencySymbol + sEthValue
                             return
                         } else {
-                            currency_amount!!.text = ""
+                            binding.currencyAmount.text = ""
                         }
                         ignore = false
                     }
                 }
             } catch (e: NumberFormatException) {
-                btc_amount!!.setText("")
-                eth_amount!!.setText("")
-                currency_amount!!.text = ""
+                binding.btcAmount.setText("")
+               binding.ethAmount.setText("")
+               binding.currencyAmount.text = ""
                 Toast.makeText(requireContext(), "You can only Enter Numbers!", Toast.LENGTH_LONG).show()
             }
         }
