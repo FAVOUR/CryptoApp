@@ -20,7 +20,6 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
 
     override suspend fun getCryptoRateById(id: Int): Result<CryptoCurrencyData> {
        return localCryptoRatesDataSource.getCryptoRateById(id)
-
     }
 
     override suspend fun saveCryptoRates(cryptoRateData: List<CryptoCurrencyData>) {
@@ -49,18 +48,11 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
     }*/
 
     override suspend fun deleteCryptoRate(cryptoCurrencyData: CryptoCurrencyData) {
-        TODO("Not yet implemented")
     }
 
     override suspend fun deleteAllCurrencyRate() {
-        TODO("Not yet implemented")
     }
 
-
-//    private suspend fun UpdateCryptoRatesFromRemoteDateSource(){
-//
-//     val remoteDataSource = remoteCryptoRateDataSource.getCryptoRate()
-//    }
 
 
     private suspend fun fetchCryptoRatesFromRemoteDataSource(isRefresh: Boolean,vararg currencyAbbreviation :CurrencyAbbreviation):Result<List<CryptoCurrencyData>>{

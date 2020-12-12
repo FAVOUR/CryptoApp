@@ -31,10 +31,14 @@ android {
         includeAndroidResources =true
 //        returnDefaultValues=true
     }
+        buildFeatures{
+            viewBinding true
+            dataBinding true
 
-    dataBinding {
-        enabled = true
-    }
+        }
+//    dataBinding {
+//        enabled = true
+//    }
 //    kotlin
     buildTypes {
         release {
@@ -87,7 +91,8 @@ dependencies {
 
 
 //    Okhttp-Interceptor
-    implementation "com.squareup.okhttp3:logging-interceptor:4.0.1"
+//    implementation "com.squareup.okhttp3:logging-interceptor:4.0.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.8.0"
 
 
 
@@ -162,8 +167,12 @@ dependencies {
     //Mockito
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation 'org.mockito:mockito-inline:2.13.0'
+     //okhttp for the sake of the mock server
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
+//    testImplementation 'com.squareup.okhttp3:mockwebserver:4.3.1'
 
-
+//     MockServer
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.0")
     //Roboelectric
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
 

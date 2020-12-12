@@ -25,10 +25,8 @@ class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewM
     lateinit var currencySymbol: String
     lateinit var currencyName: String
     var check :Boolean = true
-//    var _cryptoCurrencyData =MutableLiveData <List<CryptoCurrencyData>>()
     val  cryptoCurrencyData :LiveData<List<CryptoCurrencyData>>
             get () =repository.observeCryptoRates().switchMap {
-//                 getResult(it)
                  getActualDataFromRepositoryData(it)
 
      }

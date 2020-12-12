@@ -16,10 +16,7 @@ import javax.inject.Inject
 import kotlin.properties.Delegates
 
 class EditorViewModel @Inject constructor(val repository: CryptoRepository):ViewModel() {
-//    var currencySpinner: Spinner? = null
-//    var cryptoClient: CryptoCurrencyService? = null
-//    var conversionFromBtc: Double by Delegates.notNull<Double>()
-//    var conversionFromEth: Double by Delegates.notNull<Double>()
+
     lateinit var currencyAbr: CurrencyAbbreviation
     lateinit var currencySymbol: CurrencySymbol
     lateinit var _currencyName: String
@@ -34,28 +31,8 @@ class EditorViewModel @Inject constructor(val repository: CryptoRepository):View
        get() = _errorMessage
 
 
-/*
-       fun saveData() = viewModelScope.launch{
-
-//           currencyDao.saveCurrency(CryptoCurrencyData(currencySymbol=currencySymbol.name, currencyName = _currencyName,currencyAbbreviation = currencyAbr.name,
-//                                                        btcRate = conversionFromBtc, ethRate = conversionFromEth,image = image))
-
-               repository.saveCryptoRate(cryptoRateData = CryptoCurrencyData(currencySymbol=currencySymbol.name, currencyName = _currencyName,currencyAbbreviation = currencyAbr.name,
-                                                        btcRate = conversionFromBtc, ethRate = conversionFromEth,image = image))
-       }*/
-
-
 
         fun  getCryptoRate() = viewModelScope.launch {
-//                liveData<Result<Unit>> {
-            /*  var rates =  kotlin.runCatching { //Serves same function as try catch
-                repository.getCryptoRate(currencyAbr)
-            }
-                  rates  .onFailure {
-
-               Log.e("yeah " , Gson().toJson(it))
-           }*/  //TODO If you consider this approach then reconsider the need for having loading as part of the sealed class
-//        }
 
             _isLoading.value=true
 
