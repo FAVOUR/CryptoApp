@@ -65,11 +65,6 @@ class ConversionFragment : Fragment() {
     lateinit  var viewModelFactory: ViewModelFactory
 
     private val viewmodel: ConversionViewmodel by viewModels    {
-//
-//        val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
-//        val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
-//
-//        ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(), DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource))
         viewModelFactory
     }
 
