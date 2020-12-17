@@ -1,11 +1,10 @@
-package com.example.android.cryptoapp.fragments
+package com.example.android.cryptoapp.ui.fragments
 
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,6 @@ import com.example.android.cryptoapp.databinding.FragmentConversionBinding
 import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
 import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
-import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 //import kotlinx.android.synthetic.main.fragment_conversion.*
