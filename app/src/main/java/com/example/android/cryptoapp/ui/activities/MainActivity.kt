@@ -1,9 +1,9 @@
-package com.example.android.cryptoapp.activities
+package com.example.android.cryptoapp.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.android.cryptoapp.R
-import com.example.android.cryptoapp.fragments.ListFragment
+import com.example.android.cryptoapp.ui.fragments.ListFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
