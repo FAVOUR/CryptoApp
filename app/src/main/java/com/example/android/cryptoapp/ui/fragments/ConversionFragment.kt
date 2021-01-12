@@ -87,15 +87,11 @@ class ConversionFragment : Fragment() {
         check =viewmodel.check
         format = viewmodel.format
         bundle = viewmodel.bundle
-//        Log.e("  conversion frag bundle", Gson().toJson(bundle))
 
           format.isGroupingUsed = true
           format.maximumIntegerDigits = 20
           format.maximumFractionDigits = 3
 
-//        currency_amount = currency_amount
-//        btc_amount = btc_amount
-//        eth_amount =eth_amount
         binding.btcAmount.addTextChangedListener(generalWatcher)
         binding.ethAmount.addTextChangedListener(generalWatcher)
 
