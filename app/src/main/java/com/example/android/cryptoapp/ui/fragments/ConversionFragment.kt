@@ -32,8 +32,6 @@ import java.text.DecimalFormat
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-
-
 /**
  * A simple [Fragment] subclass.
  * Use the [ConversionFragment.newInstance] factory method to
