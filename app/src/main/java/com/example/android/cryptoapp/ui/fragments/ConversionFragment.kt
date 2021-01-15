@@ -185,6 +185,6 @@ class ConversionFragment : Fragment() {
                 Toast.makeText(requireContext(), "You can only Enter Numbers!", Toast.LENGTH_LONG).show()
             }
         }
-    } //    //addCurrency button
+    }
 
 }
