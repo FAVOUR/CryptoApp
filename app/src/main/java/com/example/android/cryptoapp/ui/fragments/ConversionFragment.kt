@@ -39,8 +39,8 @@ import kotlin.properties.Delegates
  */
 class ConversionFragment : Fragment() {
 
-       var image :Int by Delegates.notNull<Int>()
-      private var check by Delegates.notNull<Boolean>()
+    var image :Int by Delegates.notNull<Int>()
+    private var check by Delegates.notNull<Boolean>()
     private var currencyAbr: String  by Delegates.notNull<String>()
     private var currencySymbol: String by  Delegates.notNull<String>()
     private var currencyName: String  by  Delegates.notNull<String>()
