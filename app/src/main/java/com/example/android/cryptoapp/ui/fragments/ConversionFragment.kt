@@ -81,9 +81,9 @@ class ConversionFragment : Fragment() {
 
         viewmodel.bundle = requireArguments()
 
-        check =viewmodel.check
-        format = viewmodel.format
-        bundle = viewmodel.bundle
+          check =viewmodel.check
+           format = viewmodel.format
+           bundle = viewmodel.bundle
 
           format.isGroupingUsed = true
           format.maximumIntegerDigits = 20
