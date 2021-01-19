@@ -79,7 +79,7 @@ class ConversionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewmodel.bundle = requireArguments()
+          viewmodel.bundle = requireArguments()
 
           check =viewmodel.check
            format = viewmodel.format
