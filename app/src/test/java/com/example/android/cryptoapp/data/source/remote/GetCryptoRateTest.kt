@@ -44,7 +44,6 @@ class GetCryptoRateTest {
     }
 
 
-
     @Test
     fun checkMockSever (){
 
