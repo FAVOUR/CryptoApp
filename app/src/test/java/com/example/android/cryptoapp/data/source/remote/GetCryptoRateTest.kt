@@ -26,6 +26,7 @@ class GetCryptoRateTest {
 
         mockServer.start(8080)
 
+
 //        val moshi =Moshi.Builder()
 //                .add(KotlinJsonAdapterFactory())
 //                .build()
