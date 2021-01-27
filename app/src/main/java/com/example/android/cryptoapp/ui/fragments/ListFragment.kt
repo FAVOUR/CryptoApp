@@ -14,6 +14,7 @@ import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter
+import com.example.android.cryptoapp.databinding.FragmentListBinding
 import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.domain.model.asDomainModel
 import com.example.android.cryptoapp.viewmodel.ListViewModel
@@ -76,10 +77,10 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_list, container, false)
+        val view = FragmentListBinding.inflate(inflater, container, false)
 
 
-        return   view
+        return   view.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
