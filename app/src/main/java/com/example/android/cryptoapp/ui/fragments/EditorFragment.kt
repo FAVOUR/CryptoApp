@@ -31,7 +31,6 @@ import javax.inject.Inject
  */
 class EditorFragment : DialogFragment() {
 
-
     private lateinit  var appComponent: AppComponent
 
 
