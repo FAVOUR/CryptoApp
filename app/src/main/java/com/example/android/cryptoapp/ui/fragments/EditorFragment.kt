@@ -140,6 +140,8 @@ class EditorFragment : DialogFragment() {
 //       fun data (bundle: Bundle)
 //    }
 
+
+
 /*
     fun addCurrency() {
 //        loading!!.visibility = View.VISIBLE
