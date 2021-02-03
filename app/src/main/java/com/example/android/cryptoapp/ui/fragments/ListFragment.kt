@@ -104,15 +104,11 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                 val data = cryptoCurrencyData.asDomainModel()
                 resultAdapter.add(data)
             }
-//            for (it in cryptoCurrencyData) {
-//                results.add(CryptoCurrencyRates(it.image, it.btcRate, it.ethRate, it.currencyName, it.currencyAbbreviation, it.currencySymbol))
-//            }
-//            resultAdapter!!.notifyItemChanged(results.size)
+
         })
 
 
 
-//        viewmodel.cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
     }
 
 
