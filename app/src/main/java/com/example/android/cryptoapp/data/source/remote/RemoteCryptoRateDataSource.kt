@@ -52,13 +52,13 @@ class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoC
         var  result :Result<CryptoCurrencyData>  = Result.Loading //Workout to see that loading is emitted first before other options in the sealed class
         val client = ApiClient.MainApiClient.client?.create(CryptoCurrencyService::class.java)
         val cryptoList = apiCall { client?.getJsonResponse_(currencyAbbreviation.abbr)!!}
-        Timber.e(Gson().toJson(cryptoList))
+//        Timber.e(Gson().toJson(cryptoList))
 
         //Make this process  a higher order function so that this will not be done over and over again for every network call
         //TODO Find out a better way to deal with this the domain model at this stage
         result = when(cryptoList){
             is Result.Success->{
-                 Timber.d(Gson().toJson(cryptoList.data))
+//                 Timber.d(Gson().toJson(cryptoList.data))
                 //With this You can now use DataTransferObject<T> in for example getCryptoRate() method do the database conversion
                 //So if that class does not extend this object do not border to convert to database model as the data us not needed by the database
                 //You may want to create an interface that the datamodel must extend for the sake of converting to Domain object. or may stick to something like the current

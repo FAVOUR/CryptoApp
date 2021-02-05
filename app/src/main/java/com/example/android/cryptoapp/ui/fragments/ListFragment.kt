@@ -3,6 +3,7 @@ package com.example.android.cryptoapp.ui.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
@@ -51,19 +52,12 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
     val viewmodel : ListViewModel by viewModels {
-//         val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
-//         val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
-//
-//         ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(),DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource))
-//
         viewModelFactory
      }
 
@@ -102,6 +96,8 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
             Timber.e(Gson().toJson(cryptoCurrencyData))
             if(cryptoCurrencyData !=null) {
                 val data = cryptoCurrencyData.asDomainModel()
+
+                Log.e("data", Gson().toJson(data))
                 resultAdapter.add(data)
             }
 

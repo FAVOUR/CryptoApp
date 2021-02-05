@@ -24,7 +24,8 @@ interface CurrencyDao {
     @Delete
     fun deleteCryptoRate(cryptoCurrencyData: CryptoCurrencyData)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend  fun saveCryptoCurrencyRate(cryptoCurrencyData: CryptoCurrencyData):Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
