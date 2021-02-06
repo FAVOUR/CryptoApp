@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter.RatesViewHolder
+import com.example.android.cryptoapp.databinding.RatesRowItemsBinding
 import com.google.gson.Gson
 import java.text.DecimalFormat
 
@@ -29,10 +32,10 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatesViewHolder {
 
-        val layoutResourceId = R.layout.rates_row_items
+//        val layoutResourceBinding = RatesRowItemsBinding.
         val getCurrentContext = parent.context
         val layoutInflater = LayoutInflater.from(getCurrentContext)
-        val newViewHolder = layoutInflater.inflate(layoutResourceId, parent, false)
+        val newViewHolder:RatesRowItemsBinding  = DataBindingUtil.inflate(layoutInflater,R.layout.rates_row_items, parent, false)
         return RatesViewHolder(newViewHolder)
     }
 
@@ -58,7 +61,7 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
         fun onListItemClicked(result: CryptoCurrencyRates)
     }
 
-    inner class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class RatesViewHolder(val binding: RatesRowItemsBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         fun bind(listIndex: Int) {
             var format: DecimalFormat? = null
             format = DecimalFormat()
@@ -66,13 +69,14 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
             format.maximumIntegerDigits = 10
             format.maximumFractionDigits = 3
 
-            exchangeRate_1.setText(format.format(mResults[listIndex].firstExRate))
-            currencySymbol_1.setText(mResults[listIndex].symbol)
-            exchangeRate_2.setText(format.format(mResults[listIndex].secondExRate))
-            currencySymbol_2.setText(mResults[listIndex].symbol)
-            currencyAbr.setText(mResults[listIndex].abbrivation)
-            currencyImage?.setImageResource(mResults[listIndex].image)
-            currencyName.setText(mResults[listIndex].name)
+            binding.btcResult.text=(format.format(mResults[listIndex].firstExRate))
+            binding.currencySymbol.text=(mResults[listIndex].symbol)
+            binding.ethResult.text=(format.format(mResults[listIndex].secondExRate))
+            binding.currencySymbol1.text=(mResults[listIndex].symbol)
+            binding.currencyAbr.text=(mResults[listIndex].abbrivation)
+            binding.currencyImage?.setImageResource(mResults[listIndex].image)
+            binding.currencyName.text=(mResults[listIndex].name)
+
         }
 
         override fun onClick(view: View) {
@@ -89,13 +93,6 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
             Log.e("Init",  "Here ")
 
             itemView.setOnClickListener(this)
-            exchangeRate_1 = itemView.findViewById<View>(R.id.btc_result) as TextView
-            currencyAbr = itemView.findViewById<View>(R.id.currency_abr) as TextView
-            currencyImage = itemView.findViewById<View>(R.id.currency_image) as ImageView
-            currencyName = itemView.findViewById<View>(R.id.currency_name) as TextView
-            currencySymbol_1 = itemView.findViewById<View>(R.id.currency_symbol) as TextView
-            exchangeRate_2 = itemView.findViewById<View>(R.id.eth_result) as TextView
-            currencySymbol_2 = itemView.findViewById<View>(R.id.currency_symbol_1) as TextView
 
              mOnClickedListiner =mListItemClickListiner
 
