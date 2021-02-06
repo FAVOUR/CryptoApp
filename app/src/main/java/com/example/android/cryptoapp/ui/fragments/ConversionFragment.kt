@@ -32,8 +32,6 @@ import java.text.DecimalFormat
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-
-
 /**
  * A simple [Fragment] subclass.
  * Use the [ConversionFragment.newInstance] factory method to
@@ -41,9 +39,8 @@ import kotlin.properties.Delegates
  */
 class ConversionFragment : Fragment() {
 
-       var image :Int by Delegates.notNull<Int>()
-      private var check by Delegates.notNull<Boolean>()
-
+    var image :Int by Delegates.notNull<Int>()
+    private var check by Delegates.notNull<Boolean>()
     private var currencyAbr: String  by Delegates.notNull<String>()
     private var currencySymbol: String by  Delegates.notNull<String>()
     private var currencyName: String  by  Delegates.notNull<String>()
@@ -73,6 +70,7 @@ class ConversionFragment : Fragment() {
         val conversionFragment = appComponent.create(this)
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         _binding= FragmentConversionBinding.inflate(inflater,container,false)
@@ -82,20 +80,16 @@ class ConversionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewmodel.bundle = requireArguments()
+          viewmodel.bundle = requireArguments()
 
-        check =viewmodel.check
-        format = viewmodel.format
-        bundle = viewmodel.bundle
-//        Log.e("  conversion frag bundle", Gson().toJson(bundle))
+          check =viewmodel.check
+           format = viewmodel.format
+           bundle = viewmodel.bundle
 
           format.isGroupingUsed = true
           format.maximumIntegerDigits = 20
           format.maximumFractionDigits = 3
 
-//        currency_amount = currency_amount
-//        btc_amount = btc_amount
-//        eth_amount =eth_amount
         binding.btcAmount.addTextChangedListener(generalWatcher)
         binding.ethAmount.addTextChangedListener(generalWatcher)
 
@@ -191,6 +185,6 @@ class ConversionFragment : Fragment() {
                 Toast.makeText(requireContext(), "You can only Enter Numbers!", Toast.LENGTH_LONG).show()
             }
         }
-    } //    //addCurrency button
+    }
 
 }

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.currency_data.*
+import com.example.android.cryptoapp.databinding.FragmentEditorBinding
 import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.util.*
 import com.example.android.cryptoapp.viewmodel.EditorViewModel
@@ -29,9 +30,6 @@ import javax.inject.Inject
  * create an instance of this fragment.
  */
 class EditorFragment : DialogFragment() {
-
-
-
 
     private lateinit  var appComponent: AppComponent
 
@@ -62,8 +60,8 @@ class EditorFragment : DialogFragment() {
 
 
 
-        val view =  inflater.inflate(R.layout.fragment_editor, container, false)
-        return view
+        val view =  FragmentEditorBinding.inflate(inflater, container, false)
+        return view.root
     }
 
 
@@ -141,6 +139,8 @@ class EditorFragment : DialogFragment() {
 //    interface OnDataGotten{
 //       fun data (bundle: Bundle)
 //    }
+
+
 
 /*
     fun addCurrency() {

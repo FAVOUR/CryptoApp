@@ -3,6 +3,7 @@ package com.example.android.cryptoapp.ui.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
@@ -14,6 +15,7 @@ import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter
+import com.example.android.cryptoapp.databinding.FragmentListBinding
 import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.domain.model.asDomainModel
 import com.example.android.cryptoapp.viewmodel.ListViewModel
@@ -50,19 +52,12 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
     val viewmodel : ListViewModel by viewModels {
-//         val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
-//         val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
-//
-//         ViewModelFactory(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao(),DefaultCryptoRepository(localCryptoRatesDataSource = localDataSource,remoteCryptoRateDataSource = remoteDataSource))
-//
         viewModelFactory
      }
 
@@ -76,10 +71,10 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_list, container, false)
+        val view = FragmentListBinding.inflate(inflater, container, false)
 
 
-        return   view
+        return   view.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -101,17 +96,15 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
             Timber.e(Gson().toJson(cryptoCurrencyData))
             if(cryptoCurrencyData !=null) {
                 val data = cryptoCurrencyData.asDomainModel()
+
+                Log.e("data", Gson().toJson(data))
                 resultAdapter.add(data)
             }
-//            for (it in cryptoCurrencyData) {
-//                results.add(CryptoCurrencyRates(it.image, it.btcRate, it.ethRate, it.currencyName, it.currencyAbbreviation, it.currencySymbol))
-//            }
-//            resultAdapter!!.notifyItemChanged(results.size)
+
         })
 
 
 
-//        viewmodel.cryptoClient = ApiClient.client?.create(CryptoCurrencyService::class.java)
     }
 
 
