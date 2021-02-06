@@ -5,7 +5,7 @@ import com.example.android.cryptoapp.data.source.local.db.CurrencyDao
 import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
 import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
 import com.example.android.cryptoapp.di.module.viewmodel.ViewModelModule
-import com.example.android.cryptoapp.util.Constants
+import com.example.android.cryptoapp.util.Helpers
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.picasso.Picasso
@@ -65,7 +65,7 @@ class AppModule {
     fun provideRetrofitInstance(moshi:Moshi,okHttpClient: OkHttpClient): Retrofit {
 
         return Retrofit.Builder()
-                .baseUrl(Constants.CRYPTOCOMPARE_BASE_URL)
+                .baseUrl(Helpers.CRYPTOCOMPARE_BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .client(okHttpClient)
                 .build()
