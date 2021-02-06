@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
        <data>
            <variable
                name="viewmodel"
                type="com.example.android.cryptoapp.viewmodel.ListViewModel" />
+           <variable
+               name="cryptoData"
+               type="com.example.android.cryptoapp.domain.model.CryptoCurrencyRates" />
+            <import
+                type="com.example.android.cryptoapp.util.Helpers" alias="Helpers" />
        </data>
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
@@ -40,8 +45,9 @@
                     android:id="@+id/currency_image"
                     android:layout_width="wrap_content"
                     android:layout_height="62dp"
-                    />
-<!--                tools:src="@drawable/hdk"-->
+                    tools:src="@drawable/hdk"
+                    app:currencyLogo="@{ cryptoData.image}"
+                />
 
                 <TextView
                     android:id="@+id/currency_abr"
@@ -51,6 +57,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="15dp"
                     android:textColor="#000000"
+                    android:text="@{cryptoData.abbrivation}"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="BTC " />
@@ -63,6 +70,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/currency_image"
                     tools:text="BitCoin"
+                    android:text="@{cryptoData.name}"
+
                     android:textStyle="bold|italic"/>
             </RelativeLayout>
 
@@ -70,9 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-
-                >
+                android:layout_gravity="center_vertical">
 
                 <ImageView
                     android:id="@+id/btc_image"
@@ -96,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/currency_symbol"
                     tools:text="6,78989076.890"
+                    android:text="@{Helpers.formatAndReturnString (cryptoData.firstExRate)}"
                     android:textColor="#ab7d0b"
                     android:layout_alignBaseline="@+id/btc_image"
                     />
@@ -106,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_toRightOf="@id/base_currency"
-                    android:text="BTC "
+                    android:text="@{cryptoData.symbol}"
                     android:textColor="#ab7d0b"
                     android:layout_marginRight="2dp"
                     />
@@ -135,6 +143,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     tools:text="56789"
+                    android:text="@{Helpers.formatAndReturnString (cryptoData.secondExRate)}"
                     android:textColor="#5b6abd"
                     android:layout_below="@+id/btc_image"
                     android:layout_toRightOf="@+id/currency_symbol_1"/>
@@ -148,12 +157,10 @@
                     android:layout_toRightOf="@id/base_currency_1"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="ETH"
+                    android:text="@{cryptoData.symbol}"
+
                     android:textColor="#5b6abd"
-                    />
-
-
-
+                    />  // android:text="ETH"
             </RelativeLayout>
         </LinearLayout>
 
