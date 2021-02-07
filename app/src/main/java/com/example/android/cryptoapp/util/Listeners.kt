@@ -10,6 +10,6 @@ class Listeners {
 
 
     interface LongItemClickedListener{
-        fun onLongItemClickedListener(itemId:Long)
+        fun onLongItemClickedListener(result: CryptoCurrencyRates)
     }
 }
