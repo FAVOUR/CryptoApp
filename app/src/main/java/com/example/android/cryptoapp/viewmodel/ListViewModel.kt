@@ -7,7 +7,9 @@ import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
 import com.example.android.cryptoapp.data.source.repository.CryptoRepository
+import com.example.android.cryptoapp.domain.model.asDBModel
 import com.example.android.cryptoapp.util.Result
+import kotlinx.coroutines.launch
 import java.lang.Error
 import javax.inject.Inject
 
@@ -33,6 +35,7 @@ class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewM
 //     get() = _cryptoCurrencyData
 
 
+
    private fun <T> getActualDataFromRepositoryData(response:Result<T>): LiveData<T> {
        val result = MutableLiveData<T>()
 
@@ -45,6 +48,14 @@ class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewM
        }
        return result
    }
+
+     fun deleteRates(result: CryptoCurrencyRates){
+         viewModelScope.launch {
+        repository.deleteCryptoRate(result.asDBModel())
+     }
+    }
+
+
 
 /*    fun addNewData() {
         val cryptoData =CryptoCurrencyData(currencyName = "Nigeria", currencyAbbreviation = "NGN",currencySymbol = "",image =12345,btcRate = 3.65,ethRate = 234.56)
