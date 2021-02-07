@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class CryptoCurrencyData (
 
     @PrimaryKey(autoGenerate = true)
-    var  id:Int=0,
+    var  id:Long=0,
     @ColumnInfo(name = "Name")
     var currencyName:String="N/A",
     @ColumnInfo(name= "Abbreviation")
