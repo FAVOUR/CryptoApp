@@ -1,5 +1,7 @@
 package com.example.android.cryptoapp.domain.model
 
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
 
 
@@ -16,3 +18,11 @@ data class CryptoCurrencyRates(var  id:Long, val image: Int, val firstExRate: Do
         }
 
     }
+
+
+    fun  CryptoCurrencyRates.asDBModel():CryptoCurrencyData{
+
+    return CryptoCurrencyData(id = id,image = image,btcRate =  firstExRate,ethRate =  secondExRate, currencyName = name, currencyAbbreviation = abbrivation, currencySymbol = symbol)
+
+
+}
