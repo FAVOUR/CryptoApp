@@ -4,25 +4,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter.RatesViewHolder
 import com.example.android.cryptoapp.databinding.RatesRowItemsBinding
-import com.example.android.cryptoapp.util.Helpers.formatAndReturnString
+import com.example.android.cryptoapp.util.Listeners.*
 import com.google.gson.Gson
-import java.text.DecimalFormat
 
 
 //class RatesAdapter(private val mContext: Context, private val mResults: MutableList<Results>, private val mOnClickedListiner: ListItemClickListiner) : RecyclerView.Adapter<Rates_ViewHoler>() {
-class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, private  val mListItemClickListiner :ListItemClickListiner) : RecyclerView.Adapter<RatesViewHolder>() {
+class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, private  val listItemClickListener :ListItemClickListiner, private val longClickListener : LongItemClickedListener) : RecyclerView.Adapter<RatesViewHolder>() {
     private var clickedPosition = 0
-    private lateinit var mOnClickedListiner: ListItemClickListiner
-
+    private lateinit var onClickedListiner: ListItemClickListiner
+    private lateinit var onLonglickListener: LongItemClickedListener
+    init {
+        onClickedListiner =listItemClickListener
+        onLonglickListener =longClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatesViewHolder {
 
@@ -52,11 +52,16 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
         return mResults.size
     }
 
-    interface ListItemClickListiner {
-        fun onListItemClicked(result: CryptoCurrencyRates)
-    }
 
-    inner class RatesViewHolder(val binding: RatesRowItemsBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+    inner class RatesViewHolder(val binding: RatesRowItemsBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener,View.OnLongClickListener {
+
+        init {
+
+            binding.root.setOnClickListener(this)
+            binding.root.setOnLongClickListener(this)
+        }
+
         fun bind(listIndex: Int) {
 
 
@@ -75,26 +80,35 @@ class RatesAdapter(private val mResults: MutableList<CryptoCurrencyRates>, priva
 
         override fun onClick(view: View) {
 
-//         Set the body of the function to get the position which is the item that was clicked
+//         Set the function [getAdapterPosition] to get the position which is the item that was clicked
             clickedPosition = adapterPosition
 
 
 //        This invokes the onclick listener of the other class by passing clickedPosition value
-            mOnClickedListiner.onListItemClicked(mResults[clickedPosition])
+            onClickedListiner.onListItemClicked(mResults[clickedPosition])
         }
 
-        init {
+        override fun onLongClick(v: View?): Boolean {
+            Log.e(" mResults.size",  " >>>>>>>>")
 
-            var format: DecimalFormat = DecimalFormat()
-            format.isGroupingUsed = true
-            format.maximumIntegerDigits = 10
-            format.maximumFractionDigits = 3
 
-            itemView.setOnClickListener(this)
+//         Set the function [getAdapterPosition] to get the position which is the item that was clicked
+            clickedPosition = adapterPosition
 
-             mOnClickedListiner =mListItemClickListiner
+            //  This invokes the onclick listener of the other class by passing clickedPosition value
+            onLonglickListener.onLongItemClickedListener(mResults[clickedPosition])
+
+            //Instructs the listener to listen no more
+           return true
         }
+
+
     }
+
+
+
+
+
 
     //adds data for the adapter to utilize
     fun add(results: List<CryptoCurrencyRates>) {

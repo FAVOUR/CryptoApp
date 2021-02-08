@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -17,7 +18,9 @@ import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 import com.example.android.cryptoapp.adapter.RatesAdapter
 import com.example.android.cryptoapp.databinding.FragmentListBinding
 import com.example.android.cryptoapp.di.component.AppComponent
-import com.example.android.cryptoapp.domain.model.asDomainModel
+import com.example.android.cryptoapp.domain.model.asDBModel
+import com.example.android.cryptoapp.domain.model.asUIModel
+import com.example.android.cryptoapp.util.Listeners.*
 import com.example.android.cryptoapp.viewmodel.ListViewModel
 import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import com.google.gson.Gson
@@ -37,7 +40,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 //class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragment.OnDataGotten {
-class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
+class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
 
     lateinit var resultAdapter: RatesAdapter
     var layoutManager: LinearLayoutManager? = null
@@ -85,8 +88,7 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
         layoutManager = LinearLayoutManager(requireContext())
         results = ArrayList()
         soFar = ArrayList()
-//        resultAdapter = RatesAdapter(applicationContext, results, this@ListActivity)
-        resultAdapter = RatesAdapter(results,this)
+        resultAdapter = RatesAdapter(results,this,this)
         rv_members!!.layoutManager = layoutManager
         rv_members!!.adapter = resultAdapter
 
@@ -95,9 +97,9 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
 
             Timber.e(Gson().toJson(cryptoCurrencyData))
             if(cryptoCurrencyData !=null) {
-                val data = cryptoCurrencyData.asDomainModel()
+                val data = cryptoCurrencyData.asUIModel()
 
-                Log.e("data", Gson().toJson(data))
+//                Log.e("data", Gson().toJson(data))
                 resultAdapter.add(data)
             }
 
@@ -173,6 +175,11 @@ class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner {
                     .commit()
 
         }
+    }
+
+    override fun onLongItemClickedListener(result: CryptoCurrencyRates) {
+      Toast.makeText(activity,Gson().toJson(result),Toast.LENGTH_SHORT).show()
+        viewmodel.deleteRates(result)
     }
 
 //    override fun data(bundle: Bundle) {
