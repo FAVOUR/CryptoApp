@@ -6,6 +6,7 @@ import java.text.DecimalFormat
 
 object Helpers {
      const val CRYPTOCOMPARE_BASE_URL = "https://min-api.cryptocompare.com/data/"
+     const val DATA = "data"
 
      @JvmStatic
      fun formatAndReturnString(data :Double): String {
