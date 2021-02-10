@@ -15,6 +15,8 @@ import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.databinding.FragmentConversionBinding
 import com.example.android.cryptoapp.di.component.AppComponent
+import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
+import com.example.android.cryptoapp.util.Helpers.DATA
 import com.example.android.cryptoapp.viewmodel.ConversionViewmodel
 import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import com.squareup.picasso.Picasso
@@ -97,12 +99,23 @@ class ConversionFragment : Fragment() {
         if (check) {
 
         //  TODO Consider using a switch statement instead of the boring initialization of classes
-            viewmodel.image = bundle!!.getInt("image")
-            viewmodel.btcRate = bundle!!.getDouble("btcRate")
-            viewmodel.currencyAbr = bundle?.getString("currencyAbr") ?: ""
-            viewmodel.currencySymbol = bundle?.getString("currencySymbol") ?: ""
-            viewmodel.currencyName = bundle?.getString("currencyName") ?: ""
-            viewmodel.ethRate = bundle?.getDouble("ethRate") ?: 0.00
+
+//            viewmodel.image = bundle!!.getInt("image")
+//            viewmodel.btcRate = bundle!!.getDouble("btcRate")
+//            viewmodel.currencyAbr = bundle?.getString("currencyAbr") ?: ""
+//            viewmodel.currencySymbol = bundle?.getString("currencySymbol") ?: ""
+//            viewmodel.currencyName = bundle?.getString("currencyName") ?: ""
+//            viewmodel.ethRate = bundle?.getDouble("ethRate") ?: 0.00
+
+            //Pass the data to viewmodel and do the population in the viewmodel class
+           var  cryptoRatesData = bundle!!.getParcelable(DATA) as CryptoCurrencyRates
+
+            viewmodel.image = cryptoRatesData.image
+            viewmodel.btcRate = cryptoRatesData.firstExRate
+            viewmodel.currencyAbr = cryptoRatesData.abbrivation
+            viewmodel.currencySymbol =cryptoRatesData.symbol
+            viewmodel.currencyName = cryptoRatesData.name
+            viewmodel.ethRate = cryptoRatesData.secondExRate
 
 
             image = viewmodel.image
@@ -114,6 +127,7 @@ class ConversionFragment : Fragment() {
             check = viewmodel.check
         }
 
+        //TODO Adapters are ready the only constrain is to know how to use databinding with BindingAdapters
         //Set the currency Image
         picasso.load(image)
                 .transform(CropCircleTransformation())
