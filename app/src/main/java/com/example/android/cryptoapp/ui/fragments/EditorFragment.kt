@@ -19,7 +19,6 @@ import com.example.android.cryptoapp.di.component.AppComponent
 import com.example.android.cryptoapp.util.*
 import com.example.android.cryptoapp.viewmodel.EditorViewModel
 import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_editor.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -37,6 +36,8 @@ class EditorFragment : DialogFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+
+    lateinit var binding: FragmentEditorBinding
     // activity-ktx artifact
     private val viewmodel: EditorViewModel by viewModels{
 //        val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
@@ -60,8 +61,8 @@ class EditorFragment : DialogFragment() {
 
 
 
-        val view =  FragmentEditorBinding.inflate(inflater, container, false)
-        return view.root
+         binding =  FragmentEditorBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 
@@ -80,7 +81,7 @@ class EditorFragment : DialogFragment() {
 
 
         spinnerForCurrency()
-        ExchangeRateBTN.setOnClickListener {
+        binding.ExchangeRateBTN.setOnClickListener {
             addCurrency()
         }
     }
@@ -89,11 +90,11 @@ class EditorFragment : DialogFragment() {
         viewmodel.isLoading.observe(viewLifecycleOwner, Observer { isMakingNetworkRequest ->
             Timber.e(isMakingNetworkRequest.toString())
             if (isMakingNetworkRequest) {
-                pbloading.visibility = View.VISIBLE
-                textView.visibility = View.VISIBLE
+                binding.pbloading.visibility = View.VISIBLE
+                binding.textView.visibility = View.VISIBLE
             } else {
-                pbloading.visibility = View.GONE
-                textView.visibility = View.GONE
+                binding.pbloading.visibility = View.GONE
+                binding. textView.visibility = View.GONE
                 dismiss()
             }
         })
@@ -112,11 +113,11 @@ class EditorFragment : DialogFragment() {
 
         // Apply the Adapter to the spinner
 //        viewmodel.currencySpinner!!.adapter = currencySpinnerAdapter
-        currencyName.adapter = currencySpinnerAdapter
+        binding.currencyName.adapter = currencySpinnerAdapter
 
         // Set the currency Selected to the constant values
         //TODO Try to lazily instantiate the adapter.onItemSelected interface
-        currencyName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding. currencyName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val selection = parent.getItemAtPosition(position) as String
                 if (!TextUtils.isEmpty(selection)) {

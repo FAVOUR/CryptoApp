@@ -3,7 +3,6 @@ package com.example.android.cryptoapp.ui.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -15,16 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
-import com.example.android.cryptoapp.adapter.RatesAdapter
+import com.example.android.cryptoapp.ui.adapters.rv_adapter.RatesAdapter
 import com.example.android.cryptoapp.databinding.FragmentListBinding
 import com.example.android.cryptoapp.di.component.AppComponent
-import com.example.android.cryptoapp.domain.model.asDBModel
 import com.example.android.cryptoapp.domain.model.asUIModel
+import com.example.android.cryptoapp.util.Helpers.DATA
 import com.example.android.cryptoapp.util.Listeners.*
 import com.example.android.cryptoapp.viewmodel.ListViewModel
 import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_list.*
+//import kotlinx.android.synthetic.main.fragment_list.*
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
@@ -57,6 +56,8 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
         super.onCreate(savedInstanceState)
     }
 
+    lateinit var binding:FragmentListBinding
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -74,10 +75,10 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        val view = FragmentListBinding.inflate(inflater, container, false)
+        binding = FragmentListBinding.inflate(inflater, container, false)
 
 
-        return   view.root
+        return   binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,8 +90,8 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
         results = ArrayList()
         soFar = ArrayList()
         resultAdapter = RatesAdapter(results,this,this)
-        rv_members!!.layoutManager = layoutManager
-        rv_members!!.adapter = resultAdapter
+        binding.rvMembers!!.layoutManager = layoutManager
+        binding.rvMembers!!.adapter = resultAdapter
 
         viewmodel.cryptoCurrencyData.observe(viewLifecycleOwner, Observer { cryptoCurrencyData ->
 
@@ -159,12 +160,14 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
           val conversionFragment = ConversionFragment()
 
          val bundle = Bundle()
-        bundle.putInt("image", result.image)
-        bundle.putDouble("btcRate", result.firstExRate)
-        bundle.putString("currencySymbol", result.symbol)
-        bundle.putDouble("ethRate", result.secondExRate)
-        bundle.putString("currencyAbr", result.abbrivation)
-        bundle.putString("currencyName", result.name)
+        bundle.putParcelable(DATA, result)
+
+//        bundle.putInt("image", result.image)
+//        bundle.putDouble("btcRate", result.firstExRate)
+//        bundle.putString("currencySymbol", result.symbol)
+//        bundle.putDouble("ethRate", result.secondExRate)
+//        bundle.putString("currencyAbr", result.abbrivation)
+//        bundle.putString("currencyName", result.name)
 
         conversionFragment.arguments = bundle
 
