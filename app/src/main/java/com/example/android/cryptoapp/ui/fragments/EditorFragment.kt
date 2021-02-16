@@ -1,6 +1,8 @@
 package com.example.android.cryptoapp.ui.fragments
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -40,10 +42,7 @@ class EditorFragment : DialogFragment() {
     lateinit var binding: FragmentEditorBinding
     // activity-ktx artifact
     private val viewmodel: EditorViewModel by viewModels{
-//        val remoteDataSource  =  RemoteCryptoRateDataSource(apiClient = ApiClient,moshi = Moshi.Builder().build())
-//        val localDataSource  = LocalCryptoRatesDataSource(CurrencyRoomDatabase.getDataBase(requireContext()).currencyDao())
-//
-//
+
         viewModelFactory
     }
 //
@@ -92,6 +91,10 @@ class EditorFragment : DialogFragment() {
             if (isMakingNetworkRequest) {
                 binding.pbloading.visibility = View.VISIBLE
                 binding.textView.visibility = View.VISIBLE
+                binding.group.visibility = View.GONE
+//                binding.root.background=ColorDrawable (Color.parseColor("#99000000"))
+                binding.root.background=ColorDrawable (Color.TRANSPARENT)
+
             } else {
                 binding.pbloading.visibility = View.GONE
                 binding. textView.visibility = View.GONE
