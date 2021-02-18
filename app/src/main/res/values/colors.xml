@@ -7,7 +7,15 @@
 
     <!-- Primary color for the editor -->
     <color name="editorColorPrimary">#2D3640</color>
+<!--    <color name="transparent_color">#00000000</color>-->
 
     <!-- Primary dark color for the editor -->
     <color name="editorColorPrimaryDark">#394450</color>
+
+    <!--  Color for Btc -->
+    <color name="first_color">#ab7d0b</color>
+
+    <!--  Color for Eth -->
+    <color name="second_color">#5b6abd</color>
+
 </resources>
