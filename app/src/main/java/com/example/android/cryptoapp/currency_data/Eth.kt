@@ -10,83 +10,83 @@ import com.squareup.moshi.JsonClass
 data class Eth (
  @Json(name ="AUD")
 //    @Expose
-    val AUD: Double? = null,
+    val AUD: Double? = 0.00,
 
  @Json(name ="EGP")
 //    @Expose
-    val EGP: Double? = null,
+    val EGP: Double? = 0.00,
 
  @Json(name ="GBP")
 //    @Expose
-    val GBP: Double? = null,
+    val GBP: Double? = 0.00,
 
  @Json(name ="EUR")
 //    @Expose
-    val EUR: Double? = null,
+    val EUR: Double? = 0.00,
 
  @Json(name ="GEL")
 //    @Expose
-    val GEL: Double? = null,
+    val GEL: Double? = 0.00,
 
  @Json(name ="GHS")
 //    @Expose
-    val GHS: Double? = null,
+    val GHS: Double? = 0.00,
 
  @Json(name ="HKD")
 //    @Expose
-    val HKD: Double? = null,
+    val HKD: Double? = 0.00,
 
  @Json(name ="ILS")
 //    @Expose
-    val ILS: Double? = null,
+    val ILS: Double? = 0.00,
 
  @Json(name ="JMD")
 //    @Expose
-    val JMD: Double? = null,
+    val JMD: Double? = 0.00,
 
  @Json(name ="JPY")
 //    @Expose
-    val JPY: Double? = null,
+    val JPY: Double? = 0.00,
 
  @Json(name ="MYR")
 //    @Expose
-    val MYR: Double? = null,
+    val MYR: Double? = 0.00,
 
  @Json(name ="NGN")
 //    @Expose
-    val NGN: Double? = null,
+    val NGN: Double? = 0.00,
 
  @Json(name ="PHP")
 //    @Expose
-    val PHP: Double? = null,
+    val PHP: Double? = 0.00,
 
  @Json(name ="QAR")
 //    @Expose
-    val QAR: Double? = null,
+    val QAR: Double? = 0.00,
 
  @Json(name ="RUB")
 //    @Expose
-    val RUB: Double? = null,
+    val RUB: Double? = 0.00,
 
  @Json(name ="ZAR")
 //    @Expose
-    val ZAR: Double? = null,
+    val ZAR: Double? = 0.00,
 
  @Json(name ="CHF")
 //    @Expose
-    val CHF: Double? = null,
+    val CHF: Double? = 0.00,
 
  @Json(name ="TWD")
 //    @Expose
-    val TWD: Double? = null,
+    val TWD: Double? = 0.00,
 
  @Json(name ="THB")
 //    @Expose
-    val THB: Double? = null,
+    val THB: Double? = 0.00,
 
  @Json(name ="USD")
 //    @Expose
-    val USD: Double? = null
+    val USD: Double? = 0.00
 
  )
 
