@@ -8,12 +8,14 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
+import com.example.android.cryptoapp.util.getCurrencyAbbrFromSpinner
 
-object SpinnerBinder {
+object SpinnerBindingAdapter {
 
     @JvmStatic
-    @BindingAdapter(value = ["selectedValue","selectedValueAttributeChange"])
-    fun Spinner.setSelectedValue( itemSelected:String, inverseBindingListener: InverseBindingListener){
+    @BindingAdapter(value = ["selectedValue","selectedValueAttrChanged"], requireAll = false)
+    fun Spinner.setSelectedValue( itemSelected:String?, inverseBindingListener: InverseBindingListener){
 
         onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
 
@@ -22,11 +24,7 @@ object SpinnerBinder {
                 inverseBindingListener.onChange()
             }
 
-
-
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
             }
         }
 
@@ -37,9 +35,11 @@ object SpinnerBinder {
     }
 
     @JvmStatic
-    @InverseBindingAdapter(attribute ="selectedValue",event ="selectedValueAttributeChange" )
-      fun Spinner.getSelectedValue(itemSelected:String):String{
-            return selectedItem as String
+    @InverseBindingAdapter(attribute ="selectedValue",event ="selectedValueAttrChanged" )
+      fun Spinner.getSelectedValue():CurrencyAbbreviation{
+            val  position=(adapter as ArrayAdapter<String>).getPosition(selectedItem as String)
+            return  getCurrencyAbbrFromSpinner(position)
+
     }
 
 }
