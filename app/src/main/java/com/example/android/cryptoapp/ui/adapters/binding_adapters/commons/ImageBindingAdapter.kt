@@ -11,7 +11,7 @@ import javax.inject.Inject
 
  class ImageBindingAdapter @Inject constructor(val picasso: Picasso) {
 
-         @BindingAdapter("icon")
+         @BindingAdapter("image")
          fun ImageView.setImage(imageResId: Int) {
              picasso.load(imageResId)
                      .transform(CropCircleTransformation())

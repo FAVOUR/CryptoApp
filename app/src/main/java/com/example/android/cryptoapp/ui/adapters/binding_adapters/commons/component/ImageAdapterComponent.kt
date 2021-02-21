@@ -1,7 +1,7 @@
 package com.example.android.cryptoapp.ui.adapters.binding_adapters.commons.component
 
 import androidx.databinding.DataBindingComponent
-import com.example.android.cryptoapp.ui.adapters.binding_adapters.commons.ImageBindingAdapters
+import com.example.android.cryptoapp.ui.adapters.binding_adapters.commons.ImageBindingAdapter
 import com.squareup.picasso.Picasso
 
 /**
@@ -10,5 +10,5 @@ import com.squareup.picasso.Picasso
  * */
 
 class ImageAdapterComponent(val picasso:Picasso) : DataBindingComponent {
-    override fun getImageBindingAdapters(): ImageBindingAdapters = ImageBindingAdapters(picasso)
+    override fun getImageBindingAdapters(): ImageBindingAdapter = ImageBindingAdapter(picasso)
 }
