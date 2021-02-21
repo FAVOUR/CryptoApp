@@ -9,7 +9,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import javax.inject.Inject
 
 
- class ImageBindingAdapters @Inject constructor(val picasso: Picasso) {
+ class ImageBindingAdapter @Inject constructor(val picasso: Picasso) {
 
          @BindingAdapter("icon")
          fun ImageView.setImage(imageResId: Int) {
