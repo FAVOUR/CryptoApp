@@ -28,7 +28,7 @@ class GetCryptoRateTest {
         mockServer.start(8080)
 
     mockServer.takeRequest()
-        val baseUrl: HttpUrl = HttpUrl.get("https://ourapi.com/")
+        val baseUrl: HttpUrl = MockWebServer().url("https://ourapi.com/")
 
 
 //        val moshi =Moshi.Builder()
