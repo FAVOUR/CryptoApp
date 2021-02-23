@@ -30,7 +30,6 @@ class GetCryptoRateTest {
     mockServer.takeRequest()
         val baseUrl: HttpUrl = MockWebServer().url("https://ourapi.com/")
 
-
 //        val moshi =Moshi.Builder()
 //                .add(KotlinJsonAdapterFactory())
 //                .build()
