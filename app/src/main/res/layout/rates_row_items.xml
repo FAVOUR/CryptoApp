@@ -5,14 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
        <data>
-           <variable
-               name="viewmodel"
-               type="com.example.android.cryptoapp.viewmodel.ListViewModel" />
+
            <variable
                name="cryptoData"
-               type="com.example.android.cryptoapp.domain.model.CryptoCurrencyRates" />
-            <import
-                type="com.example.android.cryptoapp.util.Helpers" alias="Helpers" />
+               type="com.example.android.cryptoapp.domain.model.CryptoCurrencyRates"/>
+
+            <variable
+                name="clickListener"
+                type="com.example.android.cryptoapp.util.Listeners.ListItemClickListener"/>
+
+           <import type="com.example.android.cryptoapp.ui.adapters.binding_adapters.commons.component.Converters" />
        </data>
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
@@ -23,6 +25,7 @@
     android:fadingEdgeLength="@dimen/cardview_default_elevation"
     android:persistentDrawingCache="scrolling"
     android:smoothScrollbar="true"
+
     >
 
 
@@ -30,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
+            android:onClick="@{() -> clickListener.onListItemClicked(cryptoData)}"
             android:orientation="horizontal">
 
 
@@ -46,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="62dp"
                     tools:src="@drawable/hdk"
-                    app:currencyLogo="@{ cryptoData.image}"
+                    app:image="@{cryptoData.image}"
                 />
 
                 <TextView
@@ -103,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/currency_symbol"
                     tools:text="6,78989076.890"
-                    android:text="@{Helpers.formatAndReturnString (cryptoData.firstExRate)}"
+                    android:text="@{Converters.formatAndReturnString (cryptoData.firstExRate)}"
                     android:textColor="#ab7d0b"
                     android:layout_alignBaseline="@+id/btc_image"
                     />
@@ -143,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     tools:text="56789"
-                    android:text="@{Helpers.formatAndReturnString (cryptoData.secondExRate)}"
+                    android:text="@{Converters.formatAndReturnString (cryptoData.secondExRate)}"
                     android:textColor="#5b6abd"
                     android:layout_below="@+id/btc_image"
                     android:layout_toRightOf="@+id/currency_symbol_1"/>

@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import timber.log.Timber
 
 //Checks the spinner and returns the abbreviation and image resource of the currency selected
-  fun getCurrencyAbbrFromSpinner(position: Int): CurrencyAbbreviation {
+  fun getCurrencyAbbrFromSpinner(position: Int): CurrencyAbbreviation { // todo You shouldnt need tthis
     val currencyAbbreviation: CurrencyAbbreviation
     when (position) {
         1 -> {
@@ -73,7 +73,7 @@ import timber.log.Timber
     return currencyAbbreviation
 }
 
- fun getCurrencyImage(currencyAbbreviation: CurrencyAbbreviation): Int {
+ fun getCurrencyImage(currencyAbbreviation: CurrencyAbbreviation): Int {  // todo You shouldnt need tthis
     var image:Int=R.mipmap.icon
     when (currencyAbbreviation) {
         CurrencyAbbreviation.AUSTRALIA_DOLLAR -> {
@@ -161,7 +161,7 @@ import timber.log.Timber
 }
 
 //confirm BTC rates after putting  the currency type as parameter of this method
-fun getBtcRate(currency: CurrencyAbbreviation?,btc: Btc?): Double {
+fun getBtcRate(currency: CurrencyAbbreviation?,btc: Btc?): Double {   // todo You shouldnt need tthis
 
     return when (currency) {
         CurrencyAbbreviation.AUSTRALIA_DOLLAR ->    btc?.AUD ?: 0.00
@@ -189,7 +189,8 @@ fun getBtcRate(currency: CurrencyAbbreviation?,btc: Btc?): Double {
 }
 
 //confirm ETH rates after putting the currency type as parameter of this method
- fun getEthRate(currency: CurrencyAbbreviation?,eth: Eth?): Double {
+ fun getEthRate(currency: CurrencyAbbreviation?,eth: Eth?): Double { // todo You shouldnt need tthis
+
     val ethRates: Double
     var currencySymbol: CurrencySymbol = CurrencySymbol.NONE
     when (currency) {

@@ -4,6 +4,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.example.android.cryptoapp.util.MockResponseFileReader
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.HttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -25,6 +26,9 @@ class GetCryptoRateTest {
     fun getClient() {
 
         mockServer.start(8080)
+
+    mockServer.takeRequest()
+        val baseUrl: HttpUrl = HttpUrl.get("https://ourapi.com/")
 
 
 //        val moshi =Moshi.Builder()
@@ -54,14 +58,16 @@ class GetCryptoRateTest {
 
     @Test
     fun makeANetworkRequestAndCheckResult(){
+
+
 //        mockServer.enqueue(MockResponse().setBody(MockResponseFileReader("rates.json").content))
-      /*  mockServer.dispatcher = object : Dispatcher() {
+        mockServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
 
                  return  MockResponse().setStatus("200").setBody(MockResponseFileReader("rates.json").content)
 
             }
-        }*/
+        }
 
     }
 

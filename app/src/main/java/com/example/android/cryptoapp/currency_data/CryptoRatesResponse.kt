@@ -10,7 +10,7 @@ import com.squareup.moshi.JsonClass
  * Created by OZMA NIG COM LTD on 05-Oct-17.
  */
 //@JsonClass(generateAdapter = true)
-data class JsonResponse (
+data class CryptoRatesResponse (
     @Json(name ="BTC")
 //    @Expose
     val bTC: Btc? = null,

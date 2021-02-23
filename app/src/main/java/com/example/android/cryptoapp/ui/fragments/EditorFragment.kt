@@ -24,12 +24,6 @@ import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import timber.log.Timber
 import javax.inject.Inject
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EditorFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EditorFragment : DialogFragment() {
 
     private lateinit  var appComponent: AppComponent
@@ -40,9 +34,9 @@ class EditorFragment : DialogFragment() {
 
 
     lateinit var binding: FragmentEditorBinding
+
     // activity-ktx artifact
     private val viewmodel: EditorViewModel by viewModels{
-
         viewModelFactory
     }
 
@@ -53,12 +47,7 @@ class EditorFragment : DialogFragment() {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-
-
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
          binding =  FragmentEditorBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -70,9 +59,9 @@ class EditorFragment : DialogFragment() {
         activity?.actionBar?.title =resources.getString(R.string.editor_activity_title)
 
         indicateRemoteRequest()
-
-
-        spinnerForCurrency()
+        binding.viewModel=viewmodel
+        viewmodel.setCountries(resources.getStringArray(R.array.currency_options))
+//        spinnerForCurrency()
         binding.ExchangeRateBTN.setOnClickListener {
             addCurrency()
         }
@@ -99,7 +88,7 @@ class EditorFragment : DialogFragment() {
     /**
      * Setup the dropdown spinner that allows the user to select the currency of choice.
      */
-    private fun spinnerForCurrency(){
+ /*   private fun spinnerForCurrency(){
         // Create Adapter for spinner. The list options are from the String array
         val currencySpinnerAdapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(requireContext(),
                 R.array.currency_options, android.R.layout.simple_spinner_item)
@@ -120,7 +109,7 @@ class EditorFragment : DialogFragment() {
                     viewmodel.currencyAbr = getCurrencyAbbrFromSpinner(position)
                     viewmodel._currencyName = selection
                     viewmodel.currencySymbol = getSymbol( viewmodel.currencyAbr)
-                    viewmodel.image = getCurrencyImage( viewmodel.currencyAbr)
+                    viewmodel.image = getCurrencyImage( viewmodel.currencyAbr!!)
                 } else {
                     viewmodel.currencyAbr =  CurrencyAbbreviation.NONE
                     viewmodel. _currencyName = ""
@@ -131,7 +120,7 @@ class EditorFragment : DialogFragment() {
         }
     }
 
-
+*/
     fun addCurrency() {
         viewmodel.getCryptoRate()
     }

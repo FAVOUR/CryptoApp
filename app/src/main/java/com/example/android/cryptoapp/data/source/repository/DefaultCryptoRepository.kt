@@ -40,7 +40,7 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
 
 //        remoteCryptoRateDataSource.getCryptoRate(cryptoCurrencyAbbreviation)
 
-        return fetchCryptoRateFromRemoteDataSource(cryptoCurrencyAbbreviation)
+        return remotelyFetchCryptoRates(cryptoCurrencyAbbreviation)
     }
 
 /*
@@ -55,28 +55,35 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
 
 
 
-    private suspend fun fetchCryptoRatesFromRemoteDataSource(isRefresh: Boolean,vararg currencyAbbreviation :CurrencyAbbreviation):Result<List<CryptoCurrencyData>>{
-               val remoteDataSource = remoteCryptoRateDataSource.getCryptoRates(currencyAbbreviation)
+    private suspend fun remotelyFetchListOfCryptoRates(isRefresh: Boolean,vararg currencyAbbreviation :CurrencyAbbreviation):Result<List<CryptoCurrencyData>>{
+               val remoteDataSource = remoteCryptoRateDataSource.getSpecifiedCurrencyRates(currencyAbbreviation)
                when (remoteDataSource) {
                    is Result.Success ->
+                       //Convert to db model and save
                        saveCryptoRates(remoteDataSource.data)
                    is Result.Error -> {
                        throw Throwable(remoteDataSource.errorMessage)
                    }
                }
-              return localCryptoRatesDataSource.getCryptoRates(currencyAbbreviation)
+              return localCryptoRatesDataSource.getSpecifiedCurrencyRates(currencyAbbreviation)
 
 
     }
 
-    private suspend fun fetchCryptoRateFromRemoteDataSource( currencyAbbreviation :CurrencyAbbreviation):Result<CryptoCurrencyData>{
+    private suspend fun remotelyFetchCryptoRates(currencyAbbreviation :CurrencyAbbreviation):Result<CryptoCurrencyData>{
 
-            val remoteDataSource = remoteCryptoRateDataSource.getCryptoRate(currencyAbbreviation)
+            val remoteDataSource = remoteCryptoRateDataSource.getACurrencyRate(currencyAbbreviation)
             val value:Long =0L
 
          return when (remoteDataSource) {
                 is Result.Success -> //Could be  successDOT and the one that finally gets to the viewmodel is now just SUCCESS
                     returnRateSaved{  saveCryptoRate(remoteDataSource.data) }  //Todo Re-evaluate  this approach later
+//                        withContext(dispatcher){
+//                         val resp =  saveCryptoRate(remoteDataSource.data)
+//
+//                            localCryptoRatesDataSource.getCryptoRate()
+//                        }
+
 //                 localCryptoRatesDataSource.getCryptoRateById(id)
 
                  is Result.Error -> {

@@ -6,72 +6,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/editorColorPrimary">
 
-    <TextView
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.android.cryptoapp.viewmodel.EditorViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/editorColorPrimary">
+
+        <TextView
             android:id="@+id/title"
-            android:text="Select a currency "
             style="@style/CategoryStyle"
-        app:layout_constraintBottom_toTopOf="@+id/currencyName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+            android:text="Select a currency "
+            app:layout_constraintBottom_toTopOf="@+id/currencyName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Spinner
-        android:id="@+id/currencyName"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="30dp"
-        android:spinnerMode="dropdown"
-        android:dropDownSelector="@color/colorSelect"
-        app:layout_constraintBottom_toTopOf="@+id/ExchangeRateBTN"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-            <ProgressBar
-                android:id="@+id/pbloading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/ExchangeRateBTN"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone"
-                />
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/pbloading"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:text="Obtaining rates......"
-                android:textColor="@color/colorSelect"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/currencyName"/>
+        <Spinner
+            android:id="@+id/currencyName"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+            android:dropDownSelector="@color/colorSelect"
+            android:spinnerMode="dropdown"
+            android:entries="@{viewModel.counties}"
+            app:selectedValue="@={viewModel.currencyAbr}"
+            app:layout_constraintBottom_toTopOf="@+id/ExchangeRateBTN"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-    <Button
-        android:id="@+id/ExchangeRateBTN"
-        android:layout_height="wrap_content"
-        android:layout_width="116dp"
-        android:layout_gravity="center_horizontal"
-        android:elevation="@dimen/button_margin"
-        android:text="ok"
-        android:background="@color/colorAccent"
-        android:textColor="#ffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currencyName" />
+        <ProgressBar
+            android:id="@+id/pbloading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="70dp"
+            app:layout_constraintBottom_toTopOf="@+id/ExchangeRateBTN"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pbloading"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="Obtaining rates......"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currencyName" />
+<!--        android:textColor="@color/colorSelect"-->
+
+        <Button
+            android:id="@+id/ExchangeRateBTN"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorAccent"
+            android:elevation="@dimen/button_margin"
+            android:text="ok"
+            android:textColor="#ffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currencyName" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="title,currencyName,ExchangeRateBTN" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

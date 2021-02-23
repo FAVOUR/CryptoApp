@@ -9,11 +9,14 @@ interface CurrencyDao {
     @Query("Select * from CryptoCurrencyData")
    suspend fun  getLocalCryptoRates(): List<CryptoCurrencyData>?
 
-    @Query("Select * from CryptoCurrencyData")
+    @Query("Select * from CryptoCurrencyData order by id desc")
      fun ObserveCryptoRates():LiveData<List<CryptoCurrencyData>>
 
+//    @Query("Select * from CryptoCurrencyData")
+//     fun ObserveCryptoRate():LiveData<List<CryptoCurrencyData>>
+
     @Query("Select * from CryptoCurrencyData")
-     fun ObserveCryptoRate():LiveData<List<CryptoCurrencyData>>
+    fun getCryptoRate():List<CryptoCurrencyData>
 
     @Query("Select * from CryptoCurrencyData where id = :rateId")
     fun getCryptoRateById(rateId:Int):CryptoCurrencyData

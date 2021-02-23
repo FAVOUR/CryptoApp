@@ -4,7 +4,7 @@ import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
 
 class Listeners {
 
-    interface ListItemClickListiner {
+    interface ListItemClickListener {
         fun onListItemClicked(result: CryptoCurrencyRates)
     }
 

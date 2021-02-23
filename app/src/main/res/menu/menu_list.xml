@@ -16,9 +16,9 @@
 <!--        app:showAsAction="always"/>-->
 
 
-    <item
-        android:id="@+id/about"
-        android:title="@string/About"
-        app:showAsAction="collapseActionView" />
+<!--    <item-->
+<!--        android:id="@+id/about"-->
+<!--        android:title="@string/About"-->
+<!--        app:showAsAction="collapseActionView" />-->
 
 </menu>

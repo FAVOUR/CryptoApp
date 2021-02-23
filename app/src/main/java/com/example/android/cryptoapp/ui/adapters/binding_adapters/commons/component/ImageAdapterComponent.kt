@@ -10,5 +10,5 @@ import com.squareup.picasso.Picasso
  * */
 
 class ImageAdapterComponent(val picasso:Picasso) : DataBindingComponent {
-    override fun getImageBindingAdapters(): ImageBindingAdapter = ImageBindingAdapter(picasso)
+    override fun getImageBindingAdapter(): ImageBindingAdapter = ImageBindingAdapter(picasso)
 }

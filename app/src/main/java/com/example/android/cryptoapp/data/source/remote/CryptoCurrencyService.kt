@@ -1,8 +1,7 @@
 package com.example.android.cryptoapp.data.source.remote
 
 import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
-import com.example.android.cryptoapp.currency_data.JsonResponse
-import retrofit2.Call
+import com.example.android.cryptoapp.currency_data.CryptoRatesResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -12,11 +11,8 @@ import retrofit2.http.Query
  */
 interface CryptoCurrencyService {
     @GET("pricemulti?fsyms=BTC,ETH")
-     fun getJsonResponse(@Query("tsyms") tsyms: String?): Call<JsonResponse?>?
-
-    @GET("pricemulti?fsyms=BTC,ETH")
-    suspend fun getJsonResponse_(@Query("tsyms") tsyms: String?): Response<JsonResponse>
+    suspend fun getACurrencyRate(@Query("tsyms") tsyms: String?): Response<CryptoRatesResponse>
     
     @GET("pricemulti?fsyms=BTC,ETH")
-    suspend fun getJsonResponses_(@Query("tsyms")  currencyAbbreviation : Array<out CurrencyAbbreviation?>): Response<List<JsonResponse?>>
+    suspend fun getSpecifiedCurrencyRate(@Query("tsyms")  currencyAbbreviation : Array<out CurrencyAbbreviation?>): Response<List<CryptoRatesResponse>>
 }

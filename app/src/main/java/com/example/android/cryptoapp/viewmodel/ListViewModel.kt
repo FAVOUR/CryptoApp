@@ -1,16 +1,14 @@
 package com.example.android.cryptoapp.viewmodel
 
-import android.net.UrlQuerySanitizer
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
-import com.example.android.cryptoapp.adapter.RatesAdapter
+import com.example.android.cryptoapp.ui.adapters.rv_adapter.RatesAdapter
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
 import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import com.example.android.cryptoapp.domain.model.asDBModel
 import com.example.android.cryptoapp.util.Result
 import kotlinx.coroutines.launch
-import java.lang.Error
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(val repository: CryptoRepository ):ViewModel() {
