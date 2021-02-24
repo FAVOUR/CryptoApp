@@ -5,6 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.android.cryptoapp.TestData
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
 import com.example.android.cryptoapp.data.source.local.db.CurrencyDao
 import com.example.android.cryptoapp.data.source.local.db.CurrencyRoomDatabase
@@ -24,7 +25,6 @@ class CurrencyDaoTest {
     lateinit var  context:Context
     lateinit var  dao:CurrencyDao
     lateinit var rate:CryptoCurrencyData
-//    lateinit var
 
     @get:Rule
     val instantTaskExecutorRule =InstantTaskExecutorRule()
@@ -32,8 +32,8 @@ class CurrencyDaoTest {
     @Before
     fun setUp() {
         context =ApplicationProvider.getApplicationContext()
-        rate = CryptoCurrencyData(currencyName = "Nigeria", currencyAbbreviation = "NGN",currencySymbol = "",image =12345,btcRate = 3.65,ethRate = 234.56)
-
+//        rate = CryptoCurrencyData(currencyName = "Nigeria", currencyAbbreviation = "NGN",currencySymbol = "",image =12345,btcRate = 3.65,ethRate = 234.56)
+        rate = TestData.getCryptoCurrencyData()
         db = Room.inMemoryDatabaseBuilder(context,CurrencyRoomDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
@@ -41,11 +41,6 @@ class CurrencyDaoTest {
 
     }
 
-    @After
-    fun tearDown() {
-
-        db.close()
-    }
 
     @Test
     fun saveRate_return_rates() = runBlocking{
@@ -61,4 +56,12 @@ class CurrencyDaoTest {
 //  TODO Write the test for
 //    @Test
 //    fun `save_and_update_rates`()
+
+
+    @After
+    fun tearDown() {
+
+        db.close()
+    }
+
 }

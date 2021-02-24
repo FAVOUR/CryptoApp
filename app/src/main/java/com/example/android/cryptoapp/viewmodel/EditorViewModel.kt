@@ -1,12 +1,8 @@
 package com.example.android.cryptoapp.viewmodel
 
 import android.util.Log
-import android.widget.Spinner
 import androidx.lifecycle.*
 import com.example.android.cryptoapp.currency_data.*
-import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
-import com.example.android.cryptoapp.data.source.local.db.CurrencyDao
-import com.example.android.cryptoapp.data.source.remote.CryptoCurrencyService
 import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import com.example.android.cryptoapp.util.Result
 import com.google.gson.Gson
@@ -17,11 +13,11 @@ import kotlin.properties.Delegates
 
 class EditorViewModel @Inject constructor(val repository: CryptoRepository):ViewModel() {
 
-    lateinit var currencyAbr: CurrencyAbbreviation
+     var currencyAbr: CurrencyAbbreviation?=null
     lateinit var currencySymbol: CurrencySymbol
-    lateinit var _currencyName: String
+     var _currencyName: String?=null
      var image : Int by Delegates.notNull<Int>()
-    lateinit var jsonResponse: JsonResponse
+    lateinit var cryptoRatesResponse: CryptoRatesResponse
 
     private var _isLoading=MutableLiveData<Boolean>()
      val isLoading:LiveData<Boolean>
@@ -30,13 +26,20 @@ class EditorViewModel @Inject constructor(val repository: CryptoRepository):View
      val errorMessage:LiveData<String>
        get() = _errorMessage
 
+    lateinit var counties :Array<String>
+     var selectedcountry =MutableLiveData<String>()
 
+    fun setCountries(allCounties:Array<String>){
+        counties=allCounties
+    }
 
         fun  getCryptoRate() = viewModelScope.launch {
-
+//          Log.e("_currencyName>>>> ",_currencyName)
+//          Log.e("_selectedcountry>>>> ",selectedcountry.value)
+          Log.e("_selectedcountry>>>> ",Gson().toJson(currencyAbr))
             _isLoading.value=true
 
-            var response=   repository.getCryptoRate(currencyAbr)
+            var response=   repository.getCryptoRate(currencyAbr!!)
 
 
             when (response) {

@@ -5,6 +5,7 @@ import com.example.android.cryptoapp.di.module.ActivityModule
 import com.example.android.cryptoapp.di.module.AppModule
 import com.example.android.cryptoapp.ui.fragments.ConversionFragment
 import com.example.android.cryptoapp.ui.fragments.EditorFragment
+//import com.example.android.cryptoapp.ui.fragments.EditorFragment
 import com.example.android.cryptoapp.ui.fragments.ListFragment
 import dagger.BindsInstance
 import dagger.Component

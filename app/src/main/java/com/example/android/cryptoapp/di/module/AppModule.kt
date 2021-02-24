@@ -20,19 +20,18 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class])
-//@Module
 class AppModule {
 
 
     //Provide an instance of Picasso
-    @Singleton //This indicates that it is tied to the livecycleScope
+    @Singleton //This indicates that it is scoped
     @Provides
     fun providePicassoInstance ():Picasso {
         return Picasso.get()
     }
 
     //Provide an instance of Moshi
-     @Singleton //This indicates that it is tied to the lifecycleScope
+     @Singleton //This indicates that it is scoped
      @Provides
      fun provideMoshiInstance() :Moshi{
          return   Moshi.Builder()
@@ -84,17 +83,16 @@ class AppModule {
     @Singleton
     @Provides
     fun provideDispatchersInstance( ): CoroutineDispatcher {
-
         return  Dispatchers.IO
-
     }
+
+
     //Provide an instance of the CurrencyDao
     @Singleton
     @Provides
     fun provideCryptoServiceInstance(retrofit: Retrofit): CryptoCurrencyService {
 
         return retrofit.create(CryptoCurrencyService::class.java)
-
     }
 
 

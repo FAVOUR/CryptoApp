@@ -1,32 +1,38 @@
 package com.example.android.cryptoapp.ui.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.cryptoapp.App
 import com.example.android.cryptoapp.R
 import com.example.android.cryptoapp.domain.model.CryptoCurrencyRates
-import com.example.android.cryptoapp.adapter.RatesAdapter
+import com.example.android.cryptoapp.ui.adapters.rv_adapter.RatesAdapter
 import com.example.android.cryptoapp.databinding.FragmentListBinding
 import com.example.android.cryptoapp.di.component.AppComponent
-import com.example.android.cryptoapp.domain.model.asDBModel
 import com.example.android.cryptoapp.domain.model.asUIModel
+import com.example.android.cryptoapp.ui.adapters.binding_adapters.commons.component.ImageAdapterComponent
+import com.example.android.cryptoapp.util.Helpers.DATA
+import com.example.android.cryptoapp.util.Helpers.setupFragmentManager
 import com.example.android.cryptoapp.util.Listeners.*
 import com.example.android.cryptoapp.viewmodel.ListViewModel
 import com.example.android.cryptoapp.viewmodel.factory.ViewModelFactory
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_list.*
+import com.squareup.picasso.Picasso
+//import kotlinx.android.synthetic.main.fragment_list.*
 import timber.log.Timber
-import java.util.ArrayList
+import timber.log.Timber.tag
+import java.util.*
 import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,7 +46,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 //class ListFragment : Fragment(), RatesAdapter.ListItemClickListiner, EditorFragment.OnDataGotten {
-class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
+class ListFragment : Fragment(), ListItemClickListener,LongItemClickedListener {
 
     lateinit var resultAdapter: RatesAdapter
     var layoutManager: LinearLayoutManager? = null
@@ -57,8 +63,14 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
         super.onCreate(savedInstanceState)
     }
 
+    lateinit var binding:FragmentListBinding
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit  var picasso: Picasso
+
 
     val viewmodel : ListViewModel by viewModels {
         viewModelFactory
@@ -74,10 +86,10 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        val view = FragmentListBinding.inflate(inflater, container, false)
+        binding = FragmentListBinding.inflate(inflater, container, false)
 
 
-        return   view.root
+        return   binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,9 +100,9 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
         layoutManager = LinearLayoutManager(requireContext())
         results = ArrayList()
         soFar = ArrayList()
-        resultAdapter = RatesAdapter(results,this,this)
-        rv_members!!.layoutManager = layoutManager
-        rv_members!!.adapter = resultAdapter
+        resultAdapter = RatesAdapter(results,this,this,  ImageAdapterComponent(picasso = picasso))
+        binding.rvMembers!!.layoutManager = layoutManager
+        binding.rvMembers!!.adapter = resultAdapter
 
         viewmodel.cryptoCurrencyData.observe(viewLifecycleOwner, Observer { cryptoCurrencyData ->
 
@@ -108,8 +120,6 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
 
 
     }
-
-
 
 
     override fun onCreateOptionsMenu(menu: Menu,inflater: MenuInflater) {
@@ -132,15 +142,7 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
 
                 return true
             }
-            R.id.about -> {
-                val builder: AlertDialog.Builder
-                builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("About").setMessage(getString(R.string.About_)).setPositiveButton(android.R.string.yes
-                ) { dialog, which -> }
-                val alertDialog = builder.create()
-                alertDialog.show()
-                return true
-            }
+//
 //            R.id.replace -> {
 //                      val editorFragment = EditorFragment()
 //                val fragmentManager = activity?.let {   activity ->
@@ -155,27 +157,29 @@ class ListFragment : Fragment(), ListItemClickListiner,LongItemClickedListener {
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("TimberArgCount")
     override fun onListItemClicked(result: CryptoCurrencyRates) {
           val conversionFragment = ConversionFragment()
 
          val bundle = Bundle()
-        bundle.putInt("image", result.image)
-        bundle.putDouble("btcRate", result.firstExRate)
-        bundle.putString("currencySymbol", result.symbol)
-        bundle.putDouble("ethRate", result.secondExRate)
-        bundle.putString("currencyAbr", result.abbrivation)
-        bundle.putString("currencyName", result.name)
+        bundle.putParcelable(DATA, result)
+
+//        bundle.putInt("image", result.image)
+//        bundle.putDouble("btcRate", result.firstExRate)
+//        bundle.putString("currencySymbol", result.symbol)
+//        bundle.putDouble("ethRate", result.secondExRate)
+//        bundle.putString("currencyAbr", result.abbrivation)
+//        bundle.putString("currencyName", result.name)
 
         conversionFragment.arguments = bundle
+        Timber.e("bundle nor ", bundle )
 
-        val fragmentManager = activity?.let{activity ->
-            activity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.viewContainer,conversionFragment,null)
-                    .addToBackStack(null)
-                    .commit()
+        Timber.e("bundle conversionFragment.arguments ", conversionFragment.arguments )
 
-        }
+        activity?.setupFragmentManager(conversionFragment,getString(R.string.ConversionFragmentTag)) ?: return
     }
+
+
 
     override fun onLongItemClickedListener(result: CryptoCurrencyRates) {
       Toast.makeText(activity,Gson().toJson(result),Toast.LENGTH_SHORT).show()

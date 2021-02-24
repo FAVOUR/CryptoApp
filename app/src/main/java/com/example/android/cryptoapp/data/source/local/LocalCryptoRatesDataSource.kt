@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
+/***/
 class LocalCryptoRatesDataSource @Inject constructor (private val cryptoRateDao: CurrencyDao,  private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO):ILocalCryptoRatesDataSource {
     override fun observeCryptoRates(): LiveData<Result<List<CryptoCurrencyData>>> {
 
@@ -38,7 +38,7 @@ class LocalCryptoRatesDataSource @Inject constructor (private val cryptoRateDao:
         cryptoRateDao.deleteAllCryptoRates()
     }
 
-    override suspend fun getCryptoRates( currencyAbbreviation : Array<out CurrencyAbbreviation?>?): Result<List<CryptoCurrencyData>> = withContext(ioDispatcher) {
+    override suspend fun getSpecifiedCurrencyRates(currencyAbbreviation : Array<out CurrencyAbbreviation?>?): Result<List<CryptoCurrencyData>> = withContext(ioDispatcher) {
 
      val result = cryptoRateDao.getLocalCryptoRates()
 
@@ -60,6 +60,22 @@ class LocalCryptoRatesDataSource @Inject constructor (private val cryptoRateDao:
     override suspend fun getCryptoRateById(id: Int): Result<CryptoCurrencyData> = withContext(ioDispatcher) {
        val result=  cryptoRateDao.getCryptoRateById(id)
 
+
+        return@withContext try {
+            Result.Loading
+            if(result != null){
+                Result.Success(result)
+            } else{
+                Result.Error("Unable to retrieve Crypto Rates ")
+            }
+        }catch (e:Throwable){
+            Result.Error("Error retrieving Records ")
+
+        }
+    }
+
+    override suspend fun getCryptoRate(): Result<List<CryptoCurrencyData>> = withContext(ioDispatcher) {
+        val result=  cryptoRateDao.getCryptoRate()
 
         return@withContext try {
             Result.Loading
