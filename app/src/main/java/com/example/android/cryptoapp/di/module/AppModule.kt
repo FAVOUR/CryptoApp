@@ -93,7 +93,6 @@ class AppModule {
     fun provideCryptoServiceInstance(retrofit: Retrofit): CryptoCurrencyService {
 
         return retrofit.create(CryptoCurrencyService::class.java)
-
     }
 
 

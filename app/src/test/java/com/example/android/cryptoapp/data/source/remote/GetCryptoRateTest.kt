@@ -1,73 +1,102 @@
 package com.example.android.cryptoapp.data.source.remote
-
-import androidx.test.core.app.ApplicationProvider
-import com.example.android.cryptoapp.util.MockResponseFileReader
+import com.example.android.cryptoapp.CoroutineTestRule
+import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.HttpUrl
-import okhttp3.mockwebserver.Dispatcher
+import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
+import org.hamcrest.core.Is.`is`
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Rule
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.io.InputStream
+import java.io.InputStreamReader
+import java.util.concurrent.TimeUnit
 
 class GetCryptoRateTest {
-  lateinit var retrofit: Retrofit
 
      var mockServer = MockWebServer()
+   lateinit var  cryptoRateService:CryptoCurrencyService
+   lateinit var  moshi :Moshi
+
+//    @get:Rule
+//    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    @ExperimentalCoroutinesApi
+    var testRule: CoroutineTestRule = CoroutineTestRule()
+
+
+
     @Before
     fun getClient() {
 
         mockServer.start(8080)
 
-    mockServer.takeRequest()
-        val baseUrl: HttpUrl = MockWebServer().url("https://ourapi.com/")
+        val baseUrl: HttpUrl = MockWebServer().url("/")
 
-//        val moshi =Moshi.Builder()
-//                .add(KotlinJsonAdapterFactory())
-//                .build()
-//        retrofit =Retrofit.Builder()
-//                 .addConverterFactory(MoshiConverterFactory.create(moshi))
-//                .build()
-//
-//
+        //Setups up moshi
+               moshi =  Moshi.Builder()
+                .add(KotlinJsonAdapterFactory())
+                .build()
+             //Sets up Okhttp client
+         val client = OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.SECONDS)
+                .readTimeout(1, TimeUnit.SECONDS)
+                .writeTimeout(1, TimeUnit.SECONDS)
+                .build()
+
+        //Sets up retrofit service
+        cryptoRateService= Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+
+                .client(client)
+                .build()
+                .create(CryptoCurrencyService::class.java)
+
     }
-
-
-
     @After
     fun tearDown() {
         mockServer.shutdown()
     }
 
 
-    @Test
-    fun checkMockSever (){
+//    @Test
+//    fun makeANetworkRequestAndCheckResult()= runBlocking {
+//        val mockResponse =MockResponse().setStatus("200").setBody(getSuccessfulResponseFromFile("rates.json"))
+//
+//        mockServer.enqueue(mockResponse)
+//
+//            cryptoRateService.getACurrencyRate(CurrencyAbbreviation.NIGERIA_NAIRA.abbr)
+//
+//            val request = mockServer.takeRequest()
+//
+//            assertEquals("GET", `is`(request.method))
+//        }
 
 
-//         mockServer.
-    }
 
-    @Test
-    fun makeANetworkRequestAndCheckResult(){
+//    }
 
 
-//        mockServer.enqueue(MockResponse().setBody(MockResponseFileReader("rates.json").content))
-        mockServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
+    fun  getSuccessfulResponseFromFile(path:String ):String {
+        var inputStreamReader = InputStreamReader( this.javaClass.classLoader.getResourceAsStream(path))
 
-                 return  MockResponse().setStatus("200").setBody(MockResponseFileReader("rates.json").content)
+        val content = inputStreamReader.readText()
 
-            }
-        }
+        inputStreamReader.close()
 
+        return content
     }
 
 }
