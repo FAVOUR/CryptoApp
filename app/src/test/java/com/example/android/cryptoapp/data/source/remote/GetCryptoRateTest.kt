@@ -86,8 +86,6 @@ class GetCryptoRateTest {
 
 
 
-//    }
-
 
     fun  getSuccessfulResponseFromFile(path:String ):String {
         var inputStreamReader = InputStreamReader( this.javaClass.classLoader.getResourceAsStream(path))
