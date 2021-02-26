@@ -84,6 +84,7 @@ class EditorFragment : DialogFragment() {
         })
     }
 
+
     /**
      * Setup the dropdown spinner that allows the user to select the currency of choice.
      */
