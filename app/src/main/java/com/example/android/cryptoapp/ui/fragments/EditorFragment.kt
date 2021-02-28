@@ -74,7 +74,6 @@ class EditorFragment : DialogFragment() {
                 binding.pbloading.visibility = View.VISIBLE
                 binding.textView.visibility = View.VISIBLE
                 binding.group.visibility = View.GONE
-//                binding.root.background=ColorDrawable (Color.parseColor("#99000000"))
                 binding.root.background=ColorDrawable (Color.TRANSPARENT)
 
             } else {
@@ -84,6 +83,7 @@ class EditorFragment : DialogFragment() {
             }
         })
     }
+
 
     /**
      * Setup the dropdown spinner that allows the user to select the currency of choice.

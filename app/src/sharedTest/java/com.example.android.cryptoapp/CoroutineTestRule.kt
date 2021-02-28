@@ -18,6 +18,7 @@ class CoroutineTestRule(val testCouroutineDispatcher: TestCoroutineDispatcher = 
         Dispatchers.setMain(testCouroutineDispatcher)
     }
 
+
     @ExperimentalCoroutinesApi
     override fun finished(description: Description?) {
         super.finished(description)

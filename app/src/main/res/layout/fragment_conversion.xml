@@ -91,7 +91,6 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:text_color="@{viewmodel.isEth }"
-
                     tools:text="28,945,999,999,999.789"
                     android:text="@{viewmodel.totalAmount}"
                     />
