@@ -1,4 +1,4 @@
-package com.example.android.cryptoapp.currency_data
+package com.example.android.cryptoapp.data.model
 
 enum class CurrencyAbbreviation (val abbr:String){ //keep this and you can add other parameters
 

@@ -1,8 +1,6 @@
 package com.example.android.cryptoapp.util
 import com.example.android.cryptoapp.R
-import com.example.android.cryptoapp.currency_data.*
-import com.google.gson.Gson
-import timber.log.Timber
+import com.example.android.cryptoapp.data.model.*
 
 //Checks the spinner and returns the abbreviation and image resource of the currency selected
   fun getCurrencyAbbrFromSpinner(position: Int): CurrencyAbbreviation { // todo You shouldnt need tthis

@@ -1,4 +1,4 @@
-package com.example.android.cryptoapp.data.source.remote
+package com.example.android.cryptoapp.data.model
 
 
 /**

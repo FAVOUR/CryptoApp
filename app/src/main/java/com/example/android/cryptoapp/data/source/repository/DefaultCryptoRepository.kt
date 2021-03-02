@@ -1,14 +1,13 @@
 package com.example.android.cryptoapp.data.source.repository
 
 import androidx.lifecycle.LiveData
-import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
+import com.example.android.cryptoapp.data.model.CurrencyAbbreviation
 import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
 import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
 import com.example.android.cryptoapp.util.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource: RemoteCryptoRateDataSource,

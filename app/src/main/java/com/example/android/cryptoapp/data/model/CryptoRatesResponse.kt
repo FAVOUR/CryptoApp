@@ -1,10 +1,6 @@
-package com.example.android.cryptoapp.currency_data
+package com.example.android.cryptoapp.data.model
 
-import com.example.android.cryptoapp.util.DataTransferObject
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
 /**
  * Created by OZMA NIG COM LTD on 05-Oct-17.

@@ -1,15 +1,13 @@
 package com.example.android.cryptoapp.ui.adapters.binding_adapters.commons
 
 import android.view.View
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
-import androidx.databinding.InverseMethod
-import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
+import com.example.android.cryptoapp.data.model.CurrencyAbbreviation
 import com.example.android.cryptoapp.util.getCurrencyAbbrFromSpinner
 
 object SpinnerBindingAdapter {

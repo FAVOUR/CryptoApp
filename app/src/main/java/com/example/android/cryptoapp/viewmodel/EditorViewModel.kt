@@ -2,7 +2,7 @@ package com.example.android.cryptoapp.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.android.cryptoapp.currency_data.*
+import com.example.android.cryptoapp.data.model.*
 import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import com.example.android.cryptoapp.util.Result
 import com.google.gson.Gson

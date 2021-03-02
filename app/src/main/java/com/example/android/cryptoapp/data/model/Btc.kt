@@ -1,14 +1,11 @@
-package com.example.android.cryptoapp.currency_data
+package com.example.android.cryptoapp.data.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-//@JsonClass(generateAdapter = true)
-
-data class Eth (
- @Json(name ="AUD")
+@JsonClass(generateAdapter = true)
+data class Btc (
+ @Json(name ="AUD") //Pass the eunum instead
 //    @Expose
     val AUD: Double? = 0.00,
 
@@ -88,5 +85,4 @@ data class Eth (
 //    @Expose
     val USD: Double? = 0.00
 
- )
-
+)
