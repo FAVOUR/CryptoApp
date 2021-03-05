@@ -78,12 +78,4 @@ class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoC
 
 
 
-    //TODO Implement this with retrofit converterFactory and make Generic
-// override fun <ret T> parseRemoteError(errorClass: Response<T>): String {
-//
-//        retrofit.converterFactories().get()
-//
-//
-//    }
-
 }
