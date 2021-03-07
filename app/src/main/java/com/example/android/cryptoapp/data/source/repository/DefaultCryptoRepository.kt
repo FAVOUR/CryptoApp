@@ -34,7 +34,6 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
 
     }
 
-//    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>> {
     override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation):Result<CryptoCurrencyData> {
 
 //        remoteCryptoRateDataSource.getCryptoRate(cryptoCurrencyAbbreviation)
