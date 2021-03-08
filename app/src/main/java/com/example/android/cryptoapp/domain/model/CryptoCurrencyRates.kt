@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 
 //TODO
  /*  1)change the parameter name of first and second rate
-   2) Rename the class probably currency crypto */
+     2) Rename the class probably currency crypto */
 @Parcelize
 data class CryptoCurrencyRates(var  id:Long, val image: Int, val firstExRate: Double, val secondExRate: Double, val name: String, val abbrivation: String, val symbol: String):Parcelable
 

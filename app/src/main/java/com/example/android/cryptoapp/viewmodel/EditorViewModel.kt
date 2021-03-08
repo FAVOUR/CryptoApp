@@ -36,6 +36,7 @@ class EditorViewModel @Inject constructor(val repository: CryptoRepository):View
         fun  getCryptoRate() = viewModelScope.launch {
 
           Log.e("_selectedcountry>>>> ",Gson().toJson(currencyAbr))
+
             _isLoading.value=true
 
             var response=   repository.getCryptoRate(currencyAbr!!)
