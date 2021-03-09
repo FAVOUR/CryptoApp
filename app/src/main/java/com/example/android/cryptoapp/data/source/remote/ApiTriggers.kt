@@ -6,6 +6,8 @@ import com.example.android.cryptoapp.util.ErrorUtils
 import com.example.android.cryptoapp.util.Helpers.mapResponseThrowable
 import com.example.android.cryptoapp.util.Result
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
@@ -16,15 +18,15 @@ import java.lang.Exception
 /**This class carters for making the api call and mapping the response into a sealed class */
 abstract class  ApiTriggers<T> {
      val  TAG :String = "BaseApiService"
-    protected suspend fun <T> apiCall(networkRequest :suspend  () ->Response<T>):Response<T>{
+    protected suspend fun <T> apiCall(networkRequest :suspend  () ->Response<T>): Flow<Response<T>> {
 
-       return try {
+       return  flow {  try {
            networkRequest.invoke()
 
         }catch (e:Throwable){
            throw Throwable(e)
         }
-
+    }
 
     }
 
