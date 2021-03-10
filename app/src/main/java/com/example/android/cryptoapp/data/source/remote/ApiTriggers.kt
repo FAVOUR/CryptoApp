@@ -18,7 +18,7 @@ import java.lang.Exception
 /**This class carters for making the api call and mapping the response into a sealed class */
 abstract class  ApiTriggers<T> {
      val  TAG :String = "BaseApiService"
-    protected suspend fun <T> apiCall(networkRequest :suspend  () ->Response<T>): Flow<Response<T>> {
+    protected  fun <T> apiCall(networkRequest :suspend  () ->Response<T>): Flow<Response<T>> {
 
        return  flow {  try {
            networkRequest.invoke()
