@@ -1,7 +1,7 @@
 package com.example.android.cryptoapp.data.source.remote
 
-import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
-import com.example.android.cryptoapp.currency_data.CryptoRatesResponse
+import com.example.android.cryptoapp.data.model.CurrencyAbbreviation
+import com.example.android.cryptoapp.data.model.CryptoRatesResponse
 import com.example.android.cryptoapp.data.source.IRemoteCryptoRateDataSource
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
 import com.example.android.cryptoapp.util.ErrorUtils
@@ -13,11 +13,11 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoCurrencyService, private val ioDispatcher: CoroutineDispatcher,val moshi: Moshi,val retrofit: Retrofit):IRemoteCryptoRateDataSource,ApiTriggers<CryptoRatesResponse>() {
-    override suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation) = withContext(ioDispatcher) {
+class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoCurrencyService,val moshi: Moshi,val retrofit: Retrofit):IRemoteCryptoRateDataSource,ApiTriggers<CryptoRatesResponse>() {
+    override suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation) {
     }
 
-    override suspend fun getSpecifiedCurrencyRates(currencyAbbreviation : Array<out CurrencyAbbreviation?>?): Result<List<CryptoCurrencyData>> = withContext(ioDispatcher) {
+    override suspend fun getSpecifiedCurrencyRates(currencyAbbreviation : Array<out CurrencyAbbreviation?>?): Result<List<CryptoCurrencyData>> {
        var  result :Result<List<CryptoCurrencyData>>  = Result.Loading //TODO make it reactive so thet loading will stem from here
         val responseFromServer =  apiCall{ client?.getSpecifiedCurrencyRate(currencyAbbreviation?: arrayOf(CurrencyAbbreviation.NONE)) }
 
@@ -37,7 +37,7 @@ class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoC
                }
             }
 
-        return@withContext result
+        return result
 
     }
 
@@ -77,13 +77,5 @@ class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoC
 
 
 
-
-    //TODO Implement this with retrofit converterFactory and make Generic
-// override fun <ret T> parseRemoteError(errorClass: Response<T>): String {
-//
-//        retrofit.converterFactories().get()
-//
-//
-//    }
 
 }

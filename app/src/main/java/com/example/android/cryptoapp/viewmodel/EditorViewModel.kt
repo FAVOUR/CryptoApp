@@ -2,7 +2,7 @@ package com.example.android.cryptoapp.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.android.cryptoapp.currency_data.*
+import com.example.android.cryptoapp.data.model.*
 import com.example.android.cryptoapp.data.source.repository.CryptoRepository
 import com.example.android.cryptoapp.util.Result
 import com.google.gson.Gson
@@ -34,9 +34,9 @@ class EditorViewModel @Inject constructor(val repository: CryptoRepository):View
     }
 
         fun  getCryptoRate() = viewModelScope.launch {
-//          Log.e("_currencyName>>>> ",_currencyName)
-//          Log.e("_selectedcountry>>>> ",selectedcountry.value)
+
           Log.e("_selectedcountry>>>> ",Gson().toJson(currencyAbr))
+
             _isLoading.value=true
 
             var response=   repository.getCryptoRate(currencyAbr!!)

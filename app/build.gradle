@@ -27,7 +27,7 @@ android {
 
         androidExtensions {
             features = ["parcelize"]
-        }
+        }  //find out if you may need to remove this
 
 
     }

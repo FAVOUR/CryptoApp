@@ -1,21 +1,14 @@
 package com.example.android.cryptoapp.data.source.remote
 import com.example.android.cryptoapp.CoroutineTestRule
-import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.hamcrest.core.Is.`is`
 import org.junit.After
 import org.junit.Before
-import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.Rule
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory

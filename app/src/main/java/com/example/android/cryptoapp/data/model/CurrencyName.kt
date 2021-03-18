@@ -1,4 +1,4 @@
-package com.example.android.cryptoapp.currency_data
+package com.example.android.cryptoapp.data.model
 
 enum class CurrencyName(val currencyName:String) {
 

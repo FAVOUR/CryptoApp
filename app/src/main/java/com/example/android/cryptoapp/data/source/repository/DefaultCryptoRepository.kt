@@ -1,7 +1,7 @@
 package com.example.android.cryptoapp.data.source.repository
 
 import androidx.lifecycle.LiveData
-import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
+import com.example.android.cryptoapp.data.model.CurrencyAbbreviation
 import com.example.android.cryptoapp.data.source.local.LocalCryptoRatesDataSource
 import com.example.android.cryptoapp.data.source.local.db.CryptoCurrencyData
 import com.example.android.cryptoapp.data.source.remote.RemoteCryptoRateDataSource
@@ -35,12 +35,11 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
 
     }
 
-//    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation): Result<List<CryptoCurrencyData>> {
-    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation):Result<CryptoCurrencyData> {
+    override suspend fun getCryptoRate(cryptoCurrencyAbbreviation: CurrencyAbbreviation):Result<CryptoCurrencyData> = withContext(dispatcher) {
 
 //        remoteCryptoRateDataSource.getCryptoRate(cryptoCurrencyAbbreviation)
 
-        return remotelyFetchCryptoRates(cryptoCurrencyAbbreviation)
+        return@withContext remotelyFetchCryptoRates(cryptoCurrencyAbbreviation)
     }
 
 /*
@@ -55,7 +54,7 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
 
 
 
-    private suspend fun remotelyFetchListOfCryptoRates(isRefresh: Boolean,vararg currencyAbbreviation :CurrencyAbbreviation):Result<List<CryptoCurrencyData>>{
+    private suspend fun remotelyFetchListOfCryptoRates(isRefresh: Boolean,vararg currencyAbbreviation :CurrencyAbbreviation):Result<List<CryptoCurrencyData>> = withContext(dispatcher) {
                val remoteDataSource = remoteCryptoRateDataSource.getSpecifiedCurrencyRates(currencyAbbreviation)
                when (remoteDataSource) {
                    is Result.Success ->
@@ -65,7 +64,7 @@ class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource
                        throw Throwable(remoteDataSource.errorMessage)
                    }
                }
-              return localCryptoRatesDataSource.getSpecifiedCurrencyRates(currencyAbbreviation)
+              return@withContext localCryptoRatesDataSource.getSpecifiedCurrencyRates(currencyAbbreviation)
 
 
     }

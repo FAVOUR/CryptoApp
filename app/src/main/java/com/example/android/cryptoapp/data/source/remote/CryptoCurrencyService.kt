@@ -1,7 +1,7 @@
 package com.example.android.cryptoapp.data.source.remote
 
-import com.example.android.cryptoapp.currency_data.CurrencyAbbreviation
-import com.example.android.cryptoapp.currency_data.CryptoRatesResponse
+import com.example.android.cryptoapp.data.model.CurrencyAbbreviation
+import com.example.android.cryptoapp.data.model.CryptoRatesResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
