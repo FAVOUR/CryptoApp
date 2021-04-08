@@ -14,6 +14,7 @@ import javax.inject.Inject
 class DefaultCryptoRepository @Inject constructor(val remoteCryptoRateDataSource: RemoteCryptoRateDataSource,
                                val localCryptoRatesDataSource: LocalCryptoRatesDataSource,
                                val dispatcher: CoroutineDispatcher =Dispatchers.IO):CryptoRepository{
+
     override fun observeCryptoRates(): LiveData<Result<List<CryptoCurrencyData>>> {
         return localCryptoRatesDataSource.observeCryptoRates()
     }
