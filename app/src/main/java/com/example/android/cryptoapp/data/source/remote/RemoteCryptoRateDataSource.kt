@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoCurrencyService,val moshi: Moshi,val retrofit: Retrofit):IRemoteCryptoRateDataSource,ApiTriggers<CryptoRatesResponse>() {
     override suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation) {
+
     }
 
     override suspend fun getSpecifiedCurrencyRates(currencyAbbreviation : Array<out CurrencyAbbreviation?>?): Result<List<CryptoCurrencyData>> {
@@ -54,8 +55,8 @@ class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoC
         //Make this process  a higher order function so that this will not be done over and over again for every network call
         //TODO Find out a better way to deal with this the domain model at this stage
         result = when(formattedResponse){
+
             is Result.Success->{
-//                 Timber.d(Gson().toJson(cryptoList.data))
 
                 //With this You can now use DataTransferObject<T> in for example getCryptoRate() method do the database conversion
                 //So if that class does not extend this object do not border to convert to database model as the data us not needed by the database
