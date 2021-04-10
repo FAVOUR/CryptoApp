@@ -8,10 +8,9 @@ import com.example.android.cryptoapp.util.ErrorUtils
 import com.example.android.cryptoapp.util.Result
 import com.example.android.cryptoapp.util.asDataBaseModel
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import javax.inject.Inject
+
 
 class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoCurrencyService,val moshi: Moshi,val retrofit: Retrofit):IRemoteCryptoRateDataSource,ApiTriggers<CryptoRatesResponse>() {
     override suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation) {
@@ -50,8 +49,6 @@ class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoC
        val formattedResponse = apiResponse(response = responseFromServer,retrofit = retrofit){ response,retrofit ->
              ErrorUtils.parseError(response, retrofit)
           }
-
-
         //Make this process  a higher order function so that this will not be done over and over again for every network call
         //TODO Find out a better way to deal with this the domain model at this stage
         result = when(formattedResponse){
