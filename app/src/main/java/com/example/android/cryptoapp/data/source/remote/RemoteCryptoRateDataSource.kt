@@ -16,7 +16,6 @@ class RemoteCryptoRateDataSource @Inject constructor( private val client:CryptoC
     override suspend fun refreshCryptoRates(cryptoCurrencyAbbreviation: CurrencyAbbreviation) {
 
     }
-
     override suspend fun getSpecifiedCurrencyRates(currencyAbbreviation : Array<out CurrencyAbbreviation?>?): Result<List<CryptoCurrencyData>> {
        var  result :Result<List<CryptoCurrencyData>>  = Result.Loading //TODO make it reactive so thet loading will stem from here
         val responseFromServer =  apiCall{ client?.getSpecifiedCurrencyRate(currencyAbbreviation?: arrayOf(CurrencyAbbreviation.NONE)) }
